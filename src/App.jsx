@@ -1,12 +1,11 @@
 import { lazy, Suspense } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
-import history from './@history';
+import history from "./@history";
 import Loading from "./components/Loading";
 
-const Dashboard = lazy(() => import("./pages/Dashboard"));
+const WalletActivity = lazy(() => import("./pages/WalletActivity"));
 function App() {
-
   return (
     <Router history={history}>
       <Suspense fallback={<Loading />}>
@@ -15,7 +14,7 @@ function App() {
             path="/"
             element={
               <Layout>
-                <Dashboard />
+                <WalletActivity />
               </Layout>
             }
           />
