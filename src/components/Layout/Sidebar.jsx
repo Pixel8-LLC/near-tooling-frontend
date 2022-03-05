@@ -8,32 +8,32 @@ import { ReactComponent as BullseyeArrow } from "../../assets/img/bullseye-arrow
 const Sidebar = () => {
   return (
     <div className="h-fit w-sidebarWidth bg-zinc-800 rounded-xl py-5 space-y-4">
-      <div className=" pl-6 pr-2">NFT Tools</div>
-      <div className="max-h-sidebarListHeight overflow-y-auto space-y-3">
+      <div className=" pl-5 pr-2 text-lg font-medium">NFT Tools</div>
+      <div className="max-h-sidebarListHeight text-lg overflow-y-auto space-y-3">
         <Link
           to="/"
-          className="flex items-center py-3 pl-6 pr-2 space-x-2 hover:bg-white hover:text-black"
+          className="flex items-center py-3 pl-5 pr-2 space-x-5 hover:font-medium hover:bg-white hover:text-black"
         >
           <Wallet />
           <div className="">Wallet Activity</div>
         </Link>
         <Link
           to="/"
-          className="flex items-center py-3 pl-6 pr-2 space-x-2 hover:bg-white hover:text-black"
+          className="flex items-center py-3 pl-5 pr-2 space-x-5 hover:bg-white hover:text-black"
         >
           <Trophy />
           <div className="">Flex</div>
         </Link>
         <Link
           to="/"
-          className="flex items-center py-3 pl-6 pr-2 space-x-2 hover:bg-white hover:text-black"
+          className="flex items-center py-3 pl-5 pr-2 space-x-5 hover:bg-white hover:text-black"
         >
           <UserGroup />
           <div className="">Fans</div>
         </Link>
         <Link
           to="/"
-          className="flex items-center py-3 pl-6 pr-2 space-x-2 hover:bg-white hover:text-black"
+          className="flex items-center py-3 pl-5 pr-2 space-x-5 hover:bg-white hover:text-black"
         >
           <BullseyeArrow />
           <div className="">Air Drop</div>

@@ -5,10 +5,10 @@ const Dashboard = () => {
   const [walletAddress, setWalletAddress] = useState("");
   return (
     <div>
-      <div className="text-xl font-bold w-full pb-3">Wallet Activity</div>
+      <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
-          <div className="rounded-lg w-96 border flex items-center ">
+          <div className="text-lg rounded-lg w-96 border flex items-center ">
             <input
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
@@ -19,8 +19,8 @@ const Dashboard = () => {
               <Search />
             </button>
           </div>
-          <div className="font-bold">Or</div>
-          <button className="text-base bg-white text-black rounded-lg px-4 py-2.5">
+          <div className="font-bold text-sm">Or</div>
+          <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-2.5">
             Connect Wallet
           </button>
         </div>
