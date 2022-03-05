@@ -1,6 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import {ReactComponent as AngleRight} from '../../assets/img/angle-right.svg'
+import React from "react";
+import { Link } from "react-router-dom";
+import { ReactComponent as AngleRight } from "../../assets/img/angle-right.svg";
 
 const Sidebar = () => {
   return (
@@ -11,74 +11,9 @@ const Sidebar = () => {
           <AngleRight />
           <div className="">Wallet Activity</div>
         </Link>
-
-        <Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link><Link to="/" className="flex items-center space-x-2">
-          <AngleRight />
-          <div className="">Wallet Activity</div>
-        </Link>
       </div>
     </div>
-  ); 
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
