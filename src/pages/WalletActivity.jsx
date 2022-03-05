@@ -5,9 +5,7 @@ const Dashboard = () => {
   const [walletAddress, setWalletAddress] = useState("");
   return (
     <div>
-      <div className="text-xl font-bold w-full border-b pb-3">
-        Wallet Activity
-      </div>
+      <div className="text-xl font-bold w-full pb-3">Wallet Activity</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div className="rounded-lg w-96 border flex items-center ">
