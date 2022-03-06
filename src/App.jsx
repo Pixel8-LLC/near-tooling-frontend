@@ -5,6 +5,7 @@ import history from "./@history";
 import Loading from "./components/Loading";
 
 const WalletActivity = lazy(() => import("./pages/WalletActivity"));
+const Flex = lazy(() => import("./pages/Flex"));
 function App() {
   return (
     <Router history={history}>
@@ -15,6 +16,14 @@ function App() {
             element={
               <Layout>
                 <WalletActivity />
+              </Layout>
+            }
+          />
+          <Route
+            path="/flex"
+            element={
+              <Layout>
+                <Flex />
               </Layout>
             }
           />

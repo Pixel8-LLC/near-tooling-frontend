@@ -20,7 +20,7 @@ const Dashboard = () => {
             </button>
           </div>
           <div className="font-bold text-sm">Or</div>
-          <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-2.5">
+          <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-3">
             Connect Wallet
           </button>
         </div>

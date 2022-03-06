@@ -7,6 +7,7 @@ module.exports = {
         sidebarListHeight: "calc(100% - 40px)",
         // mainHeight: 'calc(100vw - 182px)',
         sidebarWidth: "275px",
+        artWorkImgWidth: "230px",
       },
     },
   },
