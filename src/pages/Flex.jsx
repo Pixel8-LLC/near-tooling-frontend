@@ -75,7 +75,7 @@ const Flex = () => {
           <div className="">
             <div className="text-2xl">13 NEAR</div>
             <div className="">Wallet Value </div>
-            <div className="">Based on floor price</div>
+            <div className="text-neutral-500">Based on floor price</div>
           </div>
         </div>
         <div className="ml-auto">
