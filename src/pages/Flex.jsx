@@ -86,13 +86,10 @@ const Flex = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-x-7 mt-8">
+      <div className="grid grid-cols-4 gap-7 mt-8">
         {artworks.map((artwork) => (
-          <div className="">
-            <div
-              key={artwork.title}
-              className="bg-white text-black rounded-[13px] flex flex-col"
-            >
+          <div key={artwork.title} className="">
+            <div className="bg-white text-black rounded-[13px] flex flex-col">
               <img src={artwork.image} alt="image1" className="" />
               <div className="flex flex-col flex-1">
                 <div className="bg-slate-50 py-3 px-4 flex-1">
