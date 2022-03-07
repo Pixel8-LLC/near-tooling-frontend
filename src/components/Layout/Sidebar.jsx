@@ -29,9 +29,11 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="w-sidebarWidth bg-zinc-800 rounded-xl py-5 space-y-4">
-      <div className=" pl-5 pr-2 text-lg font-medium">NFT Tools</div>
-      <div className="max-h-sidebarListHeight text-lg overflow-y-auto space-y-3">
+    <div className="w-sidebarWidth bg-zinc-800 rounded-xl py-5">
+      <div className=" pl-5 pr-2 text-lg font-medium border-b border-b-black pb-3">
+        NFT Tools
+      </div>
+      <div className="max-h-sidebarListHeight text-lg overflow-y-auto space-y-1">
         {links.map(({ icon, title, url }) => (
           <Link
             key={title}
