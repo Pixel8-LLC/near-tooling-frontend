@@ -56,7 +56,7 @@ const Flex = () => {
               <Search />
             </button>
           </div>
-          <div className="font-bold text-sm">Or</div>
+          <div className="font-bold text-sm">OR</div>
           <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-3">
             Connect Wallet
           </button>
