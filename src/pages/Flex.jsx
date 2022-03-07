@@ -89,9 +89,9 @@ const Flex = () => {
       <div className="grid grid-cols-4 gap-7 mt-8">
         {artworks.map((artwork) => (
           <div key={artwork.title} className="">
-            <div className="bg-white text-black rounded-[13px] flex flex-col">
+            <div className="text-black rounded-xl flex flex-col">
               <img src={artwork.image} alt="image1" className="" />
-              <div className="flex flex-col flex-1">
+              <div className="bg-white rounded-b-xl flex flex-col flex-1">
                 <div className="bg-slate-50 py-3 px-4 flex-1">
                   <p className="font-bold text-lg">{artwork.title}</p>
                   <div className="text-sm mt-1">
