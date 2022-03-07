@@ -137,7 +137,7 @@ const Fans = () => {
           </div>
         </div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 text-base px-10 flex items-center space-x-4 rounded-md">
+          <button className="bg-zinc-800 py-4 text-base px-10 flex items-center font-bold space-x-4 rounded-md">
             <FileExport />
             <div className="">Export Fans</div>
           </button>
