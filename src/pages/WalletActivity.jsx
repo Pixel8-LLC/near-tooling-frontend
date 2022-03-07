@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 
 const Dashboard = () => {

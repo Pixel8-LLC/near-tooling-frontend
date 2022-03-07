@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ReactComponent as Wallet } from "../../assets/img/wallet.svg";
 import { ReactComponent as Trophy } from "../../assets/img/trophy.svg";

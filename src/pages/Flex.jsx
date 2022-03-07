@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as Icicles } from "../assets/img/icicles.svg";
 import { ReactComponent as Gem } from "../assets/img/gem.svg";
@@ -79,7 +79,7 @@ const Flex = () => {
           </div>
         </div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 px-10 flex space-x-4 rounded-md">
+          <button className="bg-zinc-800 py-4 px-10 flex items-center space-x-4 rounded-md">
             <ShareFromSquare />
             <div className="">Share</div>
           </button>
