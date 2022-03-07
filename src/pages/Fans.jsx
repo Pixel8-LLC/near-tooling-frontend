@@ -120,7 +120,7 @@ const Fans = () => {
   );
   return (
     <div className="pb-10">
-      <div className="text-6xl font-medium w-full pb-3">Flex</div>
+      <div className="text-6xl font-medium w-full pb-3">Fans</div>
       <div className="flex items-end space-x-6 text-lg mt-6">
         <div className="flex-1">
           <div className="text-lg">Enter minting contract address</div>
