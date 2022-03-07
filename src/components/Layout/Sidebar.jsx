@@ -29,7 +29,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="w-sidebarWidth bg-zinc-800 rounded-xl py-5">
+    <div className="h-fit w-sidebarWidth bg-zinc-800 rounded-xl py-5">
       <div className=" pl-5 pr-2 text-lg font-medium border-b border-b-black pb-3">
         NFT Tools
       </div>
