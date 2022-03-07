@@ -2,8 +2,6 @@ import { useMemo, useState } from "react";
 import { ReactComponent as AngleRight } from "../assets/img/angle-right.svg";
 import { ReactComponent as FileExport } from "../assets/img/file-export.svg";
 import { ReactComponent as Eye } from "../assets/img/eye.svg";
-import clipboard from "../assets/img/clipboard.svg";
-import link from "../assets/img/link.svg";
 import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
 import { ReactComponent as GreenCheck } from "../assets/img/green-check.svg";
 import { ReactComponent as GreyClock } from "../assets/img/grey-clock.svg";
