@@ -104,7 +104,7 @@ const Flex = () => {
                     </div>
                   </div>
                 </div>
-                <button className="flex items-center justify-center py-1">
+                <button className="flex items-center justify-center py-1 text-neutral-400">
                   More Info
                 </button>
               </div>
