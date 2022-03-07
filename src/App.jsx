@@ -6,6 +6,7 @@ import Loading from "./components/Loading";
 
 const WalletActivity = lazy(() => import("./pages/WalletActivity"));
 const Flex = lazy(() => import("./pages/Flex"));
+const Fans = lazy(() => import("./pages/Fans"));
 function App() {
   return (
     <Router history={history}>
@@ -24,6 +25,14 @@ function App() {
             element={
               <Layout>
                 <Flex />
+              </Layout>
+            }
+          />
+          <Route
+            path="/fans"
+            element={
+              <Layout>
+                <Fans />
               </Layout>
             }
           />
