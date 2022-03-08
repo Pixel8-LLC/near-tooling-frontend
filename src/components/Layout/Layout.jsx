@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
       <Header />
       <div className="relative flex h-sidebarHeight">
         <Sidebar />
-        <div className="w-full overflow-x-auto pl-8">
+        <div className="w-full overflow-x-auto pl-8 pb-10">
           <Outlet />
         </div>
       </div>
