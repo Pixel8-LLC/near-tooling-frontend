@@ -8,10 +8,6 @@ const Header = () => {
       </div>
       <div className="w-px h-6 bg-white"></div>
       <div className="text-xl">Tooling</div>
-      <div className="flex-1"></div>
-      <button className="bg-white text-black rounded-lg px-4 py-1">
-        Connect Wallet
-      </button>
     </div>
   );
 };

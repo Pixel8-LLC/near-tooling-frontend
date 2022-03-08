@@ -23,7 +23,7 @@ const Flex = () => {
               <Search />
             </button>
           </div>
-          <div className="font-bold text-sm">Or</div>
+          <div className="font-bold text-sm">OR</div>
           <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-3">
             Connect Wallet
           </button>
@@ -42,26 +42,23 @@ const Flex = () => {
           <div className="">
             <div className="text-2xl">13 NEAR</div>
             <div className="">Wallet Value </div>
-            <div className="">Based on floor price</div>
+            <div className="text-neutral-500">Based on floor price</div>
           </div>
         </div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 px-10 flex items-center space-x-4 rounded-md">
+          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md">
             <ShareFromSquare />
             <div className="">Share</div>
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-x-7 mt-8">
+      <div className="grid grid-cols-4 gap-7 mt-8">
         {artworks.map((artwork) => (
-          <div key={artwork.id}>
-            <div
-              key={artwork.title}
-              className="bg-white text-black rounded-[13px] flex flex-col"
-            >
+          <div key={artwork.id} className="">
+            <div className="text-black rounded-xl flex flex-col">
               <img src={artwork.image} alt="image1" className="" />
-              <div className="flex flex-col flex-1">
+              <div className="bg-white rounded-b-xl flex flex-col flex-1">
                 <div className="bg-slate-50 py-3 px-4 flex-1">
                   <p className="font-bold text-lg">{artwork.title}</p>
                   <div className="text-sm mt-1">
@@ -76,7 +73,7 @@ const Flex = () => {
                 </div>
                 <Link
                   to={`/flex/${artwork.id}`}
-                  className="flex items-center justify-center py-1"
+                  className="flex items-center justify-center py-1 text-neutral-400"
                 >
                   More Info
                 </Link>
