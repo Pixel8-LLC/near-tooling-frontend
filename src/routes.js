@@ -14,8 +14,10 @@ const routes = () => [
       { index: true, element: <WalletActivity /> },
       {
         path: "/flex",
-        element: <Flex />,
-        children: [{ path: "/flex/:id", element: <SingleNFT /> }],
+        children: [
+          { index: true, element: <Flex /> },
+          { path: "/flex/:id", element: <SingleNFT /> },
+        ],
       },
       { path: "/fans", element: <Fans /> },
     ],
