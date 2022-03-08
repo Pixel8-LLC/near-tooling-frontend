@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
@@ -73,9 +74,12 @@ const Flex = () => {
                     </div>
                   </div>
                 </div>
-                <button className="flex items-center justify-center py-1">
+                <Link
+                  to={`/flex/${artwork.id}`}
+                  className="flex items-center justify-center py-1"
+                >
                   More Info
-                </button>
+                </Link>
               </div>
             </div>
           </div>
