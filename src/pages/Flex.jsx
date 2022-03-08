@@ -55,7 +55,7 @@ const Flex = () => {
 
       <div className="grid grid-cols-4 gap-x-7 mt-8">
         {artworks.map((artwork) => (
-          <div className="">
+          <div key={artwork.id}>
             <div
               key={artwork.title}
               className="bg-white text-black rounded-[13px] flex flex-col"
