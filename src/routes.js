@@ -5,6 +5,7 @@ const WalletActivity = lazy(() => import("./pages/WalletActivity"));
 const Flex = lazy(() => import("./pages/Flex"));
 const SingleNFT = lazy(() => import("./pages/SingleNFT"));
 const Fans = lazy(() => import("./pages/Fans"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const routes = () => [
   {
@@ -20,6 +21,7 @@ const routes = () => [
         ],
       },
       { path: "/fans", element: <Fans /> },
+      { path: "*", element: <NotFound /> },
     ],
   },
 ];
