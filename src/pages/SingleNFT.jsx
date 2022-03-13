@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
@@ -7,10 +7,33 @@ import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
 import { ReactComponent as GreenCheck } from "../assets/img/green-check.svg";
 import { ReactComponent as GreyClock } from "../assets/img/grey-clock.svg";
 import ReactTable from "../components/ReactTable";
+import { Popover } from "@headlessui/react";
+import { usePopper } from "react-popper";
+import classes from "./SingleNFT.module.css";
 
 const SingleNFT = () => {
   const { id } = useParams();
   const artwork = artworks.find((val) => val.id === +id) || {};
+  let [referenceElement, setReferenceElement] = useState();
+  let [arrowElement, setArrowElement] = useState();
+  let [popperElement, setPopperElement] = useState();
+  let { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: "right",
+    modifiers: [
+      {
+        name: "arrow",
+        options: {
+          element: arrowElement,
+        },
+      },
+      {
+        name: "offset",
+        options: {
+          offset: [-40, 10],
+        },
+      },
+    ],
+  });
 
   const statusIcon = useMemo(
     () => ({
@@ -102,9 +125,33 @@ const SingleNFT = () => {
             <button className="rounded-md text-sm bg-zinc-800 py-3 text-center w-full">
               Burn NFT
             </button>
-            <button className="rounded-md text-sm bg-zinc-800 py-3 text-center w-full">
-              Other Functions
-            </button>
+            <Popover className="relative">
+              <Popover.Button
+                ref={setReferenceElement}
+                className="rounded-md text-sm bg-zinc-800 py-3 text-center w-full"
+              >
+                Other Functions
+              </Popover.Button>
+
+              <Popover.Panel
+                ref={setPopperElement}
+                style={styles.popper}
+                {...attributes.popper}
+                className="absolute z-10 bg-white text-black rounded-xl"
+              >
+                <div
+                  className={classes.arrow}
+                  style={styles.arrow}
+                  ref={setArrowElement}
+                ></div>
+                <div className="text-center px-10 py-8">
+                  <div className="">Some Function Two</div>
+                  <div className="">Some Function One</div>
+                </div>
+
+                <img src="/solutions.jpg" alt="" />
+              </Popover.Panel>
+            </Popover>
           </div>
         </div>
         <div className="flex-1">

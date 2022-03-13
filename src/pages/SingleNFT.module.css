@@ -1,0 +1,25 @@
+.arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+}
+
+.arrow::after {
+  content: " ";
+  position: absolute;
+  left: -5px;
+  top: -10px;
+  transform: rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.arrow[data-popper-placement^="top"] > #arrow {
+  bottom: -30px;
+}
+
+.arrow[data-popper-placement^="top"] > #arrow::after {
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
