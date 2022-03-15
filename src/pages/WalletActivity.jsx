@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 
-const Dashboard = () => {
+const WalletActivity = () => {
   const [walletAddress, setWalletAddress] = useState("");
   return (
     <div>
@@ -29,4 +29,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default WalletActivity;

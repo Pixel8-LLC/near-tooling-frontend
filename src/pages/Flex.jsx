@@ -1,45 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ReactComponent as Search } from "../assets/img/search.svg";
-import { ReactComponent as Icicles } from "../assets/img/icicles.svg";
-import { ReactComponent as Gem } from "../assets/img/gem.svg";
-import { ReactComponent as FireFlameCurved } from "../assets/img/fire-flame-curved.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
-import image1 from "../assets/img/image-1.png";
-import image2 from "../assets/img/image-2.png";
-import image3 from "../assets/img/image-3.png";
-import image4 from "../assets/img/image-4.png";
+import artworks from "../constants/artWorks";
+
 const Flex = () => {
   const [walletAddress, setWalletAddress] = useState("");
-  const artworks = [
-    {
-      image: image1,
-      title: "Astropups #1283",
-      royalty: "5%",
-      currentFloor: "15N",
-      rarity: <Icicles />,
-    },
-    {
-      image: image2,
-      title: "Vexed Apes Club #52",
-      royalty: "5%",
-      currentFloor: "15N",
-      rarity: <Gem />,
-    },
-    {
-      image: image3,
-      title: "VexedApesClub#898",
-      royalty: "5%",
-      currentFloor: "15N",
-      rarity: <FireFlameCurved />,
-    },
-    {
-      image: image4,
-      title: "Blue Bob Boom! Promotional DAC - Design 3 #176",
-      royalty: "5%",
-      currentFloor: "15N",
-      rarity: <FireFlameCurved />,
-    },
-  ];
+
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -88,7 +55,7 @@ const Flex = () => {
 
       <div className="grid grid-cols-4 gap-7 mt-8">
         {artworks.map((artwork) => (
-          <div key={artwork.title} className="">
+          <div key={artwork.id} className="">
             <div className="text-black rounded-xl flex flex-col">
               <img src={artwork.image} alt="image1" className="" />
               <div className="bg-white rounded-b-xl flex flex-col flex-1">
@@ -104,9 +71,12 @@ const Flex = () => {
                     </div>
                   </div>
                 </div>
-                <button className="flex items-center justify-center py-1 text-neutral-400">
+                <Link
+                  to={`/flex/${artwork.id}`}
+                  className="flex items-center justify-center py-1 text-neutral-400"
+                >
                   More Info
-                </button>
+                </Link>
               </div>
             </div>
           </div>

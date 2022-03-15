@@ -1,45 +1,12 @@
-import { lazy, Suspense } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
-import history from "./@history";
+import { Suspense } from "react";
+import { useRoutes } from "react-router-dom";
 import Loading from "./components/Loading";
+import routes from "./routes";
 
-const WalletActivity = lazy(() => import("./pages/WalletActivity"));
-const Flex = lazy(() => import("./pages/Flex"));
-const Fans = lazy(() => import("./pages/Fans"));
 function App() {
-  return (
-    <Router history={history}>
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Layout>
-                <WalletActivity />
-              </Layout>
-            }
-          />
-          <Route
-            path="/flex"
-            element={
-              <Layout>
-                <Flex />
-              </Layout>
-            }
-          />
-          <Route
-            path="/fans"
-            element={
-              <Layout>
-                <Fans />
-              </Layout>
-            }
-          />
-        </Routes>
-      </Suspense>
-    </Router>
-  );
+  const element = useRoutes(routes());
+
+  return <Suspense fallback={<Loading />}>{element}</Suspense>;
 }
 
 export default App;
