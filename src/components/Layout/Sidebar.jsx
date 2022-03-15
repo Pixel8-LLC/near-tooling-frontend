@@ -25,7 +25,7 @@ const Sidebar = () => {
     {
       icon: <BullseyeArrow />,
       title: "Air Drop",
-      url: "/air-drop",
+      url: "/airdrop",
     },
   ];
   return (
