@@ -29,10 +29,16 @@ const Airdrop = () => {
           <div className="flex space-x-10">
             <input
               type="number"
-              className="flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md"
+              className={classnames(
+                "flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
+                { "border-neutral-500": !nearSelected }
+              )}
             />
             <input
-              className="flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md"
+              className={classnames(
+                "flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
+                { "border-neutral-500": !nearSelected }
+              )}
               placeholder="Max NEAR Spend"
             />
           </div>
@@ -46,13 +52,20 @@ const Airdrop = () => {
             className="flex items-center space-x-4"
             onClick={() => setSelected("nft")}
           >
-            <i className="text-3xl fal fa-times-circle"></i>
+            <i
+              className={`text-3xl ${
+                nftSelected ? "fas fa-check-circle" : "fal fa-times-circle"
+              }`}
+            ></i>
             <span className="text-2xl font-bold">NFT Airdrop</span>
           </div>
           <div className="flex space-x-10">
             <label
               htmlFor="image_uploads"
-              className="flex-1 appearance-none bg-black border border-neutral-500 py-2.5 px-5 rounded-md"
+              className={classnames(
+                "flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
+                { "border-neutral-500": !nftSelected }
+              )}
             >
               Choose images to upload (PNG, JPG)
             </label>
@@ -60,9 +73,12 @@ const Airdrop = () => {
               id="image_uploads"
               name="image_uploads"
               type="file"
-              className="hidden flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md"
+              className={classnames(
+                "hidden flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
+                { "border-neutral-500": !nftSelected }
+              )}
             />
-            <button className="flex px-12 space-x-4 items-center bg-neutral-900 text-neutral-400 py-2.5 rounded-md">
+            <button className="flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md">
               <i className="fal fa-image"></i>
               <span>Select NFTS</span>
             </button>
