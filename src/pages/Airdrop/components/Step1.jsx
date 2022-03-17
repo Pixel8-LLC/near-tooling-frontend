@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import classnames from "classnames";
 import { v4 as uuidv4 } from "uuid";
 import { Dialog, Transition } from "@headlessui/react";
+import images from "./files";
 
 const Step1 = () => {
   const [selected, setSelected] = useState("near");
@@ -80,7 +81,7 @@ const Step1 = () => {
               { "border-neutral-500": !nftSelected }
             )}
           >
-            <label htmlFor="image_uploads" className="flex-1 py-2.5 px-5  ">
+            <label htmlFor="image_uploads" className="flex-1 py-2.5 px-5">
               {selectedFile
                 ? selectedFile?.name
                 : "Choose images to upload (PNG, JPG)"}
@@ -183,31 +184,36 @@ const Step1 = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-2xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-neutral-700 shadow-xl rounded-2xl">
-                <Dialog.Title
-                  as="h3"
-                  className="flex items-center justify-between"
-                >
-                  <div className="text-4xl leading-6 text-white">
-                    <span>Your</span> <span className="font-bold">NFTs</span>
-                  </div>
-                  <div className="text-2xl text-neutral-500">(1 Selected)</div>
-                </Dialog.Title>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                    onClick={closeModal}
+              <div className="relative inline-block w-full max-w-3xl overflow-hidden text-left align-middle transition-all transform bg-neutral-700 shadow-xl rounded-2xl">
+                <div className="z-20 absolute w-full h-1/3 bottom-0 bg-gradient-to-t from-neutral-900 to-neutral-700/0"></div>
+                <div className="z-10 px-9">
+                  <Dialog.Title
+                    as="h3"
+                    className="flex items-center justify-between px-12 pt-8 pb-4"
                   >
-                    Got it, thanks!
-                  </button>
+                    <div className="text-4xl leading-6 text-white">
+                      <span>Your</span> <span className="font-bold">NFTs</span>
+                    </div>
+                    <div className="text-2xl text-neutral-500">
+                      (1 Selected)
+                    </div>
+                  </Dialog.Title>
+                  <div className="relative">
+                    <div className="mt-2 pl-6 pr-5 grid grid-cols-4 max-h-[65vh] overflow-y-auto gap-2">
+                      {images.map((val, index) => {
+                        return <img key={val} src={val} alt={`${index + 1}`} />;
+                      })}
+                    </div>
+                    <div className="z-20 mt-4 absolute bottom-12 w-full flex items-center justify-center">
+                      <button
+                        type="button"
+                        className="px-28 py-4 text-lg font-bold bg-blue-100 border border-transparent rounded-md"
+                        onClick={closeModal}
+                      >
+                        Add 1 NFT
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </Transition.Child>
