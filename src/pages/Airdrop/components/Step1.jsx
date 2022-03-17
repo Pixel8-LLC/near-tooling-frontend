@@ -9,9 +9,16 @@ const Step1 = () => {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [selImgs, setSelImgs] = useState([]);
 
   const nearSelected = selected === "near";
   const nftSelected = selected === "nft";
+
+  const toggleSelImgs = (id) => {
+    setSelImgs((prev) =>
+      prev.includes(id) ? prev.filter((val) => val !== id) : [...prev, id]
+    );
+  };
 
   function closeModal() {
     setIsOpen(false);
@@ -201,13 +208,43 @@ const Step1 = () => {
                   <div className="relative">
                     <div className="mt-2 pl-6 pr-5 grid grid-cols-4 max-h-[65vh] overflow-y-auto gap-2">
                       {images.map((val, index) => {
-                        return <img key={val} src={val} alt={`${index + 1}`} />;
+                        return (
+                          <div className="relative">
+                            <div className="relative">
+                              <div className="absolute h-full w-full hover:bg-black/75 rounded-2xl"></div>
+                              <img
+                                className="border-4 border-neutral-900 rounded-2xl"
+                                key={val.id}
+                                src={val.image}
+                                alt={`${val.id}`}
+                              />
+                            </div>
+                            <div className="absolute bottom-px right-3 p-1.5 bg-neutral-900 rounded-full">
+                              <label
+                                className="bg-black w-4 h-4 rounded-full text-[8px] text-white flex justify-center items-center"
+                                htmlFor={`sel${val.id}`}
+                              >
+                                {selImgs.includes(val.id) ? (
+                                  <i className="far fa-check"></i>
+                                ) : null}
+                              </label>
+                              <input
+                                className="hidden"
+                                type="checkbox"
+                                name={`sel${val.id}`}
+                                checked={selImgs.includes(val.id)}
+                                onChange={() => toggleSelImgs(val.id)}
+                                id={`sel${val.id}`}
+                              />
+                            </div>
+                          </div>
+                        );
                       })}
                     </div>
                     <div className="z-20 mt-4 absolute bottom-12 w-full flex items-center justify-center">
                       <button
                         type="button"
-                        className="px-28 py-4 text-lg font-bold bg-blue-100 border border-transparent rounded-md"
+                        className="px-28 py-4 text-lg font-bold bg-white border border-transparent rounded-md"
                         onClick={closeModal}
                       >
                         Add 1 NFT
