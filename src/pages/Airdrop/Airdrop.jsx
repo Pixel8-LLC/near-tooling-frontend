@@ -23,7 +23,7 @@ const Airdrop = () => {
             onClick={handlePrevStep}
             className="flex items-center justify-center py-4 bg-neutral-900 rounded-lg space-x-16 text-center"
           >
-            <i class="far fa-chevron-left"></i>
+            <i className="far fa-chevron-left"></i>
             <span className="text-lg">Go Back</span>
           </button>
         ) : (
@@ -34,7 +34,7 @@ const Airdrop = () => {
           className="flex items-center justify-center py-4 bg-white rounded-lg space-x-16 text-black text-center"
         >
           <span className="text-lg">Select Recipients</span>
-          <i class="far fa-chevron-right"></i>
+          <i className="far fa-chevron-right"></i>
         </button>
       </div>
     </div>

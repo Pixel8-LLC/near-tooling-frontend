@@ -210,7 +210,7 @@ const Step1 = () => {
                       {images.map((val, index) => {
                         const checked = selImgs.includes(val.id);
                         return (
-                          <div className="relative group">
+                          <div key={val.id} className="relative group">
                             <label htmlFor={`sel${val.id}`}>
                               <div className="relative w-full h-full">
                                 <div
@@ -229,7 +229,6 @@ const Step1 = () => {
                                     },
                                     { "border-4 border-neutral-900": checked },
                                   )}
-                                  key={val.id}
                                   src={val.image}
                                   alt={`${val.id}`}
                                 />
