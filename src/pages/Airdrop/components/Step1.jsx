@@ -16,7 +16,7 @@ const Step1 = () => {
 
   const toggleSelImgs = (id) => {
     setSelImgs((prev) =>
-      prev.includes(id) ? prev.filter((val) => val !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((val) => val !== id) : [...prev, id],
     );
   };
 
@@ -52,14 +52,14 @@ const Step1 = () => {
             disabled={!nearSelected}
             className={classnames(
               "flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
-              { "border-neutral-500": !nearSelected }
+              { "border-neutral-500": !nearSelected },
             )}
           />
           <input
             disabled={!nearSelected}
             className={classnames(
               "flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
-              { "border-neutral-500": !nearSelected }
+              { "border-neutral-500": !nearSelected },
             )}
             placeholder="Max NEAR Spend"
           />
@@ -85,7 +85,7 @@ const Step1 = () => {
           <div
             className={classnames(
               "cursor-pointer flex-1 flex items-center appearance-none bg-black border  rounded-md",
-              { "border-neutral-500": !nftSelected }
+              { "border-neutral-500": !nftSelected },
             )}
           >
             <label htmlFor="image_uploads" className="flex-1 py-2.5 px-5">
@@ -115,7 +115,7 @@ const Step1 = () => {
             onChange={(e) => setSelectedFile(e.target.files?.[0])}
             className={classnames(
               "hidden flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
-              { "border-neutral-500": !nftSelected }
+              { "border-neutral-500": !nftSelected },
             )}
           />
           <button
@@ -145,7 +145,7 @@ const Step1 = () => {
                     disabled={!nftSelected}
                     onClick={() =>
                       setFiles((prev) =>
-                        prev.filter((val) => val.tempId !== tempId)
+                        prev.filter((val) => val.tempId !== tempId),
                       )
                     }
                   ></button>
@@ -206,37 +206,55 @@ const Step1 = () => {
                     </div>
                   </Dialog.Title>
                   <div className="relative">
-                    <div className="mt-2 pl-6 pr-5 grid grid-cols-4 max-h-[65vh] overflow-y-auto gap-2">
+                    <div className="mt-2 pl-6 pr-5 pb-28 grid grid-cols-4 max-h-[65vh] overflow-y-auto gap-x-7 gap-y-6">
                       {images.map((val, index) => {
+                        const checked = selImgs.includes(val.id);
                         return (
-                          <div className="relative">
-                            <div className="relative">
-                              <div className="absolute h-full w-full hover:bg-black/75 rounded-2xl"></div>
-                              <img
-                                className="border-4 border-neutral-900 rounded-2xl"
-                                key={val.id}
-                                src={val.image}
-                                alt={`${val.id}`}
-                              />
-                            </div>
-                            <div className="absolute bottom-px right-3 p-1.5 bg-neutral-900 rounded-full">
-                              <label
-                                className="bg-black w-4 h-4 rounded-full text-[8px] text-white flex justify-center items-center"
-                                htmlFor={`sel${val.id}`}
+                          <div className="relative group">
+                            <label htmlFor={`sel${val.id}`}>
+                              <div className="relative w-full h-full">
+                                <div
+                                  className={classnames(
+                                    "hidden group-hover:block absolute h-full w-full text-white text-sm py-6 px-4 group-hover:bg-black/50 rounded-2xl",
+                                  )}
+                                >
+                                  {`Translucent Vandal for Ukraine ${val.id}`}
+                                </div>
+                                <img
+                                  className={classnames(
+                                    "rounded-2xl w-full h-full",
+                                    {
+                                      "group-hover:border-4 group-hover:border-neutral-900":
+                                        !checked,
+                                    },
+                                    { "border-4 border-neutral-900": checked },
+                                  )}
+                                  key={val.id}
+                                  src={val.image}
+                                  alt={`${val.id}`}
+                                />
+                              </div>
+                              <div
+                                className={classnames(
+                                  "absolute bottom-0 right-0 p-1.5 bg-neutral-900 rounded-full",
+                                  { "hidden group-hover:block": !checked },
+                                )}
                               >
-                                {selImgs.includes(val.id) ? (
-                                  <i className="far fa-check"></i>
-                                ) : null}
-                              </label>
-                              <input
-                                className="hidden"
-                                type="checkbox"
-                                name={`sel${val.id}`}
-                                checked={selImgs.includes(val.id)}
-                                onChange={() => toggleSelImgs(val.id)}
-                                id={`sel${val.id}`}
-                              />
-                            </div>
+                                <div className="bg-black w-4 h-4 rounded-full text-[8px] text-white flex justify-center items-center">
+                                  {selImgs.includes(val.id) ? (
+                                    <i className="far fa-check"></i>
+                                  ) : null}
+                                </div>
+                                <input
+                                  className="hidden"
+                                  type="checkbox"
+                                  name={`sel${val.id}`}
+                                  checked={selImgs.includes(val.id)}
+                                  onChange={() => toggleSelImgs(val.id)}
+                                  id={`sel${val.id}`}
+                                />
+                              </div>
+                            </label>
                           </div>
                         );
                       })}
