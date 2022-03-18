@@ -1,4 +1,4 @@
-import Step1 from "./components/Step1";
+import Step1 from "./steps/Step1";
 
 const Airdrop = () => {
   return (
