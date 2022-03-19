@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import classnames from "classnames";
-import { Popover } from "@headlessui/react";
+import { Dialog, Popover, Transition } from "@headlessui/react";
 import { usePopper } from "react-popper";
 
 import { ReactComponent as NearIcon } from "../../../assets/img/near-icon.svg";
@@ -14,6 +14,8 @@ const Step3 = () => {
   let [groupedImgs, setGroupedImgs] = useState({});
   let [popperElement, setPopperElement] = useState();
   const [walletFilter, setWalletFilter] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   let { styles, attributes } = usePopper(referenceElement, popperElement, {
     // placement: "right",
     modifiers: [
@@ -48,6 +50,13 @@ const Step3 = () => {
     );
   };
 
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
   return (
     <div>
       <div className="mt-10">
@@ -240,6 +249,76 @@ const Step3 = () => {
           </div>
         </div>
       </div>
+
+      <button
+        className="mt-5 px-8 py-3 bg-neutral-900 rounded-lg"
+        onClick={openModal}
+      >
+        Test error modal
+      </button>
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-10 overflow-y-auto"
+          onClose={() => {}}
+        >
+          <div className="min-h-screen px-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0" />
+            </Transition.Child>
+
+            {/* This element is to trick the browser into centering the modal contents. */}
+            <span
+              className="inline-block h-screen align-middle"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <div className="relative inline-block w-full max-w-3xl overflow-hidden text-left align-middle transition-all transform bg-neutral-700 shadow-xl rounded-2xl">
+                <div className="z-10 px-9 pt-16 pb-20">
+                  <Dialog.Title
+                    as="h3"
+                    className="flex flex-col items-center justify-between px-36 pt-8 pb-4 text-center"
+                  >
+                    <i className="far fa-exclamation-circle text-6xl leading-6 text-white mb-11"></i>
+                    <div className="text-4xl text-white mb-10 leading-10">
+                      This Airdrop cannot be completed
+                    </div>
+                    <div className="text-lg mb-16 text-white">
+                      You've exceeded your maximum NEAR spend.
+                    </div>
+                    <button
+                      onClick={closeModal}
+                      className="flex items-center justify-center py-4 px-36 bg-white text-neutral-900 rounded-lg space-x-10 text-center"
+                    >
+                      <i className="far fa-chevron-left"></i>
+                      <span className="text-lg">Go Back</span>
+                    </button>
+                  </Dialog.Title>
+                </div>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 };
