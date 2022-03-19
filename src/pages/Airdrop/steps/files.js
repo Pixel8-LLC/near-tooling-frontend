@@ -17,66 +17,82 @@ const images = [
   {
     id: 1,
     image: image8,
+    wallet: "example.near",
   },
   {
     id: 2,
     image: image9,
+    wallet: "example.near",
   },
   {
     id: 3,
     image: image3,
+    wallet: "example.near",
   },
   {
     id: 4,
     image: image4,
+    wallet: "example.near",
   },
   {
     id: 5,
     image: image5,
+    wallet: "nft2.example.near",
   },
   {
     id: 6,
     image: image6,
+    wallet: "nft2.example.near",
   },
   {
     id: 7,
     image: image7,
+    wallet: "nft2.example.near",
   },
   {
     id: 8,
     image: image8,
+    wallet: "nft2.example.near",
   },
   {
     id: 9,
     image: image9,
+    wallet: "nft3.example.near",
   },
   {
     id: 10,
     image: image10,
+    wallet: "nft3.example.near",
   },
   {
     id: 11,
     image: image11,
+    wallet: "nft3.example.near",
   },
   {
     id: 12,
     image: image12,
+    wallet: "nft3.example.near",
   },
   {
     id: 13,
     image: image13,
+    wallet: "nft3.example.near",
   },
   {
     id: 14,
     image: image14,
+    wallet: "nft3.example.near",
   },
   {
     id: 15,
     image: image15,
+    wallet: "nft3.example.near",
   },
   {
     id: 16,
     image: image16,
+    wallet: "nft3.example.near",
   },
 ];
 
