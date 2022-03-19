@@ -82,20 +82,34 @@ const Step3 = () => {
         <div className="w-64 border border-neutral-900 rounded-lg">
           <button
             onClick={() => setWalletFilter("")}
-            className="bg-white py-4 px-8 text-black font-bold rounded-t-lg w-full text-left"
+            className={classnames(
+              "font-bold rounded-t-lg w-full py-4 px-8 text-left border-b border-neutral-900",
+              { "bg-white text-black": walletFilter === "" },
+            )}
           >
             All NFTs ({images.length})
           </button>
           <div className="pr-3">
             <div className="h-96 mt-6 space-y-8 overflow-auto">
               {Object.entries(groupedImgs).map(([key, val]) => (
-                <button
-                  onClick={() => setWalletFilter(key)}
-                  key={key}
-                  className="pl-8 pr-4"
-                >
-                  {key} ({(val || []).length})
-                </button>
+                <div className="flex items-center">
+                  <div
+                    className={classnames("h-6 w-1 rounded-lg bg-white", {
+                      hidden: walletFilter !== key,
+                    })}
+                  ></div>
+                  <button
+                    onClick={() => setWalletFilter(key)}
+                    key={key}
+                    title={key}
+                    className={classnames("pl-8 pr-4 flex", {
+                      "opacity-80": walletFilter !== key,
+                    })}
+                  >
+                    <span className="max-w-[10rem] truncate">{key}</span>{" "}
+                    <span>({(val || []).length})</span>
+                  </button>
+                </div>
               ))}
             </div>
           </div>
@@ -103,7 +117,12 @@ const Step3 = () => {
         <div className="flex-1 border border-neutral-900 rounded-lg px-10">
           <div className="flex items-center space-x-4">
             <div className="mb-4 flex-1">
-              <div className="text-2xl font-bold mt-9">All NFTs</div>
+              <div
+                className="text-2xl font-bold mt-9 max-w-[15rem] truncate"
+                title={!!walletFilter ? walletFilter : "All NFTs"}
+              >
+                {!!walletFilter ? walletFilter : "All NFTs"}
+              </div>
               <div className="text-sm opacity-60 h-4">
                 {selImgs.length > 0 && <>({selImgs.length} Selected)</>}
               </div>
