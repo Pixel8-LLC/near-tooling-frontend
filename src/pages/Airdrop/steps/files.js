@@ -22,7 +22,7 @@ const images = [
   {
     id: 2,
     image: image9,
-    wallet: "example.near",
+    wallet: "example.near.example.near.example.near.example.near",
   },
   {
     id: 3,
