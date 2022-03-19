@@ -14,31 +14,28 @@ const Step3 = () => {
   let [groupedImgs, setGroupedImgs] = useState({});
   let [popperElement, setPopperElement] = useState();
   const [walletFilter, setWalletFilter] = useState("");
-  let { styles, attributes, state } = usePopper(
-    referenceElement,
-    popperElement,
-    {
-      // placement: "right",
-      modifiers: [
-        {
-          name: "arrow",
-          options: {
-            element: arrowElement,
-          },
+  let { styles, attributes } = usePopper(referenceElement, popperElement, {
+    // placement: "right",
+    modifiers: [
+      {
+        name: "arrow",
+        options: {
+          element: arrowElement,
         },
-        {
-          name: "offset",
-          options: {
-            offset: [30, 18],
-          },
+      },
+      {
+        name: "offset",
+        options: {
+          offset: [30, 18],
         },
-      ],
-    },
-  );
+      },
+    ],
+  });
 
   useEffect(() => {
     setGroupedImgs(
       images.reduce(
+        // eslint-disable-next-line no-sequences
         (r, v, i, a, k = v.wallet) => ((r[k] || (r[k] = [])).push(v), r),
         {},
       ),
