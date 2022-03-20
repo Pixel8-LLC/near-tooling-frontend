@@ -64,17 +64,17 @@ const Step3 = () => {
           <span className="font-bold">Distribution</span>
           <span> - 3 Wallets</span>
         </div>
-        <div className="mt-5 flex items-center justify-between">
+        <div className="mt-5 flex items-centext-neutral-400ter justify-between">
           <div className="">
             <div className="flex items-center space-x-5">
               <i className="fas fa-image"></i>
-              <div className="min-w-32">69 NFT</div>
-              <div className="">23 NFT Per Wallet</div>
+              <div className="min-w-[8rem]">69 NFT</div>
+              <div className="text-neutral-400">23 NFT Per Wallet</div>
             </div>
             <div className="flex items-center space-x-5">
               <NearIcon />
-              <div className="min-w-32">420 NEAR</div>
-              <div className="">140 NEAR Per Wallet </div>
+              <div className="min-w-[8rem]">420 NEAR</div>
+              <div className="text-neutral-400">140 NEAR Per Wallet </div>
             </div>
           </div>
           <button className="flex px-9 space-x-4 items-center bg-neutral-900 py-4 rounded-md">
