@@ -202,7 +202,7 @@ const Step1 = () => {
                       <span>Your</span> <span className="font-bold">NFTs</span>
                     </div>
                     <div className="text-2xl text-neutral-500">
-                      (1 Selected)
+                      ({selImgs.length} Selected)
                     </div>
                   </Dialog.Title>
                   <div className="relative">
