@@ -160,7 +160,7 @@ const Step1 = () => {
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={closeModal}
+          onClose={() => {}}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -191,8 +191,15 @@ const Step1 = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="relative inline-block w-full max-w-3xl overflow-hidden text-left align-middle transition-all transform bg-neutral-700 shadow-xl rounded-2xl">
+              <div className="relative inline-block w-full max-w-3xl text-left align-middle transition-all transform bg-neutral-700 shadow-xl rounded-2xl">
                 <div className="z-20 absolute w-full h-1/3 bottom-0 bg-gradient-to-t from-neutral-900 to-neutral-700/0"></div>
+                <button
+                  onClick={closeModal}
+                  className="absolute z-20 -top-10 right-5"
+                >
+                  <i className="far fa-times text-3xl text-white" />
+                </button>
+
                 <div className="z-10 px-9">
                   <Dialog.Title
                     as="h3"
@@ -227,7 +234,9 @@ const Step1 = () => {
                                       "group-hover:border-4 group-hover:border-neutral-900":
                                         !checked,
                                     },
-                                    { "border-4 border-neutral-900": checked },
+                                    {
+                                      "border-4 border-neutral-900": checked,
+                                    },
                                   )}
                                   src={val.image}
                                   alt={`${val.id}`}

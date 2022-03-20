@@ -5,7 +5,7 @@ import Step3 from "./steps/Step3";
 import Step4 from "./steps/Step4";
 
 const Airdrop = () => {
-  const [currentstep, setCurrentstep] = useState(3);
+  const [currentstep, setCurrentstep] = useState(1);
   const handleNextStep = () =>
     setCurrentstep((prev) => (prev < 4 ? prev + 1 : prev));
   const handlePrevStep = () =>
