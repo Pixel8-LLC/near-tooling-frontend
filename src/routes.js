@@ -6,6 +6,7 @@ const Flex = lazy(() => import("./pages/Flex"));
 const SingleNFT = lazy(() => import("./pages/SingleNFT"));
 const Fans = lazy(() => import("./pages/Fans"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Airdrop = lazy(() => import("./pages/Airdrop"));
 
 const routes = () => [
   {
@@ -19,6 +20,10 @@ const routes = () => [
           { index: true, element: <Flex /> },
           { path: "/flex/:id", element: <SingleNFT /> },
         ],
+      },
+      {
+        path: "/airdrop",
+        children: [{ index: true, element: <Airdrop /> }],
       },
       { path: "/fans", element: <Fans /> },
       { path: "*", element: <NotFound /> },
