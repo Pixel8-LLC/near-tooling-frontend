@@ -56,7 +56,7 @@ const Step2 = () => {
           </div>
           <label
             htmlFor="recipient"
-            className="cursor-pointer flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md"
+            className="cursor-pointer flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md font-bold"
           >
             <input
               type="file"
