@@ -250,13 +250,6 @@ const Step3 = () => {
         </div>
       </div>
 
-      <button
-        className="mt-5 px-8 py-3 bg-neutral-900 rounded-lg"
-        onClick={openModal}
-      >
-        Test error modal
-      </button>
-
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
