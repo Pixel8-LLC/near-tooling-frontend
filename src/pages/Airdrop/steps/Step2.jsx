@@ -18,7 +18,7 @@ const Step2 = () => {
     <div>
       <div className="">
         <div className="text-2xl font-bold">Sending:</div>
-        <div className="mt-2">
+        <div className="mt-2 text-lg">
           <div className="flex items-center space-x-5">
             <i className="fas fa-image"></i>
             <div className="">69 NFT</div>
@@ -30,7 +30,7 @@ const Step2 = () => {
         </div>
       </div>
       <div className="mt-12 space-y-6">
-        <div className="text-2xl font-bold">Sending:</div>
+        <div className="text-2xl font-bold">Recipients:</div>
         <div className="flex space-x-10">
           <div
             className={classnames(
@@ -43,7 +43,7 @@ const Step2 = () => {
               onChange={(e) => setSelectedRecipient(e.target.value)}
               value={selectedRecipient}
               className={classnames(
-                "flex-1 appearance-none bg-black py-2.5 px-5 rounded-l-md",
+                "flex-1 appearance-none bg-black py-2.5 px-5 rounded-l-md text-lg",
               )}
               placeholder="Recipients"
             />
@@ -56,7 +56,7 @@ const Step2 = () => {
           </div>
           <label
             htmlFor="recipient"
-            className="cursor-pointer flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md"
+            className="cursor-pointer flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md font-bold"
           >
             <input
               type="file"
@@ -68,7 +68,7 @@ const Step2 = () => {
             <span>Import CSV</span>
           </label>
         </div>
-        <div className={classnames("border rounded-lg p-5 w-full")}>
+        <div className={classnames("border rounded-lg p-5 w-full text-lg")}>
           <div className="h-48 overflow-auto w-full space-y-2">
             {recipients.map(({ recipient, tempId }) => {
               return (

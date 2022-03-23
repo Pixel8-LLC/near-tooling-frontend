@@ -77,7 +77,7 @@ const Step3 = () => {
               <div className="text-neutral-400">140 NEAR Per Wallet </div>
             </div>
           </div>
-          <button className="flex px-9 space-x-4 items-center bg-neutral-900 py-4 rounded-md">
+          <button className="flex px-9 space-x-4 items-center bg-neutral-900 py-4 rounded-md font-bold">
             <i className="far fa-dice"></i>
             <span className="font-bold">Randomize Distribution</span>
           </button>
@@ -249,13 +249,6 @@ const Step3 = () => {
           </div>
         </div>
       </div>
-
-      <button
-        className="mt-5 px-8 py-3 bg-neutral-900 rounded-lg"
-        onClick={openModal}
-      >
-        Test error modal
-      </button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog

@@ -44,12 +44,18 @@ const Step1 = () => {
               nearSelected ? "fas fa-check-circle" : "fal fa-times-circle"
             }`}
           ></i>
-          <span className="text-2xl font-bold">NEAR Airdrop</span>
+          <span
+            className={classnames("text-2xl", {
+              "font-bold": nearSelected,
+            })}
+          >
+            NEAR Airdrop
+          </span>
         </button>
         <div className="flex space-x-10">
           <input
-            type="number"
             disabled={!nearSelected}
+            placeholder="NEAR Amount Per Wallet"
             className={classnames(
               "flex-1 appearance-none bg-black border py-2.5 px-5 rounded-md",
               { "border-neutral-500": !nearSelected },
@@ -79,7 +85,13 @@ const Step1 = () => {
               nftSelected ? "fas fa-check-circle" : "fal fa-times-circle"
             }`}
           ></i>
-          <span className="text-2xl font-bold">NFT Airdrop</span>
+          <span
+            className={classnames("text-2xl", {
+              "font-bold": nftSelected,
+            })}
+          >
+            NFT Airdrop
+          </span>
         </button>
         <div className="flex space-x-10">
           <div
@@ -121,14 +133,14 @@ const Step1 = () => {
           <button
             disabled={!nftSelected}
             onClick={openModal}
-            className="flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md"
+            className="flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md font-bold"
           >
             <i className="fal fa-image"></i>
             <span>Select NFTS</span>
           </button>
         </div>
         <div
-          className={classnames("border rounded-lg p-5 w-full", {
+          className={classnames("border rounded-lg p-5 w-full text-lg", {
             "border-neutral-500": !nftSelected,
           })}
         >
