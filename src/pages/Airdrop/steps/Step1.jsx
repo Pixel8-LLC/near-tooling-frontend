@@ -135,7 +135,7 @@ const Step1 = () => {
             onClick={openModal}
             className="flex px-12 space-x-4 items-center bg-neutral-900 py-2.5 rounded-md font-bold"
           >
-            <i className="fal fa-image"></i>
+            <i className="far fa-image"></i>
             <span>Select NFTS</span>
           </button>
         </div>
