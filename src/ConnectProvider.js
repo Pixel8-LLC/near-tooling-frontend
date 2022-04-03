@@ -3,7 +3,7 @@ import { connect, Contract, utils, WalletConnection } from "near-api-js";
 import { CONTRACT_NAME, testnetConfig } from "./contract/config";
 
 export const ConnectContext = createContext({
-  accountId: "",
+  accountID: "",
   walletConnection: null,
   contract: null,
   login: () => {},
@@ -17,7 +17,8 @@ const ConnectProvider = ({ children }) => {
   const [contract, setContract] = useState(null);
 
   const connectNearWallet = async () => {
-    const _near = connect(testnetConfig);
+    const _near = await connect(testnetConfig);
+    console.log(_near);
     const _walletConnection = new WalletConnection(_near, "ds_app");
     const _accountId = _walletConnection.getAccountId();
 
@@ -30,8 +31,10 @@ const ConnectProvider = ({ children }) => {
       },
     );
     setWalletConnection(_walletConnection);
+    console.log(_accountId);
     setAccountID(_accountId);
-    setContract(_contract);
+    setContract(_contract.account);
+    console.log(await _walletConnection.account());
   };
 
   const login = () => {

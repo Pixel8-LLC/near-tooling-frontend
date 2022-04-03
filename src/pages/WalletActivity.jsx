@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ReactComponent as Search } from "../assets/img/search.svg";
+import { ConnectContext } from "../ConnectProvider";
 
 const WalletActivity = () => {
   const [walletAddress, setWalletAddress] = useState("");
+  const { accountID, walletConnection, login } = useContext(ConnectContext);
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -24,6 +26,15 @@ const WalletActivity = () => {
             Connect Wallet
           </button>
         </div>
+        <button className="flex items-center max-w-xs py-4 text-sm font-bold text-white border-2 rounded-full border-secondary px-7">
+          {walletConnection && walletConnection.isSignedIn() ? (
+            <>{accountID}</>
+          ) : (
+            <div onClick={() => login()}>
+              <span className="pr-1 font-light">Login with</span> NEAR
+            </div>
+          )}
+        </button>
       </div>
     </div>
   );
