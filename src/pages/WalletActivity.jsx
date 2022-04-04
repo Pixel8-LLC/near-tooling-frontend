@@ -42,15 +42,6 @@ const WalletActivity = () => {
             </>
           )}
         </div>
-        <button className="flex items-center max-w-xs py-4 text-sm font-bold text-white border-2 rounded-full border-secondary px-7">
-          {walletConnection && walletConnection.isSignedIn() ? (
-            <>{accountID}</>
-          ) : (
-            <div onClick={() => login()}>
-              <span className="pr-1 font-light">Login with</span> NEAR
-            </div>
-          )}
-        </button>
       </div>
     </div>
   );
