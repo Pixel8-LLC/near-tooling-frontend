@@ -19,7 +19,7 @@ const ConnectProvider = ({ children }) => {
   const connectNearWallet = async () => {
     const _near = await connect(testnetConfig);
     console.log(_near);
-    const _walletConnection = new WalletConnection(_near, "ds_app");
+    const _walletConnection = new WalletConnection(_near, "nt_app");
     const _accountId = _walletConnection.getAccountId();
 
     const _contract = await new Contract(
@@ -49,7 +49,7 @@ const ConnectProvider = ({ children }) => {
 
   const logout = () => {
     walletConnection.signOut();
-    localStorage.removeItem("ds_token");
+    localStorage.removeItem("nt_token");
     window.location.reload(window.location.origin);
   };
 

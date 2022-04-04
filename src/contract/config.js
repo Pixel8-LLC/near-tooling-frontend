@@ -10,7 +10,7 @@ export const testnetConfig = {
   walletUrl: "https://wallet.testnet.near.org",
   helperUrl: "https://helper.testnet.near.org",
   explorerUrl: "https://explorer.testnet.near.org",
-  appKeyPrefix: "ds_app",
+  appKeyPrefix: "nt_app",
 };
 
 export const mainnetConfig = {
@@ -21,5 +21,5 @@ export const mainnetConfig = {
   walletUrl: "https://wallet.near.org",
   helperUrl: "https://helper.mainnet.near.org",
   explorerUrl: "https://explorer.mainnet.near.org",
-  appKeyPrefix: "ds_app",
+  appKeyPrefix: "nt_app",
 };

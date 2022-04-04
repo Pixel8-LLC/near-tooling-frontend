@@ -60,7 +60,7 @@ const Success = () => {
           walletUrl: `https://wallet.${net}.near.org`,
           helperUrl: `https://helper.${net}.near.org`,
           explorerUrl: `https://explorer.${net}.near.org`,
-          appKeyPrefix: "ds_app",
+          appKeyPrefix: "nt_app",
         };
         const near = await connect(config);
         let pk =
@@ -79,7 +79,7 @@ const Success = () => {
           pk,
         });
         if (sign.data.success) {
-          localStorage.setItem("ds_token", sign.data.token);
+          localStorage.setItem("nt_token", sign.data.token);
           navigate("/");
           window.location.reload();
         }
