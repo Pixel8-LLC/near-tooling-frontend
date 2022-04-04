@@ -20,6 +20,7 @@ const ConnectProvider = ({ children }) => {
     const _near = await connect(testnetConfig);
     const _walletConnection = new WalletConnection(_near, "nt_app");
     const _accountId = _walletConnection.getAccountId();
+    console.log(await _near.account());
 
     const _contract = await new Contract(
       _walletConnection.account(),

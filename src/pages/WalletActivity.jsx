@@ -1,11 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { connect } from "near-api-js";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ConnectContext } from "../ConnectProvider";
+import { config, net } from "../contants";
 
 const WalletActivity = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
-
+  const near = useMemo(async () => await connect(config), []);
+  // let pk =
+  //   near.connection.signer.keyStore.localStorage[
+  //     `near-api-js:keystore:${account_id}:${net}`
+  //   ];
   useEffect(() => {
     console.log(accountID);
     console.log(walletConnection && walletConnection.isSignedIn());
