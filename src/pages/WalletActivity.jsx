@@ -1,10 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ConnectContext } from "../ConnectProvider";
 
 const WalletActivity = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
+
+  useEffect(() => {
+    console.log(accountID);
+    console.log(walletConnection && walletConnection.isSignedIn());
+    if (walletConnection && walletConnection.isSignedIn() && accountID) {
+      setWalletAddress(accountID);
+    }
+  }, [accountID, walletConnection]);
+
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -21,10 +30,17 @@ const WalletActivity = () => {
               <Search />
             </button>
           </div>
-          <div className="font-bold text-sm">OR</div>
-          <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-3">
-            Connect Wallet
-          </button>
+          {!(walletConnection && walletConnection.isSignedIn()) && (
+            <>
+              <div className="font-bold text-sm">OR</div>
+              <button
+                onClick={() => login()}
+                className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
+              >
+                Connect Wallet
+              </button>
+            </>
+          )}
         </div>
         <button className="flex items-center max-w-xs py-4 text-sm font-bold text-white border-2 rounded-full border-secondary px-7">
           {walletConnection && walletConnection.isSignedIn() ? (

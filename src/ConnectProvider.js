@@ -18,7 +18,6 @@ const ConnectProvider = ({ children }) => {
 
   const connectNearWallet = async () => {
     const _near = await connect(testnetConfig);
-    console.log(_near);
     const _walletConnection = new WalletConnection(_near, "nt_app");
     const _accountId = _walletConnection.getAccountId();
 
@@ -31,10 +30,8 @@ const ConnectProvider = ({ children }) => {
       },
     );
     setWalletConnection(_walletConnection);
-    console.log(_accountId);
     setAccountID(_accountId);
     setContract(_contract.account);
-    console.log(await _walletConnection.account());
   };
 
   const login = () => {
@@ -44,7 +41,6 @@ const ConnectProvider = ({ children }) => {
       `${window.location.origin}/near/success`,
       `${window.location.origin}/near/failed`,
     );
-    console.log("haha", walletConnection);
   };
 
   const logout = () => {

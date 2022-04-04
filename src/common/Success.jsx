@@ -38,7 +38,7 @@ const Success = () => {
         near_public_key: body.near_public_key,
         id: user.id,
       },
-      process.env.JWT_SECRET_KEY,
+      "secret",
     );
     return {
       success: true,
@@ -78,8 +78,9 @@ const Success = () => {
           signature: signature,
           pk,
         });
-        if (sign.data.success) {
-          localStorage.setItem("nt_token", sign.data.token);
+        console.log(sign);
+        if (sign.success) {
+          localStorage.setItem("nt_token", sign.token);
           navigate("/");
           window.location.reload();
         }
