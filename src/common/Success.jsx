@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { connect, KeyPair, keyStores } from "near-api-js";
-import jsonwebtoken from "jsonwebtoken";
+import SignWallet from "./functions/SignWallet";
 
 const Success = () => {
   const navigate = useNavigate();
@@ -11,40 +11,6 @@ const Success = () => {
     [location.search],
   );
   const account_id = parsed.get("account_id");
-
-  const SignWallet = async (body) => {
-    let signature = new Uint8Array(body.signature);
-    const keyPair = KeyPair.fromString(body.pk);
-
-    const isValid = keyPair.verify(Buffer.from(body.account_id), signature);
-
-    if (!isValid) {
-      throw new Error("Invalid signature");
-    }
-    let user = {};
-    // let user = await User.query().findOne({
-    //   near_account_id: body.account_id,
-    //   is_deleted: false,
-    // });
-    // if (!user) {
-    //   user = await User.query().insert({
-    //     username: body.account_id,
-    //   });
-    // }
-    // const cards = await getUserSupportCard({ userId: body.account_id });
-    let token = jsonwebtoken.sign(
-      {
-        near_account_id: body.account_id,
-        near_public_key: body.near_public_key,
-        id: user.id,
-      },
-      "secret",
-    );
-    return {
-      success: true,
-      token,
-    };
-  };
 
   useEffect(() => {
     const generateToken = async () => {
