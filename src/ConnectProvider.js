@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { connect, Contract, utils, WalletConnection } from "near-api-js";
-import { CONTRACT_NAME, testnetConfig } from "./contract/config";
+import { CONTRACT_NAME, mainnetConfig } from "./contract/config";
+import { net } from "./constants";
 
 export const ConnectContext = createContext({
   accountID: "",
@@ -17,7 +18,7 @@ const ConnectProvider = ({ children }) => {
   const [contract, setContract] = useState(null);
 
   const connectNearWallet = async () => {
-    const _near = await connect(testnetConfig);
+    const _near = await connect(mainnetConfig);
     const _walletConnection = new WalletConnection(_near, "nt_app");
     const _accountId = _walletConnection.getAccountId();
     console.log(await _near.account());
@@ -37,7 +38,7 @@ const ConnectProvider = ({ children }) => {
 
   const login = () => {
     walletConnection.requestSignIn(
-      "testnet",
+      net,
       "ExampleApp",
       `${window.location.origin}/near/success`,
       `${window.location.origin}/near/failed`,

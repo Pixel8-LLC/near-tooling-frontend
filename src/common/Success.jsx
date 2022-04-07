@@ -18,7 +18,7 @@ const Success = () => {
         let net =
           process.env.REACT_APP_CONTEXT === "production"
             ? "mainnet"
-            : "testnet";
+            : "mainnet";
         const config = {
           networkId: net,
           keyStore: new keyStores.BrowserLocalStorageKeyStore(), // optional if not signing transactions

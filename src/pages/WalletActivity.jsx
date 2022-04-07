@@ -1,8 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { useQuery } from "react-query";
-import { ReactComponent as AngleRight } from "../assets/img/angle-right.svg";
-import { ReactComponent as FileExport } from "../assets/img/file-export.svg";
-import { ReactComponent as Eye } from "../assets/img/eye.svg";
+import { useMutation } from "react-query";
 import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
 import { ReactComponent as GreenCheck } from "../assets/img/green-check.svg";
 import { ReactComponent as GreyClock } from "../assets/img/grey-clock.svg";
@@ -10,42 +7,62 @@ import { getWalletActivity } from "../api/walletActivity";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ConnectContext } from "../ConnectProvider";
 import ReactTable from "../components/ReactTable";
-import { format } from "date-fns/fp";
+import format from "date-fns/format";
 import { toast } from "react-toastify";
+import { net } from "../constants";
 
 const WalletActivity = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(1);
+  const [fetchedOnce, setFetchedOnce] = useState(false);
   const {
     data: { results = [], success } = {},
     isLoading,
-    error,
-  } = useQuery(["walletActivity", page], () =>
-    getWalletActivity({ account_id: "haivuong.near" }),
+    isError,
+    mutate,
+  } = useMutation(
+    ["walletActivity", page, walletAddress],
+    (walletActivityParams) => getWalletActivity(walletActivityParams),
   );
+
+  const handleWalletAddress = () => {
+    mutate({ account_id: walletAddress });
+    setFetchedOnce(true);
+  };
+
   const statusIcon = useMemo(
     () => ({
       SUCCESS_VALUE: <GreenCheck />,
-      Failed: <RedTimes />,
+      SUCCESS_RECEIPT_ID: <GreenCheck />,
+      FAILURE: <RedTimes />,
       Pending: <GreyClock />,
     }),
     [],
   );
-  console.log(results);
+  const statusText = useMemo(
+    () => ({
+      SUCCESS_VALUE: "Succeeded",
+      SUCCESS_RECEIPT_ID: "Succeeded",
+      FAILURE: "Failed",
+      Pending: "Pending",
+    }),
+    [],
+  );
   const columns = useMemo(
     () => [
       {
         Header: "Date",
-        accessor: (row) =>
-          // format(new Date(row.block_timestamp), "M/d/yyyy")
-          row.block_timestamp,
+        accessor: (row) => {
+          return row.block_timestamp
+            ? format(row.block_timestamp / 10 ** 6, "M/d/yyyy")
+            : "-";
+        },
       },
       {
         Header: "From",
         accessor: "signer_account_id",
       },
-
       {
         Header: "To",
         accessor: "receiver_account_id",
@@ -60,11 +77,13 @@ const WalletActivity = () => {
         Cell: ({ row, value }) => (
           <div className="flex items-center space-x-2 w-full">
             <div className="">{statusIcon[row.original.status] || ""}</div>
-            <div className="w-28 flex-1">{row.original.status || "N/A"}</div>
+            <div className="w-28 flex-1">
+              {statusText[row.original.status] || "N/A"}
+            </div>
             <a
               target="_blank"
               rel="noreferrer"
-              href={`https://explorer.testnet.near.org/transactions/${row.original.transaction_hash}`}
+              href={`https://explorer.${net}.near.org/transactions/${row.original.transaction_hash}`}
             >
               <i className="fas fa-link"></i>
             </a>
@@ -80,18 +99,14 @@ const WalletActivity = () => {
         ),
       },
     ],
-    [statusIcon],
+    [statusIcon, statusText],
   );
 
   useEffect(() => {
-    console.log(accountID);
-    console.log(walletConnection && walletConnection.isSignedIn());
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
       setWalletAddress(accountID);
     }
   }, [accountID, walletConnection]);
-
-  console.log(error);
 
   return (
     <div>
@@ -105,7 +120,7 @@ const WalletActivity = () => {
               className="bg-black flex-1 rounded-l-lg py-2.5 px-5 border-r"
               placeholder="Enter Wallet (example.near)"
             />
-            <button className="py-2.5 px-4">
+            <button onClick={handleWalletAddress} className="py-2.5 px-4">
               <Search />
             </button>
           </div>
@@ -122,17 +137,23 @@ const WalletActivity = () => {
           )}
         </div>
       </div>
-      {!isLoading ? (
-        success || error ? (
-          <div className="text-xs mt-10">
-            <ReactTable data={results} columns={columns} />
-          </div>
+      <div className="mt-10">
+        {!isLoading ? (
+          fetchedOnce ? (
+            success || isError ? (
+              <div className="text-xs">
+                <ReactTable data={results} columns={columns} />
+              </div>
+            ) : (
+              "Failed"
+            )
+          ) : (
+            ""
+          )
         ) : (
-          "Failed"
-        )
-      ) : (
-        "Loading ..."
-      )}
+          "Loading ..."
+        )}
+      </div>
     </div>
   );
 };

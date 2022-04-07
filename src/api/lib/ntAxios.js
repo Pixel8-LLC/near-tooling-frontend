@@ -12,7 +12,4 @@ const ntAxios = axios.create({
   },
 });
 
-// axios.defaults.baseURL = API_ENDPOINT_URL;
-// axios.defaults.headers.common["Authorization"] = `bearer ${AUTH_TOKEN}`;
-
 export default ntAxios;
