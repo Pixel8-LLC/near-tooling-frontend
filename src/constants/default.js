@@ -3,7 +3,7 @@ import { keyStores } from "near-api-js";
 export const API_ENDPOINT_URL = "https://near-tool-api.herokuapp.com/";
 
 export const net =
-  process.env.REACT_APP_CONTEXT === "production" ? "mainnet" : "mainnet";
+  process.env.REACT_APP_CONTEXT === "production" ? "mainnet" : "testnet";
 
 export const config = {
   networkId: net,

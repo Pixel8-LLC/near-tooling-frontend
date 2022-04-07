@@ -18,7 +18,7 @@ export const mainnetConfig = {
   keyStore: new keyStores.BrowserLocalStorageKeyStore(),
   contractName: CONTRACT_NAME,
   nodeUrl: "https://rpc.mainnet.near.org",
-  walletUrl: "https://wallet.near.org",
+  walletUrl: "https://wallet.mainnet.near.org",
   helperUrl: "https://helper.mainnet.near.org",
   explorerUrl: "https://explorer.mainnet.near.org",
   appKeyPrefix: "nt_app",

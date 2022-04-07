@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
-import { connect, KeyPair, keyStores } from "near-api-js";
+import { connect, KeyPair } from "near-api-js";
 import SignWallet from "./functions/SignWallet";
+import { config, net } from "../constants";
 
 const Success = () => {
   const navigate = useNavigate();
@@ -15,19 +16,6 @@ const Success = () => {
   useEffect(() => {
     const generateToken = async () => {
       try {
-        let net =
-          process.env.REACT_APP_CONTEXT === "production"
-            ? "mainnet"
-            : "mainnet";
-        const config = {
-          networkId: net,
-          keyStore: new keyStores.BrowserLocalStorageKeyStore(), // optional if not signing transactions
-          nodeUrl: `https://rpc.${net}.near.org`,
-          walletUrl: `https://wallet.${net}.near.org`,
-          helperUrl: `https://helper.${net}.near.org`,
-          explorerUrl: `https://explorer.${net}.near.org`,
-          appKeyPrefix: "nt_app",
-        };
         const near = await connect(config);
         let pk =
           near.connection.signer.keyStore.localStorage[

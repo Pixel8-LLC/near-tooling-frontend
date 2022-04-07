@@ -13,6 +13,7 @@ import { net } from "../constants";
 
 const WalletActivity = () => {
   const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddressErrMsg, setWalletAddressErrMsg] = useState("");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(1);
   const [fetchedOnce, setFetchedOnce] = useState(false);
@@ -27,6 +28,12 @@ const WalletActivity = () => {
   );
 
   const handleWalletAddress = () => {
+    if (walletConnection && walletConnection.isSignedIn() && accountID) {
+      if (walletAddress !== accountID) {
+        setWalletAddressErrMsg("Use Connected Wallet");
+        return;
+      }
+    }
     mutate({ account_id: walletAddress });
     setFetchedOnce(true);
   };
@@ -113,16 +120,19 @@ const WalletActivity = () => {
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
-          <div className="text-lg rounded-lg w-96 border flex items-center ">
-            <input
-              value={walletAddress}
-              onChange={(e) => setWalletAddress(e.target.value)}
-              className="bg-black flex-1 rounded-l-lg py-2.5 px-5 border-r"
-              placeholder="Enter Wallet (example.near)"
-            />
-            <button onClick={handleWalletAddress} className="py-2.5 px-4">
-              <Search />
-            </button>
+          <div className="">
+            <div className="text-lg rounded-lg w-96 border flex items-center ">
+              <input
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
+                className="bg-black flex-1 rounded-l-lg py-2.5 px-5 border-r"
+                placeholder="Enter Wallet (example.near)"
+              />
+              <button onClick={handleWalletAddress} className="py-2.5 px-4">
+                <Search />
+              </button>
+            </div>
+            <div className="text-xs mt-3">{walletAddressErrMsg}</div>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) && (
             <>
