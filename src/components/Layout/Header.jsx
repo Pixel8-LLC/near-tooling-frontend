@@ -1,10 +1,15 @@
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 import logo from "../../assets/img/logo.png";
 import { ConnectContext } from "../../ConnectProvider";
 
 const Header = () => {
   const { accountID, walletConnection, login, logout } =
     useContext(ConnectContext);
+
+  const showConnectWallet = useSelector(
+    (state) => state.topBar.showConnectWallet,
+  );
 
   return (
     <div className="flex items-center py-10 w-full">
@@ -31,12 +36,14 @@ const Header = () => {
           </div>
         ) : (
           <>
-            <button
-              onClick={() => login()}
-              className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
-            >
-              Connect Wallet
-            </button>
+            {showConnectWallet && (
+              <button
+                onClick={() => login()}
+                className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
+              >
+                Connect Wallet
+              </button>
+            )}
           </>
         )}
       </div>

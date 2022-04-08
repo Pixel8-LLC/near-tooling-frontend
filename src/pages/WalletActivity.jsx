@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useMutation } from "react-query";
 import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
 import { ReactComponent as GreenCheck } from "../assets/img/green-check.svg";
@@ -10,13 +10,22 @@ import ReactTable from "../components/ReactTable";
 import format from "date-fns/format";
 import { toast } from "react-toastify";
 import { net } from "../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowConnectWallet } from "../redux/actions/topBar";
 
 const WalletActivity = () => {
+  const dispatch = useDispatch();
   const [walletAddress, setWalletAddress] = useState("");
   const [walletAddressErrMsg, setWalletAddressErrMsg] = useState("");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(1);
   const [fetchedOnce, setFetchedOnce] = useState(false);
+  const [clickConnnectOnce, setClickConnnectOnce] = useState(false);
+
+  const showConnectWallet = useSelector(
+    (state) => state.topBar.showConnectWallet,
+  );
+
   const {
     data: { results = [], success } = {},
     isLoading,
@@ -110,22 +119,37 @@ const WalletActivity = () => {
     [statusIcon, statusText],
   );
 
-  const setSearchBarWithAccountID = () => {
+  const setSearchBarWithAccountID = useCallback(() => {
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
       setWalletAddress(accountID);
     }
-  };
+  }, [accountID, walletConnection]);
 
   useEffect(() => {
     setSearchBarWithAccountID();
-  }, [accountID, walletConnection]);
+  }, [accountID, setSearchBarWithAccountID, walletConnection]);
+
+  const handlSetShowConnectWallet = (v) => dispatch(setShowConnectWallet(v));
+
+  useEffect(() => {
+    if (
+      !clickConnnectOnce &&
+      !(walletConnection && walletConnection.isSignedIn() && accountID)
+    ) {
+      if ((walletAddress || "").length === 0 && showConnectWallet) {
+        dispatch(setShowConnectWallet(false));
+      } else if ((walletAddress || "").length !== 0 && !showConnectWallet) {
+        dispatch(setShowConnectWallet(true));
+      }
+    }
+  }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
 
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
-          <div className="">
+          <div className="mt-3">
             <form
               id="search"
               className="text-lg rounded-lg w-96 border flex items-center"
@@ -159,17 +183,21 @@ const WalletActivity = () => {
               {walletAddressErrMsg}
             </div>
           </div>
-          {!(walletConnection && walletConnection.isSignedIn()) && (
-            <>
-              <div className="font-bold text-sm">OR</div>
-              <button
-                onClick={() => login()}
-                className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
-              >
-                Connect Wallet
-              </button>
-            </>
-          )}
+          {!(walletConnection && walletConnection.isSignedIn()) &&
+            !showConnectWallet && (
+              <>
+                <div className="font-bold text-sm">OR</div>
+                <button
+                  onClick={() => {
+                    handlSetShowConnectWallet(true);
+                    setClickConnnectOnce(true);
+                  }}
+                  className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
+                >
+                  Connect Wallet
+                </button>
+              </>
+            )}
         </div>
       </div>
       <div className="mt-10">
