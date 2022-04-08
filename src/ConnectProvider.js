@@ -37,7 +37,7 @@ const ConnectProvider = ({ children }) => {
 
   const login = () => {
     walletConnection.requestSignIn(
-      net,
+      net === "mainnet" ? "near" : net,
       "ExampleApp",
       `${window.location.origin}/near/success`,
       `${window.location.origin}/near/failed`,
