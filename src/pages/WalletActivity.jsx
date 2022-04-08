@@ -27,7 +27,8 @@ const WalletActivity = () => {
     (walletActivityParams) => getWalletActivity(walletActivityParams),
   );
 
-  const handleWalletAddress = () => {
+  const handleWalletAddress = (e) => {
+    e.preventDefault();
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
       if (walletAddress !== accountID) {
         setWalletAddressErrMsg("Use Connected Wallet");
@@ -125,17 +126,31 @@ const WalletActivity = () => {
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div className="">
-            <div className="text-lg rounded-lg w-96 border flex items-center ">
+            <form
+              id="search"
+              className="text-lg rounded-lg w-96 border flex items-center"
+              onSubmit={handleWalletAddress}
+            >
               <input
                 value={walletAddress}
                 onChange={(e) => setWalletAddress(e.target.value)}
                 className="bg-black flex-1 rounded-l-lg py-2.5 px-5 border-r"
                 placeholder="Enter Wallet (example.near)"
               />
-              <button onClick={handleWalletAddress} className="py-2.5 px-4">
+              <label
+                role="button"
+                htmlFor="searchWallet"
+                className="py-2.5 px-4"
+              >
                 <Search />
-              </button>
-            </div>
+              </label>
+              <input
+                id="searchWallet"
+                className="hidden"
+                type="submit"
+                value="Search"
+              />
+            </form>
             <div
               onClick={setSearchBarWithAccountID}
               className="text-xs mt-3"
