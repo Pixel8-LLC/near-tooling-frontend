@@ -109,10 +109,14 @@ const WalletActivity = () => {
     [statusIcon, statusText],
   );
 
-  useEffect(() => {
+  const setSearchBarWithAccountID = () => {
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
       setWalletAddress(accountID);
     }
+  };
+
+  useEffect(() => {
+    setSearchBarWithAccountID();
   }, [accountID, walletConnection]);
 
   return (
@@ -132,7 +136,13 @@ const WalletActivity = () => {
                 <Search />
               </button>
             </div>
-            <div className="text-xs mt-3">{walletAddressErrMsg}</div>
+            <div
+              onClick={setSearchBarWithAccountID}
+              className="text-xs mt-3"
+              role="button"
+            >
+              {walletAddressErrMsg}
+            </div>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) && (
             <>
