@@ -16,7 +16,7 @@ import { setShowConnectWallet } from "../redux/actions/topBar";
 const WalletActivity = () => {
   const dispatch = useDispatch();
   const [walletAddress, setWalletAddress] = useState("");
-  const [walletAddressErrMsg, setWalletAddressErrMsg] = useState("");
+  const [walletAddressErr, setWalletAddressErr] = useState(null);
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(1);
   const [fetchedOnce, setFetchedOnce] = useState(false);
@@ -36,11 +36,37 @@ const WalletActivity = () => {
     (walletActivityParams) => getWalletActivity(walletActivityParams),
   );
 
-  const handleWalletAddress = (e) => {
+  const handleWalletAddress = async (e) => {
     e.preventDefault();
+    setWalletAddressErr(null);
+    if (
+      walletConnection &&
+      walletConnection._connectedAccount &&
+      walletConnection._connectedAccount.connection &&
+      walletConnection._connectedAccount.connection.provider
+    ) {
+      try {
+        await walletConnection._connectedAccount.connection.provider.query({
+          request_type: "view_account",
+          finality: "final",
+          account_id: walletAddress,
+        });
+      } catch (error) {
+        setWalletAddressErr({
+          code: 1,
+          message: "Please enter a valid wallet address",
+        });
+        return;
+      }
+    }
+
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
       if (walletAddress !== accountID) {
-        setWalletAddressErrMsg("Use Connected Wallet");
+        setWalletAddressErr({
+          code: 2,
+          message: "Use Connected Wallet",
+        });
+
         return;
       }
     }
@@ -142,7 +168,14 @@ const WalletActivity = () => {
         dispatch(setShowConnectWallet(true));
       }
     }
-  }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
+  }, [
+    accountID,
+    clickConnnectOnce,
+    dispatch,
+    showConnectWallet,
+    walletAddress,
+    walletConnection,
+  ]);
 
   return (
     <div>
@@ -175,12 +208,20 @@ const WalletActivity = () => {
                 value="Search"
               />
             </form>
-            <div
-              onClick={setSearchBarWithAccountID}
-              className="text-xs mt-3"
-              role="button"
-            >
-              {walletAddressErrMsg}
+            <div className="text-xs mt-3">
+              {walletAddressErr ? (
+                walletAddressErr.code === 1 ? (
+                  walletAddressErr.message
+                ) : walletAddressErr.code === 2 ? (
+                  <button onClick={setSearchBarWithAccountID}>
+                    {walletAddressErr.message}
+                  </button>
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) &&
