@@ -20,7 +20,6 @@ const WalletActivity = () => {
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(1);
   const [fetchedOnce, setFetchedOnce] = useState(false);
-  const [clickConnnectOnce, setClickConnnectOnce] = useState(false);
 
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
@@ -155,27 +154,15 @@ const WalletActivity = () => {
     setSearchBarWithAccountID();
   }, [accountID, setSearchBarWithAccountID, walletConnection]);
 
-  const handlSetShowConnectWallet = (v) => dispatch(setShowConnectWallet(v));
-
   useEffect(() => {
-    if (
-      !clickConnnectOnce &&
-      !(walletConnection && walletConnection.isSignedIn() && accountID)
-    ) {
+    if (!(walletConnection && walletConnection.isSignedIn() && accountID)) {
       if ((walletAddress || "").length === 0 && showConnectWallet) {
         dispatch(setShowConnectWallet(false));
       } else if ((walletAddress || "").length !== 0 && !showConnectWallet) {
         dispatch(setShowConnectWallet(true));
       }
     }
-  }, [
-    accountID,
-    clickConnnectOnce,
-    dispatch,
-    showConnectWallet,
-    walletAddress,
-    walletConnection,
-  ]);
+  }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
 
   return (
     <div>
@@ -229,10 +216,7 @@ const WalletActivity = () => {
               <>
                 <div className="font-bold text-sm">OR</div>
                 <button
-                  onClick={() => {
-                    handlSetShowConnectWallet(true);
-                    setClickConnnectOnce(true);
-                  }}
+                  onClick={() => login()}
                   className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
                 >
                   Connect Wallet
