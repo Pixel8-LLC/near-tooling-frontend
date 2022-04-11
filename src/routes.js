@@ -7,6 +7,7 @@ const SingleNFT = lazy(() => import("./pages/SingleNFT"));
 const Fans = lazy(() => import("./pages/Fans"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Airdrop = lazy(() => import("./pages/Airdrop"));
+const NearSuccess = lazy(() => import("./common/Success"));
 
 const routes = () => [
   {
@@ -26,6 +27,7 @@ const routes = () => [
         children: [{ index: true, element: <Airdrop /> }],
       },
       { path: "/fans", element: <Fans /> },
+      { path: "/near/success", element: <NearSuccess /> },
       { path: "*", element: <NotFound /> },
     ],
   },
