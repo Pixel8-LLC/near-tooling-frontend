@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import format from "date-fns/format";
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
 import { ReactComponent as GreenCheck } from "../assets/img/green-check.svg";
 import { ReactComponent as GreyClock } from "../assets/img/grey-clock.svg";
 import ReactTable from "../components/ReactTable";
+import { ConnectContext } from "../ConnectProvider";
 import { Popover } from "@headlessui/react";
 import { usePopper } from "react-popper";
 import classes from "./SingleNFT.module.css";
@@ -25,6 +26,7 @@ const SingleNFT = () => {
   let [referenceElement, setReferenceElement] = useState();
   let [arrowElement, setArrowElement] = useState();
   let [popperElement, setPopperElement] = useState();
+  const { accountID, walletConnection, login } = useContext(ConnectContext);
 
   const dispatch = useDispatch();
   const [walletAddress, setWalletAddress] = useState("");
@@ -49,7 +51,7 @@ const SingleNFT = () => {
   );
   useEffect(() => {
     if (contract_id && token_id) {
-      mutate({ contract_id, token_id, account_id: 'pixel8llc.near' });
+      mutate({ contract_id, token_id, account_id: accountID });
       nftActivitymutate({
         token_id,
         related: 'outcome,receipt'
