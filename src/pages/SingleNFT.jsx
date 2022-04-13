@@ -160,7 +160,7 @@ const SingleNFT = () => {
           <img
             src={metadata?.media_url}
             alt={metadata?.title}
-            className="rounded-xl w-80 h-80"
+            className="rounded-xl w-80"
           />
           <div className="text-sm mt-4">
             <div className="">Royalty: {metadata?.royalty_perc}</div>

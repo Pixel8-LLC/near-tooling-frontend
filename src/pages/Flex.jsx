@@ -57,6 +57,8 @@ const Flex = () => {
       </div>
       <div className="flex items-center mt-9">
         <div className="flex space-x-14 flex-1">
+          {/* 
+          // NOTE: Just commenting out for now until we get the data in place
           <div className="">
             <div className="text-2xl">5</div>
             <div className="">Artworks collected</div>
@@ -69,7 +71,7 @@ const Flex = () => {
             <div className="text-2xl">13 NEAR</div>
             <div className="">Wallet Value </div>
             <div className="text-neutral-500">Based on floor price</div>
-          </div>
+          </div> */}
         </div>
         <div className="ml-auto">
           <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md">
