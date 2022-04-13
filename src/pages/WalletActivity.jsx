@@ -1,5 +1,10 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useMutation } from "react-query";
+
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import 'react-dates/initialize';
+import "react-dates/lib/css/_datepicker.css";
+
 import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
 import { ReactComponent as GreenCheck } from "../assets/img/green-check.svg";
 import { ReactComponent as GreyClock } from "../assets/img/grey-clock.svg";
@@ -167,6 +172,7 @@ const WalletActivity = () => {
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
+
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div className="mt-3">
@@ -229,9 +235,18 @@ const WalletActivity = () => {
         {!isLoading ? (
           fetchedOnce ? (
             success || isError ? (
-              <div className="text-xs">
-                <ReactTable data={results} columns={columns} />
-              </div>
+              <>
+                <div className="mb-5">
+                  <p>Filter By Date:</p>
+                  <DateRangePicker
+                    startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                    endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                  />
+                </div>
+                <div className="text-xs">
+                  <ReactTable data={results} columns={columns} useFilters />
+                </div>
+              </>
             ) : (
               "Failed"
             )
