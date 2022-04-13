@@ -23,7 +23,7 @@ const WalletActivity = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [walletAddressErr, setWalletAddressErr] = useState(null);
   const { accountID, walletConnection, login } = useContext(ConnectContext);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [fetchedOnce, setFetchedOnce] = useState(false);
 
   const showConnectWallet = useSelector(
@@ -74,7 +74,7 @@ const WalletActivity = () => {
         return;
       }
     }
-    mutate({ account_id: walletAddress });
+    mutate({ account_id: walletAddress, page });
     setFetchedOnce(true);
   };
 
@@ -169,6 +169,24 @@ const WalletActivity = () => {
     }
   }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
 
+  useEffect(() => {
+    if (walletAddress) {
+      mutate({ account_id: walletAddress, page });
+      setFetchedOnce(true);
+    }
+  }, [walletAddress, page])
+
+  const onClickPrevious = () => {
+    if (page > 0) {
+      setPage(page - 1)
+    }
+  }
+  const onClickNext = () => {
+    if (results.length === 20) {
+      setPage(page + 1)
+    }
+  }
+  console.log(page)
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -244,7 +262,7 @@ const WalletActivity = () => {
                   />
                 </div>
                 <div className="text-xs">
-                  <ReactTable data={results} columns={columns} useFilters />
+                  <ReactTable data={results} columns={columns} useFilters onClickPrevious={onClickPrevious} onClickNext={onClickNext} page={page} perPage={20} />
                 </div>
               </>
             ) : (
