@@ -30,7 +30,7 @@ const SingleNFT = () => {
 
   const dispatch = useDispatch();
   const [walletAddress, setWalletAddress] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const {
     data: { metadata = {}, success } = {},
     isLoading,
@@ -53,7 +53,7 @@ const SingleNFT = () => {
     if (contract_id && token_id) {
       mutate({ contract_id, token_id, account_id: accountID });
       nftActivitymutate({
-        token_id,
+        'filter[token_id]': token_id,
         related: 'outcome,receipt'
       });
     }
@@ -144,6 +144,16 @@ const SingleNFT = () => {
     navigator.clipboard.writeText(link);
     toast.dark("Explorer link copied to clipboard");
   };
+  const onClickPrevious = () => {
+    if (page > 0) {
+      setPage(page - 1)
+    }
+  }
+  const onClickNext = () => {
+    if (results.length === 20) {
+      setPage(page + 1)
+    }
+  }
   return (
     <div>
       <div className="flex items-center">
@@ -208,7 +218,7 @@ const SingleNFT = () => {
         <div className="flex-1">
           <div className="text-xl font-bold">NFT History</div>
           <div className="text-xs">
-            <ReactTable columns={columns} data={results} />
+            <ReactTable columns={columns} data={results} page={page} perPage={20} onClickPrevious={onClickPrevious} onClickNext={onClickNext} />
           </div>
         </div>
       </div>
