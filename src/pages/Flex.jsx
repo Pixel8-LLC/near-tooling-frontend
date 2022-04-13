@@ -23,8 +23,12 @@ const Flex = () => {
     (getUserNftsParams) => getUserNfts(getUserNftsParams),
   );
   useEffect(() => {
-    mutate({ account_id: accountID });
+    mutate({ account_id: walletAddress ? walletAddress : accountID });
   }, [])
+  console.log(walletAddress)
+  const onSearch = () => {
+    mutate({ account_id: walletAddress ? walletAddress : accountID });
+  }
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -37,14 +41,18 @@ const Flex = () => {
               className="bg-black flex-1 rounded-l-lg py-2.5 px-5 border-r"
               placeholder="Enter Wallet (example.near)"
             />
-            <button className="py-2.5 px-4">
+            <button className="py-2.5 px-4" onClick={onSearch}>
               <Search />
             </button>
           </div>
-          <div className="font-bold text-sm">OR</div>
-          <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-3">
-            Connect Wallet
-          </button>
+          {!(walletConnection && walletConnection.isSignedIn()) &&
+            <>
+              <div className="font-bold text-sm">OR</div>
+              <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-3" onClick={() => login()}>
+                Connect Wallet
+              </button>
+            </>
+          }
         </div>
       </div>
       <div className="flex items-center mt-9">
