@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,9 +6,11 @@ import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
 import { getUserNfts } from '../api/UserNft';
+import { ConnectContext } from "../ConnectProvider";
 
 const Flex = () => {
   const dispatch = useDispatch();
+  const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [walletAddress, setWalletAddress] = useState("");
   const [page, setPage] = useState(1);
   const {
@@ -21,7 +23,7 @@ const Flex = () => {
     (getUserNftsParams) => getUserNfts(getUserNftsParams),
   );
   useEffect(() => {
-    mutate({ account_id: "pixel8llc.near" });
+    mutate({ account_id: accountID });
   }, [])
   return (
     <div>
