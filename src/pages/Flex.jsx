@@ -1,12 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
+import { getUserNfts } from '../api/UserNft';
 
 const Flex = () => {
+  const dispatch = useDispatch();
   const [walletAddress, setWalletAddress] = useState("");
-
+  const [page, setPage] = useState(1);
+  const {
+    data: { results = [], success } = {},
+    isLoading,
+    isError,
+    mutate,
+  } = useMutation(
+    ["userNfts", page, walletAddress],
+    (getUserNftsParams) => getUserNfts(getUserNftsParams),
+  );
+  useEffect(() => {
+    mutate({ account_id: "pixel8llc.near" });
+  }, [])
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -54,15 +70,15 @@ const Flex = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-7 mt-8">
-        {artworks.map((artwork) => (
-          <div key={artwork.id} className="">
+        {results.map((artwork) => (
+          <div key={artwork.token_id} className="">
             <div className="text-black rounded-xl flex flex-col">
-              <img src={artwork.image} alt="image1" className="" />
+              <img src={artwork.media_url} alt={artwork.title} className="" />
               <div className="bg-white rounded-b-xl flex flex-col flex-1">
                 <div className="bg-slate-50 py-3 px-4 flex-1">
                   <p className="font-bold text-lg">{artwork.title}</p>
                   <div className="text-sm mt-1">
-                    <div className="">Royalty: {artwork.royalty}</div>
+                    <div className="">Royalty: {artwork.royalty_perc}</div>
                     <div className="">
                       Current Floor: {artwork.currentFloor}
                     </div>
@@ -72,7 +88,7 @@ const Flex = () => {
                   </div>
                 </div>
                 <Link
-                  to={`/flex/${artwork.id}`}
+                  to={`/flex/${artwork.token_id}:${artwork.contract_name}`}
                   className="flex items-center justify-center py-1 text-neutral-400"
                 >
                   More Info
