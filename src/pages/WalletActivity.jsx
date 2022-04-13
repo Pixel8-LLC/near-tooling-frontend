@@ -155,7 +155,10 @@ const WalletActivity = () => {
   }, [accountID, setSearchBarWithAccountID, walletConnection]);
 
   useEffect(() => {
-    if (!(walletConnection && walletConnection.isSignedIn() && accountID)) {
+    if (
+      fetchedOnce &&
+      !(walletConnection && walletConnection.isSignedIn() && accountID)
+    ) {
       if ((walletAddress || "").length === 0 && showConnectWallet) {
         dispatch(setShowConnectWallet(false));
       } else if ((walletAddress || "").length !== 0 && !showConnectWallet) {
@@ -169,7 +172,7 @@ const WalletActivity = () => {
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
-          <div className="mt-3">
+          <div>
             <form
               id="search"
               className="text-lg rounded-lg w-96 border flex items-center"
@@ -195,21 +198,6 @@ const WalletActivity = () => {
                 value="Search"
               />
             </form>
-            <div className="text-xs mt-3">
-              {walletAddressErr ? (
-                walletAddressErr.code === 1 ? (
-                  walletAddressErr.message
-                ) : walletAddressErr.code === 2 ? (
-                  <button onClick={setSearchBarWithAccountID}>
-                    {walletAddressErr.message}
-                  </button>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )}
-            </div>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) &&
             !showConnectWallet && (
@@ -223,6 +211,21 @@ const WalletActivity = () => {
                 </button>
               </>
             )}
+        </div>
+        <div className="text-xs mt-3">
+          {walletAddressErr ? (
+            walletAddressErr.code === 1 ? (
+              walletAddressErr.message
+            ) : walletAddressErr.code === 2 ? (
+              <button onClick={setSearchBarWithAccountID}>
+                {walletAddressErr.message}
+              </button>
+            ) : (
+              ""
+            )
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="mt-10">
