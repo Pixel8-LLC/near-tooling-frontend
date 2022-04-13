@@ -53,7 +53,7 @@ const SingleNFT = () => {
     if (contract_id && token_id) {
       mutate({ contract_id, token_id, account_id: accountID });
       nftActivitymutate({
-        token_id,
+        'filter[token_id]': token_id,
         related: 'outcome,receipt'
       });
     }
