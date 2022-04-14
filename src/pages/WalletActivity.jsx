@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useMutation } from "react-query";
 
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController, isInclusivelyBeforeDay } from 'react-dates';
-import 'react-dates/initialize';
+import { DateRangePicker, isInclusivelyBeforeDay } from "react-dates";
+import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 
 import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { net } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowConnectWallet } from "../redux/actions/topBar";
-import moment from 'moment';
+import moment from "moment";
 
 const WalletActivity = () => {
   const dispatch = useDispatch();
@@ -28,9 +28,9 @@ const WalletActivity = () => {
   const [fetchedOnce, setFetchedOnce] = useState(false);
   const [date, setDate] = useState({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
-  const [focusedInput, setFocusedInput] = useState(null)
+  const [focusedInput, setFocusedInput] = useState(null);
 
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
@@ -180,24 +180,30 @@ const WalletActivity = () => {
       mutate({ account_id: walletAddress, page });
       setFetchedOnce(true);
     }
-  }, [walletAddress, page])
+  }, [walletAddress, page, mutate]);
 
   const onClickPrevious = () => {
     if (page > 0) {
-      setPage(page - 1)
+      setPage(page - 1);
     }
-  }
+  };
   const onClickNext = () => {
     if (results.length === 20) {
-      setPage(page + 1)
+      setPage(page + 1);
     }
-  }
+  };
   useEffect(() => {
     if (date.startDate && date.endDate) {
-      mutate({ account_id: walletAddress, page, date_column: 'block_timestamp', from_date: date.startDate.unix(), to_date: date.endDate.add(1, 'days').unix() });
+      mutate({
+        account_id: walletAddress,
+        page,
+        date_column: "block_timestamp",
+        from_date: date.startDate.unix(),
+        to_date: date.endDate.add(1, "days").unix(),
+      });
       setFetchedOnce(true);
     }
-  }, [date])
+  }, [date, mutate, page, walletAddress]);
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -274,14 +280,24 @@ const WalletActivity = () => {
                     endDateId="end_date_id" // PropTypes.string.isRequired,
                     onDatesChange={(date) => setDate(date)} // PropTypes.func.isRequired,
                     focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                    onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
-                    isOutsideRange={day =>
+                    onFocusChange={(focusedInput) =>
+                      setFocusedInput(focusedInput)
+                    } // PropTypes.func.isRequired,
+                    isOutsideRange={(day) =>
                       !isInclusivelyBeforeDay(day, moment())
                     }
                   />
                 </div>
                 <div className="text-xs">
-                  <ReactTable data={results} columns={columns} useFilters onClickPrevious={onClickPrevious} onClickNext={onClickNext} page={page} perPage={20} />
+                  <ReactTable
+                    data={results}
+                    columns={columns}
+                    useFilters
+                    onClickPrevious={onClickPrevious}
+                    onClickNext={onClickNext}
+                    page={page}
+                    perPage={20}
+                  />
                 </div>
               </>
             ) : (

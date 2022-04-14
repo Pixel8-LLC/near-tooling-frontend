@@ -4,8 +4,7 @@ import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
-import artworks from "../constants/artWorks";
-import { getUserNfts } from '../api/UserNft';
+import { getUserNfts } from "../api/UserNft";
 import { ConnectContext } from "../ConnectProvider";
 
 const Flex = () => {
@@ -18,17 +17,16 @@ const Flex = () => {
     isLoading,
     isError,
     mutate,
-  } = useMutation(
-    ["userNfts", page, walletAddress],
-    (getUserNftsParams) => getUserNfts(getUserNftsParams),
+  } = useMutation(["userNfts", page, walletAddress], (getUserNftsParams) =>
+    getUserNfts(getUserNftsParams),
   );
   useEffect(() => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
-  }, [])
-  console.log(walletAddress)
+  }, [accountID, mutate, walletAddress]);
+  console.log(walletAddress);
   const onSearch = () => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
-  }
+  };
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -45,14 +43,17 @@ const Flex = () => {
               <Search />
             </button>
           </div>
-          {!(walletConnection && walletConnection.isSignedIn()) &&
+          {!(walletConnection && walletConnection.isSignedIn()) && (
             <>
               <div className="font-bold text-sm">OR</div>
-              <button className="text-base font-medium bg-white text-black rounded-lg px-4 py-3" onClick={() => login()}>
+              <button
+                className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
+                onClick={() => login()}
+              >
                 Connect Wallet
               </button>
             </>
-          }
+          )}
         </div>
       </div>
       <div className="flex items-center mt-9">
