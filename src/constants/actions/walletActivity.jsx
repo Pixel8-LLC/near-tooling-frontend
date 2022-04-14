@@ -1,0 +1,1 @@
+export const SET_WALLET_ADDRESS = "SET_WALLET_ADDRESS";
