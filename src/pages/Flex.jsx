@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
+import Masonry from 'react-masonry-css'
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
@@ -25,10 +26,18 @@ const Flex = () => {
   useEffect(() => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
   }, [])
-  console.log(walletAddress)
+
   const onSearch = () => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
   }
+
+  const breakpointColumnsObj = {
+    default: 4,
+    1300: 3,
+    1060: 2,
+    805: 1
+  };
+
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -81,34 +90,39 @@ const Flex = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-7 mt-8">
-        {results.map((artwork) => (
-          <div key={artwork.token_id} className="">
-            <div className="text-black rounded-xl flex flex-col">
-              <img src={artwork.media_url} alt={artwork.title} className="" />
-              <div className="bg-white rounded-b-xl flex flex-col flex-1">
-                <div className="bg-slate-50 py-3 px-4 flex-1">
-                  <p className="font-bold text-lg">{artwork.title}</p>
-                  <div className="text-sm mt-1">
-                    <div className="">Royalty: {artwork.royalty_perc}</div>
-                    <div className="">
-                      Current Floor: {artwork.currentFloor}
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="">Rarity:</div> {artwork.rarity}
+      <div className="mt-8">
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="nft-masonry-grid"
+          columnClassName="nft-masonry-grid_column">
+          {results.map((artwork) => (
+            <div key={artwork.token_id} className="">
+              <div className="text-black rounded-xl flex flex-col">
+                <img src={artwork.media_url} alt={artwork.title} className="" />
+                <div className="bg-white rounded-b-xl flex flex-col flex-1">
+                  <div className="bg-slate-50 py-3 px-4 flex-1">
+                    <p className="font-bold text-lg">{artwork.title}</p>
+                    <div className="text-sm mt-1">
+                      <div className="">Royalty: {artwork.royalty_perc}</div>
+                      <div className="">
+                        Current Floor: {artwork.currentFloor}
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <div className="">Rarity:</div> {artwork.rarity}
+                      </div>
                     </div>
                   </div>
+                  <Link
+                    to={`/flex/${artwork.token_id}:${artwork.contract_name}`}
+                    className="flex items-center justify-center py-1 text-neutral-400"
+                  >
+                    More Info
+                  </Link>
                 </div>
-                <Link
-                  to={`/flex/${artwork.token_id}:${artwork.contract_name}`}
-                  className="flex items-center justify-center py-1 text-neutral-400"
-                >
-                  More Info
-                </Link>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </Masonry>
       </div>
       <div className="my-10"></div>
     </div>
