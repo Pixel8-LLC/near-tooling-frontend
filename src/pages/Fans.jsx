@@ -15,7 +15,7 @@ const Fans = () => {
       Failed: <RedTimes />,
       Pending: <GreyClock />,
     }),
-    []
+    [],
   );
   const data = useMemo(
     () => [
@@ -68,7 +68,7 @@ const Fans = () => {
         status: "Pending",
       },
     ],
-    []
+    [],
   );
   const columns = useMemo(
     () => [
@@ -116,7 +116,7 @@ const Fans = () => {
         ),
       },
     ],
-    [statusIcon]
+    [statusIcon],
   );
   return (
     <div>

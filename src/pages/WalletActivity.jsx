@@ -18,14 +18,23 @@ import { net } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowConnectWallet } from "../redux/actions/topBar";
 import moment from "moment";
+import {
+  setFetchedOnceAction,
+  setWalletAddressAction,
+  setWalletAddressErrAction,
+} from "../redux/actions/walletActivity";
 
 const WalletActivity = () => {
   const dispatch = useDispatch();
-  const [walletAddress, setWalletAddress] = useState("");
-  const [walletAddressErr, setWalletAddressErr] = useState(null);
+  const walletAddress = useSelector(
+    (state) => state.walletActivity.walletAddress,
+  );
+  const walletAddressErr = useSelector(
+    (state) => state.walletActivity.walletAddressErr,
+  );
+  const fetchedOnce = useSelector((state) => state.walletActivity.fetchedOnce);
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(0);
-  const [fetchedOnce, setFetchedOnce] = useState(false);
   const [date, setDate] = useState({
     startDate: null,
     endDate: null,
@@ -34,6 +43,19 @@ const WalletActivity = () => {
 
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
+  );
+
+  const setWalletAddress = useCallback(
+    (payload) => dispatch(setWalletAddressAction(payload)),
+    [dispatch],
+  );
+  const setWalletAddressErr = useCallback(
+    (payload) => dispatch(setWalletAddressErrAction(payload)),
+    [dispatch],
+  );
+  const setFetchedOnce = useCallback(
+    (payload) => dispatch(setFetchedOnceAction(payload)),
+    [dispatch],
   );
 
   const {
@@ -46,42 +68,66 @@ const WalletActivity = () => {
     (walletActivityParams) => getWalletActivity(walletActivityParams),
   );
 
+  const fetchWalletActivity = useCallback(async () => {
+    setWalletAddressErr(null);
+    if (walletAddress) {
+      if (
+        walletConnection &&
+        walletConnection._connectedAccount &&
+        walletConnection._connectedAccount.connection &&
+        walletConnection._connectedAccount.connection.provider
+      ) {
+        try {
+          await walletConnection._connectedAccount.connection.provider.query({
+            request_type: "view_account",
+            finality: "final",
+            account_id: walletAddress,
+          });
+        } catch (error) {
+          setWalletAddressErr({
+            code: 1,
+            message: "Please enter a valid wallet address",
+          });
+          return;
+        }
+      }
+
+      if (walletConnection && walletConnection.isSignedIn() && accountID) {
+        if (walletAddress !== accountID) {
+          setWalletAddressErr({
+            code: 2,
+            message: "Use Connected Wallet",
+          });
+
+          return;
+        }
+      }
+      mutate({
+        account_id: walletAddress,
+        page,
+        ...(date &&
+          date.startDate &&
+          date.endDate && {
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
+      });
+      setFetchedOnce(true);
+    }
+  }, [
+    accountID,
+    date,
+    mutate,
+    page,
+    setFetchedOnce,
+    setWalletAddressErr,
+    walletAddress,
+    walletConnection,
+  ]);
   const handleWalletAddress = async (e) => {
     e.preventDefault();
-    setWalletAddressErr(null);
-    if (
-      walletConnection &&
-      walletConnection._connectedAccount &&
-      walletConnection._connectedAccount.connection &&
-      walletConnection._connectedAccount.connection.provider
-    ) {
-      try {
-        await walletConnection._connectedAccount.connection.provider.query({
-          request_type: "view_account",
-          finality: "final",
-          account_id: walletAddress,
-        });
-      } catch (error) {
-        setWalletAddressErr({
-          code: 1,
-          message: "Please enter a valid wallet address",
-        });
-        return;
-      }
-    }
-
-    if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      if (walletAddress !== accountID) {
-        setWalletAddressErr({
-          code: 2,
-          message: "Use Connected Wallet",
-        });
-
-        return;
-      }
-    }
-    mutate({ account_id: walletAddress, page });
-    setFetchedOnce(true);
+    await fetchWalletActivity();
   };
 
   const statusIcon = useMemo(
@@ -159,7 +205,7 @@ const WalletActivity = () => {
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
       setWalletAddress(accountID);
     }
-  }, [accountID, walletConnection]);
+  }, [accountID, setWalletAddress, walletConnection]);
 
   useEffect(() => {
     setSearchBarWithAccountID();
@@ -175,13 +221,6 @@ const WalletActivity = () => {
     }
   }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
 
-  useEffect(() => {
-    if (walletAddress) {
-      mutate({ account_id: walletAddress, page });
-      setFetchedOnce(true);
-    }
-  }, [walletAddress, page, mutate]);
-
   const onClickPrevious = () => {
     if (page > 0) {
       setPage(page - 1);
@@ -193,17 +232,9 @@ const WalletActivity = () => {
     }
   };
   useEffect(() => {
-    if (date.startDate && date.endDate) {
-      mutate({
-        account_id: walletAddress,
-        page,
-        date_column: "block_timestamp",
-        from_date: date.startDate.unix(),
-        to_date: date.endDate.add(1, "days").unix(),
-      });
-      setFetchedOnce(true);
-    }
-  }, [date, mutate, page, walletAddress]);
+    fetchWalletActivity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date]);
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -216,6 +247,7 @@ const WalletActivity = () => {
               className="text-lg rounded-lg w-96 border flex items-center"
               onSubmit={handleWalletAddress}
             >
+              {console.log(walletAddress)}
               <input
                 value={walletAddress}
                 onChange={(e) => setWalletAddress(e.target.value)}

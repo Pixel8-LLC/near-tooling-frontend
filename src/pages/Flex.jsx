@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,11 +6,22 @@ import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import { getUserNfts } from "../api/UserNft";
 import { ConnectContext } from "../ConnectProvider";
+import { setFetchedOnceAction } from "../redux/actions/walletActivity";
+import { setShowConnectWallet } from "../redux/actions/topBar";
 
 const Flex = () => {
   const dispatch = useDispatch();
   const { accountID, walletConnection, login } = useContext(ConnectContext);
-  const [walletAddress, setWalletAddress] = useState("");
+  const walletAddress = useSelector(
+    (state) => state.walletActivity.walletAddress,
+  );
+  const walletAddressErr = useSelector(
+    (state) => state.walletActivity.walletAddressErr,
+  );
+  const showConnectWallet = useSelector(
+    (state) => state.topBar.showConnectWallet,
+  );
+
   const [page, setPage] = useState(1);
   const {
     data: { results = [], success } = {},
@@ -24,24 +35,107 @@ const Flex = () => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
   }, [accountID, mutate, walletAddress]);
   console.log(walletAddress);
-  const onSearch = () => {
+  const onSearch = async (e) => {
+    e.preventDefault();
+    setWalletAddressErr(null);
+    if (
+      walletConnection &&
+      walletConnection._connectedAccount &&
+      walletConnection._connectedAccount.connection &&
+      walletConnection._connectedAccount.connection.provider
+    ) {
+      try {
+        await walletConnection._connectedAccount.connection.provider.query({
+          request_type: "view_account",
+          finality: "final",
+          account_id: walletAddress,
+        });
+      } catch (error) {
+        setWalletAddressErr({
+          code: 1,
+          message: "Please enter a valid wallet address",
+        });
+        return;
+      }
+    }
+    if (walletConnection && walletConnection.isSignedIn() && accountID) {
+      if (walletAddress !== accountID) {
+        setWalletAddressErr({
+          code: 2,
+          message: "Use Connected Wallet",
+        });
+
+        return;
+      }
+    }
     mutate({ account_id: walletAddress ? walletAddress : accountID });
+    setFetchedOnce(true);
   };
+
+  const setWalletAddress = useCallback(
+    (payload) => {
+      dispatch(setWalletAddress(payload));
+    },
+    [dispatch],
+  );
+  const setWalletAddressErr = (payload) =>
+    dispatch(setWalletAddressErr(payload));
+  const setFetchedOnce = useCallback(
+    (payload) => dispatch(setFetchedOnceAction(payload)),
+    [dispatch],
+  );
+
+  const setSearchBarWithAccountID = useCallback(() => {
+    if (walletConnection && walletConnection.isSignedIn() && accountID) {
+      setWalletAddress(accountID);
+    }
+  }, [accountID, setWalletAddress, walletConnection]);
+
+  useEffect(() => {
+    setSearchBarWithAccountID();
+  }, [accountID, setSearchBarWithAccountID, walletConnection]);
+
+  useEffect(() => {
+    if (!(walletConnection && walletConnection.isSignedIn() && accountID)) {
+      if ((walletAddress || "").length === 0 && showConnectWallet) {
+        dispatch(setShowConnectWallet(false));
+      } else if ((walletAddress || "").length !== 0 && !showConnectWallet) {
+        dispatch(setShowConnectWallet(true));
+      }
+    }
+  }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
+
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div className="text-lg rounded-lg w-96 border flex items-center ">
-            <input
-              value={walletAddress}
-              onChange={(e) => setWalletAddress(e.target.value)}
-              className="bg-black flex-1 rounded-l-lg py-2.5 px-5 border-r"
-              placeholder="Enter Wallet (example.near)"
-            />
-            <button className="py-2.5 px-4" onClick={onSearch}>
-              <Search />
-            </button>
+            <form
+              id="search"
+              className="text-lg rounded-lg w-96 border flex items-center"
+              onSubmit={onSearch}
+            >
+              <input
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
+                className="bg-black flex-1 rounded-l-lg py-2.5 px-5 border-r"
+                placeholder="Enter Wallet (example.near)"
+              />
+              <label
+                role="button"
+                htmlFor="searchWallet"
+                className="py-2.5 px-4"
+              >
+                <Search />
+              </label>
+              <input
+                id="searchWallet"
+                className="hidden"
+                type="submit"
+                value="Search"
+              />
+            </form>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) && (
             <>
@@ -53,6 +147,21 @@ const Flex = () => {
                 Connect Wallet
               </button>
             </>
+          )}
+        </div>
+        <div className="text-xs mt-3">
+          {walletAddressErr ? (
+            walletAddressErr.code === 1 ? (
+              walletAddressErr.message
+            ) : walletAddressErr.code === 2 ? (
+              <button onClick={setSearchBarWithAccountID}>
+                {walletAddressErr.message}
+              </button>
+            ) : (
+              ""
+            )
+          ) : (
+            ""
           )}
         </div>
       </div>
