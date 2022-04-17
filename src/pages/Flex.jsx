@@ -26,13 +26,12 @@ const Flex = () => {
     (state) => state.topBar.showConnectWallet,
   );
 
-  const [page, setPage] = useState(1);
   const {
     data: { results = [], success } = {},
     isLoading,
     isError,
     mutate,
-  } = useMutation(["userNfts", page, walletAddress], (getUserNftsParams) =>
+  } = useMutation(["userNfts", walletAddress], (getUserNftsParams) =>
     getUserNfts(getUserNftsParams),
   );
   useEffect(() => {
@@ -197,34 +196,48 @@ const Flex = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-7 mt-8">
-        {results.map((artwork) => (
-          <div key={artwork.token_id} className="">
-            <div className="text-black rounded-xl flex flex-col">
-              <img src={artwork.media_url} alt={artwork.title} className="" />
-              <div className="bg-white rounded-b-xl flex flex-col flex-1">
-                <div className="bg-slate-50 py-3 px-4 flex-1">
-                  <p className="font-bold text-lg">{artwork.title}</p>
-                  <div className="text-sm mt-1">
-                    <div className="">Royalty: {artwork.royalty_perc}</div>
-                    <div className="">
-                      Current Floor: {artwork.currentFloor}
+      <div className="mt-8">
+        {isLoading ? (
+          "Loading ..."
+        ) : isError || !success ? (
+          "Error"
+        ) : !(results && results.length) ? (
+          "No Data"
+        ) : (
+          <div className="grid grid-cols-4 gap-7">
+            {results.map((artwork) => (
+              <div key={artwork.token_id} className="">
+                <div className="text-black rounded-xl flex flex-col">
+                  <img
+                    src={artwork.media_url}
+                    alt={artwork.title}
+                    className=""
+                  />
+                  <div className="bg-white rounded-b-xl flex flex-col flex-1">
+                    <div className="bg-slate-50 py-3 px-4 flex-1">
+                      <p className="font-bold text-lg">{artwork.title}</p>
+                      <div className="text-sm mt-1">
+                        <div className="">Royalty: {artwork.royalty_perc}</div>
+                        <div className="">
+                          Current Floor: {artwork.currentFloor}
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <div className="">Rarity:</div> {artwork.rarity}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="">Rarity:</div> {artwork.rarity}
-                    </div>
+                    <Link
+                      to={`/flex/${artwork.token_id}:${artwork.contract_name}`}
+                      className="flex items-center justify-center py-1 text-neutral-400"
+                    >
+                      More Info
+                    </Link>
                   </div>
                 </div>
-                <Link
-                  to={`/flex/${artwork.token_id}:${artwork.contract_name}`}
-                  className="flex items-center justify-center py-1 text-neutral-400"
-                >
-                  More Info
-                </Link>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
       <div className="my-10"></div>
     </div>
