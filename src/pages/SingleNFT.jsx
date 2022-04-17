@@ -110,28 +110,25 @@ const SingleNFT = () => {
         accessor: "event_kind",
       },
       {
-        Header: "Explorer Link",
+        Header: "Status",
         accessor: "explorer_link",
         Cell: ({ row, value }) => (
           <div className="flex items-center space-x-2">
             <div className="">{statusIcon[row.original.outcome.status] || ""}</div>
             <div className="w-16">{row.original.outcome.status === 'SUCCESS_VALUE' ? 'Succedded' : 'Failed'}</div>
-            <a href={`https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`} target="_blank" rel="noreferrer">
-              <i className="fas fa-link"></i>
-            </a>
-            <button onClick={(e) => onCopy(e, `https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`)}>
-              <i className="fas fa-clipboard"></i>
-            </button>
           </div >
         ),
       },
       {
-        Header: () => <div className="text-right">Action</div>,
+        Header: () => <div className="text-right">Actions</div>,
         id: "action",
-        Cell: () => (
+        Cell: ({ row }) => (
           <div className="flex justify-end">
-            <button className="mr-2">
-              <Eye />
+            <a href={`https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`} target="_blank" rel="noreferrer">
+              <i className="fas fa-link"></i>
+            </a>
+            <button className="ml-2" onClick={(e) => onCopy(e, `https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`)}>
+              <i className="fas fa-clipboard"></i>
             </button>
           </div>
         ),
@@ -170,7 +167,7 @@ const SingleNFT = () => {
           <img
             src={metadata?.media_url}
             alt={metadata?.title}
-            className="rounded-xl w-80 h-80"
+            className="rounded-xl w-80"
           />
           <div className="text-sm mt-4">
             <div className="">Royalty: {metadata?.royalty_perc}</div>
@@ -216,7 +213,7 @@ const SingleNFT = () => {
           </div>
         </div>
         <div className="flex-1">
-          <div className="text-xl font-bold">NFT History</div>
+          <div className="text-xl font-bold">Contract History</div>
           <div className="text-xs">
             <ReactTable columns={columns} data={results} page={page} perPage={20} onClickPrevious={onClickPrevious} onClickNext={onClickNext} />
           </div>

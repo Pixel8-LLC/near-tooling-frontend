@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
+import Masonry from "react-masonry-css";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
@@ -36,7 +37,7 @@ const Flex = () => {
   );
   useEffect(() => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
-  }, [accountID, mutate, walletAddress]);
+  }, []);
   const fetchNFT = async () => {
     setWalletAddressErr(null);
     if (
@@ -76,7 +77,12 @@ const Flex = () => {
     e.preventDefault();
     await fetchNFT();
   };
-
+  const breakpointColumnsObj = {
+    default: 4,
+    1300: 3,
+    1060: 2,
+    805: 1,
+  };
   const setWalletAddress = useCallback(
     (payload) => {
       dispatch(setWalletAddressAction(payload));
@@ -174,6 +180,8 @@ const Flex = () => {
       </div>
       <div className="flex items-center mt-9">
         <div className="flex space-x-14 flex-1">
+          {/* 
+          // NOTE: Just commenting out for now until we get the data in place
           <div className="">
             <div className="text-2xl">5</div>
             <div className="">Artworks collected</div>
@@ -186,7 +194,7 @@ const Flex = () => {
             <div className="text-2xl">13 NEAR</div>
             <div className="">Wallet Value </div>
             <div className="text-neutral-500">Based on floor price</div>
-          </div>
+          </div> */}
         </div>
         <div className="ml-auto">
           <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md">
@@ -204,7 +212,11 @@ const Flex = () => {
         ) : !(results && results.length) ? (
           "No Data"
         ) : (
-          <div className="grid grid-cols-4 gap-7">
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="nft-masonry-grid"
+            columnClassName="nft-masonry-grid_column"
+          >
             {results.map((artwork) => (
               <div key={artwork.token_id} className="">
                 <div className="text-black rounded-xl flex flex-col">
@@ -236,7 +248,7 @@ const Flex = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </Masonry>
         )}
       </div>
       <div className="my-10"></div>
