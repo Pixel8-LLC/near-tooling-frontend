@@ -219,11 +219,11 @@ const Flex = () => {
           >
             {results.map((artwork) => (
               <div key={artwork.token_id} className="">
-                <div className="text-black rounded-xl flex flex-col">
+                <div className="text-black rounded-t-xl flex flex-col">
                   <img
                     src={artwork.media_url}
                     alt={artwork.title}
-                    className=""
+                    className="rounded-t-xl"
                   />
                   <div className="bg-white rounded-b-xl flex flex-col flex-1">
                     <div className="bg-slate-50 py-3 px-4 flex-1">
