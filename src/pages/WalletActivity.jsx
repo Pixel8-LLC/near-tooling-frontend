@@ -203,9 +203,11 @@ const WalletActivity = () => {
 
   const setSearchBarWithAccountID = useCallback(() => {
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      setWalletAddress(accountID);
+      if (!walletAddress) {
+        setWalletAddress(accountID);
+      }
     }
-  }, [accountID, setWalletAddress, walletConnection]);
+  }, [accountID, setWalletAddress, walletAddress, walletConnection]);
 
   useEffect(() => {
     setSearchBarWithAccountID();
@@ -233,8 +235,7 @@ const WalletActivity = () => {
   };
   useEffect(() => {
     fetchWalletActivity();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date]);
+  }, [date, fetchWalletActivity]);
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -247,7 +248,6 @@ const WalletActivity = () => {
               className="text-lg rounded-lg w-96 border flex items-center"
               onSubmit={handleWalletAddress}
             >
-              {console.log(walletAddress)}
               <input
                 value={walletAddress}
                 onChange={(e) => setWalletAddress(e.target.value)}

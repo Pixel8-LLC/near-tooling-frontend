@@ -6,7 +6,11 @@ import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import { getUserNfts } from "../api/UserNft";
 import { ConnectContext } from "../ConnectProvider";
-import { setFetchedOnceAction } from "../redux/actions/walletActivity";
+import {
+  setFetchedOnceAction,
+  setWalletAddressAction,
+  setWalletAddressErrAction,
+} from "../redux/actions/walletActivity";
 import { setShowConnectWallet } from "../redux/actions/topBar";
 
 const Flex = () => {
@@ -34,9 +38,7 @@ const Flex = () => {
   useEffect(() => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
   }, [accountID, mutate, walletAddress]);
-  console.log(walletAddress);
-  const onSearch = async (e) => {
-    e.preventDefault();
+  const fetchNFT = async () => {
     setWalletAddressErr(null);
     if (
       walletConnection &&
@@ -71,15 +73,19 @@ const Flex = () => {
     mutate({ account_id: walletAddress ? walletAddress : accountID });
     setFetchedOnce(true);
   };
+  const onSearch = async (e) => {
+    e.preventDefault();
+    await fetchNFT();
+  };
 
   const setWalletAddress = useCallback(
     (payload) => {
-      dispatch(setWalletAddress(payload));
+      dispatch(setWalletAddressAction(payload));
     },
     [dispatch],
   );
   const setWalletAddressErr = (payload) =>
-    dispatch(setWalletAddressErr(payload));
+    dispatch(setWalletAddressErrAction(payload));
   const setFetchedOnce = useCallback(
     (payload) => dispatch(setFetchedOnceAction(payload)),
     [dispatch],
@@ -87,9 +93,11 @@ const Flex = () => {
 
   const setSearchBarWithAccountID = useCallback(() => {
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      setWalletAddress(accountID);
+      if (!walletAddress) {
+        setWalletAddress(accountID);
+      }
     }
-  }, [accountID, setWalletAddress, walletConnection]);
+  }, [accountID, setWalletAddress, walletAddress, walletConnection]);
 
   useEffect(() => {
     setSearchBarWithAccountID();
