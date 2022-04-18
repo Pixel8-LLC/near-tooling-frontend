@@ -1,5 +1,10 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useMutation } from "react-query";
+
+import { DateRangePicker, isInclusivelyBeforeDay } from "react-dates";
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+
 import { ReactComponent as RedTimes } from "../assets/img/red-times.svg";
 import { ReactComponent as GreenCheck } from "../assets/img/green-check.svg";
 import { ReactComponent as GreyClock } from "../assets/img/grey-clock.svg";
@@ -12,17 +17,45 @@ import { toast } from "react-toastify";
 import { net } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowConnectWallet } from "../redux/actions/topBar";
+import moment from "moment";
+import {
+  setFetchedOnceAction,
+  setWalletAddressAction,
+  setWalletAddressErrAction,
+} from "../redux/actions/walletActivity";
 
 const WalletActivity = () => {
   const dispatch = useDispatch();
-  const [walletAddress, setWalletAddress] = useState("");
-  const [walletAddressErr, setWalletAddressErr] = useState(null);
+  const walletAddress = useSelector(
+    (state) => state.walletActivity.walletAddress,
+  );
+  const walletAddressErr = useSelector(
+    (state) => state.walletActivity.walletAddressErr,
+  );
+  const fetchedOnce = useSelector((state) => state.walletActivity.fetchedOnce);
   const { accountID, walletConnection, login } = useContext(ConnectContext);
-  const [page, setPage] = useState(1);
-  const [fetchedOnce, setFetchedOnce] = useState(false);
+  const [page, setPage] = useState(0);
+  const [date, setDate] = useState({
+    startDate: null,
+    endDate: null,
+  });
+  const [focusedInput, setFocusedInput] = useState(null);
 
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
+  );
+
+  const setWalletAddress = useCallback(
+    (payload) => dispatch(setWalletAddressAction(payload)),
+    [dispatch],
+  );
+  const setWalletAddressErr = useCallback(
+    (payload) => dispatch(setWalletAddressErrAction(payload)),
+    [dispatch],
+  );
+  const setFetchedOnce = useCallback(
+    (payload) => dispatch(setFetchedOnceAction(payload)),
+    [dispatch],
   );
 
   const {
@@ -35,42 +68,66 @@ const WalletActivity = () => {
     (walletActivityParams) => getWalletActivity(walletActivityParams),
   );
 
+  const fetchWalletActivity = useCallback(async () => {
+    setWalletAddressErr(null);
+    if (walletAddress) {
+      if (
+        walletConnection &&
+        walletConnection._connectedAccount &&
+        walletConnection._connectedAccount.connection &&
+        walletConnection._connectedAccount.connection.provider
+      ) {
+        try {
+          await walletConnection._connectedAccount.connection.provider.query({
+            request_type: "view_account",
+            finality: "final",
+            account_id: walletAddress,
+          });
+        } catch (error) {
+          setWalletAddressErr({
+            code: 1,
+            message: "Please enter a valid wallet address",
+          });
+          return;
+        }
+      }
+
+      if (walletConnection && walletConnection.isSignedIn() && accountID) {
+        if (walletAddress !== accountID) {
+          setWalletAddressErr({
+            code: 2,
+            message: "Use Connected Wallet",
+          });
+
+          return;
+        }
+      }
+      mutate({
+        account_id: walletAddress,
+        page,
+        ...(date &&
+          date.startDate &&
+          date.endDate && {
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
+      });
+      setFetchedOnce(true);
+    }
+  }, [
+    accountID,
+    date,
+    mutate,
+    page,
+    setFetchedOnce,
+    setWalletAddressErr,
+    walletAddress,
+    walletConnection,
+  ]);
   const handleWalletAddress = async (e) => {
     e.preventDefault();
-    setWalletAddressErr(null);
-    if (
-      walletConnection &&
-      walletConnection._connectedAccount &&
-      walletConnection._connectedAccount.connection &&
-      walletConnection._connectedAccount.connection.provider
-    ) {
-      try {
-        await walletConnection._connectedAccount.connection.provider.query({
-          request_type: "view_account",
-          finality: "final",
-          account_id: walletAddress,
-        });
-      } catch (error) {
-        setWalletAddressErr({
-          code: 1,
-          message: "Please enter a valid wallet address",
-        });
-        return;
-      }
-    }
-
-    if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      if (walletAddress !== accountID) {
-        setWalletAddressErr({
-          code: 2,
-          message: "Use Connected Wallet",
-        });
-
-        return;
-      }
-    }
-    mutate({ account_id: walletAddress });
-    setFetchedOnce(true);
+    await fetchWalletActivity();
   };
 
   const statusIcon = useMemo(
@@ -146,9 +203,11 @@ const WalletActivity = () => {
 
   const setSearchBarWithAccountID = useCallback(() => {
     if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      setWalletAddress(accountID);
+      if (!walletAddress) {
+        setWalletAddress(accountID);
+      }
     }
-  }, [accountID, walletConnection]);
+  }, [accountID, setWalletAddress, walletAddress, walletConnection]);
 
   useEffect(() => {
     setSearchBarWithAccountID();
@@ -167,9 +226,23 @@ const WalletActivity = () => {
     }
   }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
 
+  const onClickPrevious = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    }
+  };
+  const onClickNext = () => {
+    if (results.length === 20) {
+      setPage(page + 1);
+    }
+  };
+  useEffect(() => {
+    fetchWalletActivity();
+  }, [date, fetchWalletActivity]);
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
+
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div>
@@ -232,9 +305,36 @@ const WalletActivity = () => {
         {!isLoading ? (
           fetchedOnce ? (
             success || isError ? (
-              <div className="text-xs">
-                <ReactTable data={results} columns={columns} />
-              </div>
+              <>
+                <div className="mb-5">
+                  <p>Filter By Date:</p>
+                  <DateRangePicker
+                    startDate={date.startDate} // momentPropTypes.momentObj or null,
+                    startDateId="start_date_id" // PropTypes.string.isRequired,
+                    endDate={date.endDate} // momentPropTypes.momentObj or null,
+                    endDateId="end_date_id" // PropTypes.string.isRequired,
+                    onDatesChange={(date) => setDate(date)} // PropTypes.func.isRequired,
+                    focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                    onFocusChange={(focusedInput) =>
+                      setFocusedInput(focusedInput)
+                    } // PropTypes.func.isRequired,
+                    isOutsideRange={(day) =>
+                      !isInclusivelyBeforeDay(day, moment())
+                    }
+                  />
+                </div>
+                <div className="text-xs">
+                  <ReactTable
+                    data={results}
+                    columns={columns}
+                    useFilters
+                    onClickPrevious={onClickPrevious}
+                    onClickNext={onClickNext}
+                    page={page}
+                    perPage={20}
+                  />
+                </div>
+              </>
             ) : (
               "Failed"
             )

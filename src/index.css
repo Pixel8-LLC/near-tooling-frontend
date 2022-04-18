@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  font-family: 'Manrope', sans-serif;
+body {
+  font-family: "Manrope", sans-serif;
+}
+
+.nft-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -30px; /* gutter size offset */
+  width: auto;
+}
+.nft-masonry-grid_column {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.nft-masonry-grid_column > div {
+  /* change div to reference your elements you put in <Masonry> */
+  /* background: grey; */
+  margin-bottom: 30px;
 }

@@ -1,7 +1,7 @@
 import ntAxios from "./lib/ntAxios";
 
-export function getWalletActivity(params) {
-  return ntAxios(`/activity`, {
+export function getNftEvents(params) {
+  return ntAxios(`/nft-events`, {
     params,
   }).then((result) => result.data);
 }
