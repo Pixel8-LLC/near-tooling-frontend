@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useEffect, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import Masonry from "react-masonry-css";
@@ -26,6 +26,7 @@ const Flex = () => {
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
   );
+  const fetchedOnce = useSelector((state) => state.walletActivity.fetchedOnce);
 
   const {
     data: { results = [], success } = {},
@@ -35,9 +36,9 @@ const Flex = () => {
   } = useMutation(["userNfts", walletAddress], (getUserNftsParams) =>
     getUserNfts(getUserNftsParams),
   );
-  useEffect(() => {
-    mutate({ account_id: walletAddress ? walletAddress : accountID });
-  }, []);
+  // useEffect(() => {
+  //   mutate({ account_id: walletAddress ? walletAddress : accountID });
+  // }, [accountID]);
   const fetchNFT = async () => {
     setWalletAddressErr(null);
     if (
@@ -109,14 +110,24 @@ const Flex = () => {
   }, [accountID, setSearchBarWithAccountID, walletConnection]);
 
   useEffect(() => {
-    if (!(walletConnection && walletConnection.isSignedIn() && accountID)) {
+    if (
+      fetchedOnce &&
+      !(walletConnection && walletConnection.isSignedIn() && accountID)
+    ) {
       if ((walletAddress || "").length === 0 && showConnectWallet) {
         dispatch(setShowConnectWallet(false));
       } else if ((walletAddress || "").length !== 0 && !showConnectWallet) {
         dispatch(setShowConnectWallet(true));
       }
     }
-  }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
+  }, [
+    accountID,
+    dispatch,
+    fetchedOnce,
+    showConnectWallet,
+    walletAddress,
+    walletConnection,
+  ]);
 
   return (
     <div>
@@ -150,17 +161,18 @@ const Flex = () => {
               />
             </form>
           </div>
-          {!(walletConnection && walletConnection.isSignedIn()) && (
-            <>
-              <div className="font-bold text-sm">OR</div>
-              <button
-                className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
-                onClick={() => login()}
-              >
-                Connect Wallet
-              </button>
-            </>
-          )}
+          {!(walletConnection && walletConnection.isSignedIn()) &&
+            !showConnectWallet && (
+              <>
+                <div className="font-bold text-sm">OR</div>
+                <button
+                  className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
+                  onClick={() => login()}
+                >
+                  Connect Wallet
+                </button>
+              </>
+            )}
         </div>
         <div className="text-xs mt-3">
           {walletAddressErr ? (
@@ -205,9 +217,9 @@ const Flex = () => {
       </div>
 
       <div className="mt-8">
-        {isLoading ? (
+        {!fetchedOnce ? null : isLoading ? (
           "Loading ..."
-        ) : isError || !success ? (
+        ) : isError ? (
           "Error"
         ) : !(results && results.length) ? (
           "No Data"
