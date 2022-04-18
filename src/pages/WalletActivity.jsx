@@ -40,7 +40,7 @@ const WalletActivity = () => {
     endDate: null,
   });
   const [focusedInput, setFocusedInput] = useState(null);
-
+  console.log(fetchedOnce);
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
   );
@@ -224,7 +224,14 @@ const WalletActivity = () => {
         dispatch(setShowConnectWallet(true));
       }
     }
-  }, [accountID, dispatch, showConnectWallet, walletAddress, walletConnection]);
+  }, [
+    accountID,
+    dispatch,
+    fetchedOnce,
+    showConnectWallet,
+    walletAddress,
+    walletConnection,
+  ]);
 
   const onClickPrevious = () => {
     if (page > 0) {
@@ -238,7 +245,7 @@ const WalletActivity = () => {
   };
   useEffect(() => {
     fetchWalletActivity();
-  }, [date, fetchWalletActivity]);
+  }, [date]);
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
