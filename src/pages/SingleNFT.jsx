@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import format from "date-fns/format";
 import { toast } from 'react-toastify';
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
@@ -20,6 +20,8 @@ import { getNftEvents } from '../api/Nft';
 
 const SingleNFT = () => {
   const { id } = useParams();
+  const location = useLocation();
+  console.log(location);
   const idRaw = id.split(':');
   const contract_id = idRaw[idRaw.length - 1];
   const token_id = id.replace(`:${contract_id}`, '')
@@ -27,7 +29,6 @@ const SingleNFT = () => {
   let [arrowElement, setArrowElement] = useState();
   let [popperElement, setPopperElement] = useState();
   const { accountID, walletConnection, login } = useContext(ConnectContext);
-
   const dispatch = useDispatch();
   const [walletAddress, setWalletAddress] = useState("");
   const [page, setPage] = useState(0);
@@ -50,14 +51,27 @@ const SingleNFT = () => {
     (getUserNftsByToken) => getNftEvents(getUserNftsByToken),
   );
   useEffect(() => {
-    if (contract_id && token_id) {
-      mutate({ contract_id, token_id, account_id: accountID });
+    if (location.search) {
+      let wallet = location.search.split('=')[1];
+      console.log(wallet);
+      setWalletAddress(wallet);
+      mutate({ account_id: wallet });
       nftActivitymutate({
         'filter[token_id]': token_id,
         related: 'outcome,receipt'
       });
     }
-  }, [contract_id, token_id, mutate, nftActivitymutate])
+  }, [location])
+
+  useEffect(() => {
+    if (contract_id && token_id && walletAddress) {
+      mutate({ contract_id, token_id, account_id: walletAddress });
+      nftActivitymutate({
+        'filter[token_id]': token_id,
+        related: 'outcome,receipt'
+      });
+    }
+  }, [contract_id, token_id, mutate, nftActivitymutate, walletAddress])
 
   let { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
@@ -151,12 +165,17 @@ const SingleNFT = () => {
       setPage(page + 1)
     }
   }
+  const onShare = () => {
+    window.open(
+      `${window.location.origin}/flex/${token_id}:${contract_id}?wallet=${walletAddress}`, "_blank");
+  }
+
   return (
     <div>
       <div className="flex items-center">
         <div className="text-4xl font-medium">{metadata?.title}</div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md">
+          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md" onClick={onShare}>
             <ShareFromSquare />
             <div className="">Share</div>
           </button>
