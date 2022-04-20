@@ -311,37 +311,41 @@ const WalletActivity = () => {
       <div className="mt-10">
         {!isLoading ? (
           fetchedOnce ? (
-            success || isError ? (
-              <>
-                <div className="mb-5">
-                  <p>Filter By Date:</p>
-                  <DateRangePicker
-                    startDate={date.startDate} // momentPropTypes.momentObj or null,
-                    startDateId="start_date_id" // PropTypes.string.isRequired,
-                    endDate={date.endDate} // momentPropTypes.momentObj or null,
-                    endDateId="end_date_id" // PropTypes.string.isRequired,
-                    onDatesChange={(date) => setDate(date)} // PropTypes.func.isRequired,
-                    focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                    onFocusChange={(focusedInput) =>
-                      setFocusedInput(focusedInput)
-                    } // PropTypes.func.isRequired,
-                    isOutsideRange={(day) =>
-                      !isInclusivelyBeforeDay(day, moment())
-                    }
-                  />
-                </div>
-                <div className="text-xs">
-                  <ReactTable
-                    data={results}
-                    columns={columns}
-                    useFilters
-                    onClickPrevious={onClickPrevious}
-                    onClickNext={onClickNext}
-                    page={page}
-                    perPage={20}
-                  />
-                </div>
-              </>
+            !isError ? (
+              results && results.length ? (
+                <>
+                  <div className="mb-5">
+                    <p>Filter By Date:</p>
+                    <DateRangePicker
+                      startDate={date.startDate} // momentPropTypes.momentObj or null,
+                      startDateId="start_date_id" // PropTypes.string.isRequired,
+                      endDate={date.endDate} // momentPropTypes.momentObj or null,
+                      endDateId="end_date_id" // PropTypes.string.isRequired,
+                      onDatesChange={(date) => setDate(date)} // PropTypes.func.isRequired,
+                      focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                      onFocusChange={(focusedInput) =>
+                        setFocusedInput(focusedInput)
+                      } // PropTypes.func.isRequired,
+                      isOutsideRange={(day) =>
+                        !isInclusivelyBeforeDay(day, moment())
+                      }
+                    />
+                  </div>
+                  <div className="text-xs">
+                    <ReactTable
+                      data={results}
+                      columns={columns}
+                      useFilters
+                      onClickPrevious={onClickPrevious}
+                      onClickNext={onClickNext}
+                      page={page}
+                      perPage={20}
+                    />
+                  </div>
+                </>
+              ) : (
+                "No Data"
+              )
             ) : (
               "Failed"
             )

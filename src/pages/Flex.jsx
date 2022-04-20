@@ -53,38 +53,40 @@ const Flex = () => {
   // }, [accountID]);
   const fetchNFT = async () => {
     setWalletAddressErr(null);
-    if (
-      walletConnection &&
-      walletConnection._connectedAccount &&
-      walletConnection._connectedAccount.connection &&
-      walletConnection._connectedAccount.connection.provider
-    ) {
-      try {
-        await walletConnection._connectedAccount.connection.provider.query({
-          request_type: "view_account",
-          finality: "final",
-          account_id: walletAddress,
-        });
-      } catch (error) {
-        setWalletAddressErr({
-          code: 1,
-          message: "Please enter a valid wallet address",
-        });
-        return;
+    if (walletAddress) {
+      if (
+        walletConnection &&
+        walletConnection._connectedAccount &&
+        walletConnection._connectedAccount.connection &&
+        walletConnection._connectedAccount.connection.provider
+      ) {
+        try {
+          await walletConnection._connectedAccount.connection.provider.query({
+            request_type: "view_account",
+            finality: "final",
+            account_id: walletAddress,
+          });
+        } catch (error) {
+          setWalletAddressErr({
+            code: 1,
+            message: "Please enter a valid wallet address",
+          });
+          return;
+        }
       }
-    }
-    if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      if (walletAddress !== accountID) {
-        setWalletAddressErr({
-          code: 2,
-          message: "Use Connected Wallet",
-        });
+      if (walletConnection && walletConnection.isSignedIn() && accountID) {
+        if (walletAddress !== accountID) {
+          setWalletAddressErr({
+            code: 2,
+            message: "Use Connected Wallet",
+          });
 
-        return;
+          return;
+        }
       }
+      mutate({ account_id: walletAddress ? walletAddress : accountID });
+      setFetchedOnce(true);
     }
-    mutate({ account_id: walletAddress ? walletAddress : accountID });
-    setFetchedOnce(true);
   };
   const onSearch = async (e) => {
     e.preventDefault();
@@ -147,6 +149,9 @@ const Flex = () => {
   }
 
   console.log(results, "results")
+  useEffect(() => {
+    fetchNFT();
+  }, []);
 
   return (
     <div>
