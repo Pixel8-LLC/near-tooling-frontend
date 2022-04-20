@@ -123,6 +123,14 @@ const WalletActivity = () => {
             from_date: date.startDate.unix(),
             to_date: date.endDate.add(1, "days").unix(),
           }),
+        ...(selectedType &&
+          selectedType !== "All Types" && {
+            type: selectedType,
+          }),
+        ...(selectedStatus &&
+          selectedStatus !== "All Status" && {
+            status: selectedStatus,
+          }),
       });
       setFetchedOnce(true);
     }
@@ -131,6 +139,8 @@ const WalletActivity = () => {
     date,
     mutate,
     page,
+    selectedStatus,
+    selectedType,
     setFetchedOnce,
     setWalletAddressErr,
     walletAddress,
@@ -258,7 +268,8 @@ const WalletActivity = () => {
   };
   useEffect(() => {
     fetchWalletActivity();
-  }, [date]);
+  }, [date, selectedType, selectedStatus]);
+
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
