@@ -40,13 +40,13 @@ const Flex = () => {
 
   useEffect(() => {
     if (location.search) {
-      let wallet = location.search.split('=')[1];
+      let wallet = location.search.split("=")[1];
       console.log(wallet);
       setWalletAddress(wallet);
       mutate({ account_id: wallet });
       setFetchedOnce(true);
     }
-  }, [location])
+  }, [location]);
 
   // useEffect(() => {
   //   mutate({ account_id: walletAddress ? walletAddress : accountID });
@@ -145,10 +145,12 @@ const Flex = () => {
 
   const onShare = () => {
     window.open(
-      `${window.location.origin}/flex?wallet=${walletAddress}`, "_blank");
-  }
+      `${window.location.origin}/flex?wallet=${walletAddress}`,
+      "_blank",
+    );
+  };
 
-  console.log(results, "results")
+  console.log(results, "results");
   useEffect(() => {
     fetchNFT();
   }, []);
@@ -200,9 +202,7 @@ const Flex = () => {
         </div>
         <div className="text-xs mt-3">
           {walletAddressErr ? (
-            walletAddressErr.code === 1 ? (
-              walletAddressErr.message
-            ) : walletAddressErr.code === 2 ? (
+            walletAddressErr.code === 2 ? (
               <button onClick={setSearchBarWithAccountID}>
                 {walletAddressErr.message}
               </button>
@@ -233,7 +233,10 @@ const Flex = () => {
           </div> */}
         </div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md" onClick={onShare}>
+          <button
+            className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md"
+            onClick={onShare}
+          >
             <ShareFromSquare />
             <div className="">Share</div>
           </button>
@@ -241,7 +244,14 @@ const Flex = () => {
       </div>
 
       <div className="mt-8">
-        {!fetchedOnce ? null : isLoading ? (
+        {walletAddressErr && walletAddressErr.code === 1 ? (
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="text-4xl">No Wallet Found</div>
+            <div className="text-lg">
+              Oops! Please enter a different wallet.
+            </div>
+          </div>
+        ) : !fetchedOnce ? null : isLoading ? (
           "Loading ..."
         ) : isError ? (
           "Error"
