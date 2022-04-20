@@ -1,5 +1,5 @@
 import { useEffect, useContext, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useMutation } from "react-query";
 import Masonry from "react-masonry-css";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import { setShowConnectWallet } from "../redux/actions/topBar";
 
 const Flex = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const walletAddress = useSelector(
     (state) => state.walletActivity.walletAddress,
@@ -36,6 +37,17 @@ const Flex = () => {
   } = useMutation(["userNfts", walletAddress], (getUserNftsParams) =>
     getUserNfts(getUserNftsParams),
   );
+
+  useEffect(() => {
+    if (location.search) {
+      let wallet = location.search.split('=')[1];
+      console.log(wallet);
+      setWalletAddress(wallet);
+      mutate({ account_id: wallet });
+      setFetchedOnce(true);
+    }
+  }, [location])
+
   // useEffect(() => {
   //   mutate({ account_id: walletAddress ? walletAddress : accountID });
   // }, [accountID]);
@@ -129,6 +141,13 @@ const Flex = () => {
     walletConnection,
   ]);
 
+  const onShare = () => {
+    window.open(
+      `${window.location.origin}/flex?wallet=${walletAddress}`, "_blank");
+  }
+
+  console.log(results, "results")
+
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -209,7 +228,7 @@ const Flex = () => {
           </div> */}
         </div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md">
+          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md" onClick={onShare}>
             <ShareFromSquare />
             <div className="">Share</div>
           </button>
@@ -251,7 +270,7 @@ const Flex = () => {
                       </div>
                     </div>
                     <Link
-                      to={`/flex/${artwork.token_id}:${artwork.contract_name}`}
+                      to={`/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
                       className="flex items-center justify-center py-1 text-neutral-400"
                     >
                       More Info
