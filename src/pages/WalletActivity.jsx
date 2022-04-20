@@ -70,7 +70,7 @@ const WalletActivity = () => {
   );
 
   const {
-    data: { results = [], success } = {},
+    data: { results = [] } = {},
     isLoading,
     isError,
     mutate,
@@ -268,6 +268,7 @@ const WalletActivity = () => {
   };
   useEffect(() => {
     fetchWalletActivity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, selectedType, selectedStatus]);
 
   return (
@@ -335,160 +336,168 @@ const WalletActivity = () => {
       <div className="mt-10">
         {!isLoading ? (
           fetchedOnce ? (
-            success || isError ? (
-              <>
-                <div className="flex items-center mb-5 space-x-4">
-                  <div className="">
-                    <p>Filter By Date:</p>
-                    <DateRangePicker
-                      startDate={date.startDate} // momentPropTypes.momentObj or null,
-                      startDateId="start_date_id" // PropTypes.string.isRequired,
-                      endDate={date.endDate} // momentPropTypes.momentObj or null,
-                      endDateId="end_date_id" // PropTypes.string.isRequired,
-                      onDatesChange={(date) => setDate(date)} // PropTypes.func.isRequired,
-                      focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                      onFocusChange={(focusedInput) =>
-                        setFocusedInput(focusedInput)
-                      } // PropTypes.func.isRequired,
-                      isOutsideRange={(day) =>
-                        !isInclusivelyBeforeDay(day, moment())
-                      }
+            !isError ? (
+              results && results.length ? (
+                <>
+                  <div className="flex items-center mb-5 space-x-4">
+                    <div className="">
+                      <p>Filter By Date:</p>
+                      <DateRangePicker
+                        startDate={date.startDate} // momentPropTypes.momentObj or null,
+                        startDateId="start_date_id" // PropTypes.string.isRequired,
+                        endDate={date.endDate} // momentPropTypes.momentObj or null,
+                        endDateId="end_date_id" // PropTypes.string.isRequired,
+                        onDatesChange={(date) => setDate(date)} // PropTypes.func.isRequired,
+                        focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                        onFocusChange={(focusedInput) =>
+                          setFocusedInput(focusedInput)
+                        } // PropTypes.func.isRequired,
+                        isOutsideRange={(day) =>
+                          !isInclusivelyBeforeDay(day, moment())
+                        }
+                      />
+                    </div>
+                    <div className="w-72 top-16">
+                      <Listbox
+                        value={selectedStatus}
+                        onChange={setSelectedStatus}
+                      >
+                        <div className="relative mt-6">
+                          <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
+                            <span className="block truncate text-neutral-600">
+                              {selectedStatus}
+                            </span>
+                            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                              <SelectorIcon
+                                className="w-5 h-5 text-gray-400"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </Listbox.Button>
+                          <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                          >
+                            <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                              {statuses.map((status) => (
+                                <Listbox.Option
+                                  key={status}
+                                  className={({ active }) =>
+                                    `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                      active
+                                        ? "text-amber-900 bg-amber-100"
+                                        : "text-gray-900"
+                                    }`
+                                  }
+                                  value={status}
+                                >
+                                  {({ selected }) => (
+                                    <>
+                                      <span
+                                        className={`block truncate ${
+                                          selected
+                                            ? "font-medium"
+                                            : "font-normal"
+                                        }`}
+                                      >
+                                        {status}
+                                      </span>
+                                      {selected ? (
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                          <CheckIcon
+                                            className="w-5 h-5"
+                                            aria-hidden="true"
+                                          />
+                                        </span>
+                                      ) : null}
+                                    </>
+                                  )}
+                                </Listbox.Option>
+                              ))}
+                            </Listbox.Options>
+                          </Transition>
+                        </div>
+                      </Listbox>
+                    </div>
+                    <div className="w-72 top-16">
+                      <Listbox value={selectedType} onChange={setSelectedType}>
+                        <div className="relative mt-6">
+                          <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
+                            <span className="block truncate text-neutral-600">
+                              {selectedType}
+                            </span>
+                            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                              <SelectorIcon
+                                className="w-5 h-5 text-gray-400"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </Listbox.Button>
+                          <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                          >
+                            <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                              {types.map((type) => (
+                                <Listbox.Option
+                                  key={type}
+                                  className={({ active }) =>
+                                    `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                      active
+                                        ? "text-amber-900 bg-amber-100"
+                                        : "text-gray-900"
+                                    }`
+                                  }
+                                  value={type}
+                                >
+                                  {({ selected }) => (
+                                    <>
+                                      <span
+                                        className={`block truncate ${
+                                          selected
+                                            ? "font-medium"
+                                            : "font-normal"
+                                        }`}
+                                      >
+                                        {type}
+                                      </span>
+                                      {selected ? (
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                          <CheckIcon
+                                            className="w-5 h-5"
+                                            aria-hidden="true"
+                                          />
+                                        </span>
+                                      ) : null}
+                                    </>
+                                  )}
+                                </Listbox.Option>
+                              ))}
+                            </Listbox.Options>
+                          </Transition>
+                        </div>
+                      </Listbox>
+                    </div>
+                  </div>
+                  <div className="text-xs">
+                    <ReactTable
+                      data={results}
+                      columns={columns}
+                      useFilters
+                      onClickPrevious={onClickPrevious}
+                      onClickNext={onClickNext}
+                      page={page}
+                      perPage={20}
                     />
                   </div>
-                  <div className="w-72 top-16">
-                    <Listbox
-                      value={selectedStatus}
-                      onChange={setSelectedStatus}
-                    >
-                      <div className="relative mt-6">
-                        <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
-                          <span className="block truncate text-neutral-600">
-                            {selectedStatus}
-                          </span>
-                          <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                            <SelectorIcon
-                              className="w-5 h-5 text-gray-400"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                            {statuses.map((status) => (
-                              <Listbox.Option
-                                key={status}
-                                className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
-                                    active
-                                      ? "text-amber-900 bg-amber-100"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={status}
-                              >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`block truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      {status}
-                                    </span>
-                                    {selected ? (
-                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                        <CheckIcon
-                                          className="w-5 h-5"
-                                          aria-hidden="true"
-                                        />
-                                      </span>
-                                    ) : null}
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
-                      </div>
-                    </Listbox>
-                  </div>
-                  <div className="w-72 top-16">
-                    <Listbox value={selectedType} onChange={setSelectedType}>
-                      <div className="relative mt-6">
-                        <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
-                          <span className="block truncate text-neutral-600">
-                            {selectedType}
-                          </span>
-                          <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                            <SelectorIcon
-                              className="w-5 h-5 text-gray-400"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                            {types.map((type) => (
-                              <Listbox.Option
-                                key={type}
-                                className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
-                                    active
-                                      ? "text-amber-900 bg-amber-100"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={type}
-                              >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`block truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      {type}
-                                    </span>
-                                    {selected ? (
-                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                        <CheckIcon
-                                          className="w-5 h-5"
-                                          aria-hidden="true"
-                                        />
-                                      </span>
-                                    ) : null}
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
-                      </div>
-                    </Listbox>
-                  </div>
-                </div>
-                <div className="text-xs">
-                  <ReactTable
-                    data={results}
-                    columns={columns}
-                    useFilters
-                    onClickPrevious={onClickPrevious}
-                    onClickNext={onClickNext}
-                    page={page}
-                    perPage={20}
-                  />
-                </div>
-              </>
+                </>
+              ) : (
+                "No Data"
+              )
             ) : (
               "Failed"
             )
