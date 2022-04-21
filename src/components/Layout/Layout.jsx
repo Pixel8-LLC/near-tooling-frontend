@@ -4,9 +4,9 @@ import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
   return (
-    <div className="bg-black text-white px-16 h-screen overflow-hidden">
+    <div className="bg-black text-white px-16">
       <Header />
-      <div className="relative flex h-sidebarHeight">
+      <div className="relative flex">
         <Sidebar />
         <div className="w-full overflow-x-auto pl-8 pb-10">
           <Outlet />
