@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
   return (
-    <div className="bg-black text-white px-16 h-screen">
+    <div className="bg-black text-white px-16 h-screen overflow-hidden">
       <Header />
       <div className="relative flex h-sidebarHeight">
         <Sidebar />
