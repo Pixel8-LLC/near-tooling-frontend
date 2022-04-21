@@ -43,7 +43,7 @@ const WalletActivity = () => {
     (state) => state.walletActivity.walletAddressErr,
   );
   const fetchedOnce = useSelector((state) => state.walletActivity.fetchedOnce);
-  const [selectedStatus, setSelectedStatus] = useState({ label: "All Transactions", value: 'All Status' });
+  const [selectedStatus, setSelectedStatus] = useState({ name: "All Transactions", id: 'All Status' });
   const [selectedType, setSelectedType] = useState("All Types");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(0);
@@ -128,8 +128,8 @@ const WalletActivity = () => {
           type: selectedType,
         }),
         ...(selectedStatus &&
-          selectedStatus.value !== "All Status" && {
-          status: selectedStatus.value,
+          selectedStatus.id !== "All Status" && {
+          status: selectedStatus.id,
         }),
       });
       setFetchedOnce(true);
@@ -149,8 +149,8 @@ const WalletActivity = () => {
           type: selectedType,
         }),
         ...(selectedStatus &&
-          selectedStatus.value !== "All Status" && {
-          status: selectedStatus.value,
+          selectedStatus.id !== "All Status" && {
+          status: selectedStatus.id,
         }),
       });
       setFetchedOnce(true);
@@ -190,7 +190,7 @@ const WalletActivity = () => {
     }),
     [],
   );
-  const statuses = [{ label: "All Transactions", value: 'All Status' }, { label: 'Successful Transactions', value: "SUCCESS_VALUE" }, { label: 'Failed Transactions', value: "FAILURE" }];
+  const statuses = [{ name: "All Transactions", id: 'All Status' }, { name: 'Successful Transactions', id: "SUCCESS_VALUE" }, { name: 'Failed Transactions', id: "FAILURE" }];
   const types = ["All Types", "MINT", "TRANSFER", "FUNCTION_CALL", "ADD_KEY"];
   const columns = useMemo(
     () => [
@@ -302,6 +302,7 @@ const WalletActivity = () => {
       setWalletAddressErr(null);
     }
   }, [walletAddress])
+  console.log(selectedStatus, "selectedStatus")
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -389,13 +390,13 @@ const WalletActivity = () => {
                   </div>
                   <div className="w-72 top-16">
                     <Listbox
-                      value={selectedStatus.label}
+                      value={selectedStatus}
                       onChange={setSelectedStatus}
                     >
                       <div className="relative mt-6">
                         <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
                           <span className="block truncate text-neutral-600">
-                            {selectedStatus.label}
+                            {selectedStatus.name}
                           </span>
                           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                             <SelectorIcon
@@ -413,7 +414,7 @@ const WalletActivity = () => {
                           <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                             {statuses.map((status) => (
                               <Listbox.Option
-                                key={status}
+                                key={status.id}
                                 className={({ active }) =>
                                   `cursor-default select-none relative py-2 pl-10 pr-4 ${active
                                     ? "text-amber-900 bg-amber-100"
@@ -422,26 +423,30 @@ const WalletActivity = () => {
                                 }
                                 value={status}
                               >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`block truncate ${selected
-                                        ? "font-medium"
-                                        : "font-normal"
-                                        }`}
-                                    >
-                                      {status.label}
-                                    </span>
-                                    {selected ? (
-                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                        <CheckIcon
-                                          className="w-5 h-5"
-                                          aria-hidden="true"
-                                        />
+                                {({ selected }) => {
+                                  console.log(selected, 'selected');
+                                  return (
+                                    <>
+                                      <span
+                                        className={`block truncate ${selected
+                                          ? "font-medium"
+                                          : "font-normal"
+                                          }`}
+                                      >
+                                        {status.name}
                                       </span>
-                                    ) : null}
-                                  </>
-                                )}
+                                      {selected ? (
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                          <CheckIcon
+                                            className="w-5 h-5"
+                                            aria-hidden="true"
+                                          />
+                                        </span>
+                                      ) : null}
+                                    </>
+                                  )
+                                }
+                                }
                               </Listbox.Option>
                             ))}
                           </Listbox.Options>
