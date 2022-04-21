@@ -13,6 +13,7 @@ import {
   setWalletAddressErrAction,
 } from "../redux/actions/walletActivity";
 import { setShowConnectWallet } from "../redux/actions/topBar";
+import Loader from '../common/Loader';
 
 const Flex = () => {
   const dispatch = useDispatch();
@@ -41,16 +42,17 @@ const Flex = () => {
   useEffect(() => {
     if (location.search) {
       let wallet = location.search.split('=')[1];
-      console.log(wallet);
       setWalletAddress(wallet);
       mutate({ account_id: wallet });
       setFetchedOnce(true);
     }
   }, [location])
 
-  // useEffect(() => {
-  //   mutate({ account_id: walletAddress ? walletAddress : accountID });
-  // }, [accountID]);
+  useEffect(() => {
+    if (accountID)
+      mutate({ account_id: walletAddress ? walletAddress : accountID });
+  }, [accountID]);
+
   const fetchNFT = async () => {
     setWalletAddressErr(null);
     if (walletAddress) {
@@ -80,8 +82,6 @@ const Flex = () => {
             code: 2,
             message: "Use Connected Wallet",
           });
-
-          return;
         }
       }
       mutate({ account_id: walletAddress ? walletAddress : accountID });
@@ -111,17 +111,10 @@ const Flex = () => {
     [dispatch],
   );
 
-  const setSearchBarWithAccountID = useCallback(() => {
-    if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      if (!walletAddress) {
-        setWalletAddress(accountID);
-      }
-    }
-  }, [accountID, setWalletAddress, walletAddress, walletConnection]);
-
-  useEffect(() => {
-    setSearchBarWithAccountID();
-  }, [accountID, setSearchBarWithAccountID, walletConnection]);
+  const setSearchBarWithAccountID = () => {
+    setWalletAddress(accountID);
+    setWalletAddressErr(null);
+  }
 
   useEffect(() => {
     if (
@@ -148,11 +141,20 @@ const Flex = () => {
       `${window.location.origin}/flex?wallet=${walletAddress}`, "_blank");
   }
 
-  console.log(results, "results")
   useEffect(() => {
     fetchNFT();
   }, []);
 
+  useEffect(() => {
+    if (!(walletAddressErr && walletAddressErr.code !== 2) && (walletAddress && accountID && (walletAddress !== accountID))) {
+      setWalletAddressErr({
+        code: 2,
+        message: "Use Connected Wallet",
+      });
+    } else if (!walletAddress) {
+      setWalletAddressErr(null);
+    }
+  }, [walletAddress])
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -186,7 +188,7 @@ const Flex = () => {
             </form>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) &&
-            !showConnectWallet && (
+            showConnectWallet && (
               <>
                 <div className="font-bold text-sm">OR</div>
                 <button
@@ -242,7 +244,7 @@ const Flex = () => {
 
       <div className="mt-8">
         {!fetchedOnce ? null : isLoading ? (
-          "Loading ..."
+          <div className="flex justify-center items-center h-96"><Loader /></div>
         ) : isError ? (
           "Error"
         ) : !(results && results.length) ? (
