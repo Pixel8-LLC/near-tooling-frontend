@@ -111,7 +111,6 @@ const WalletActivity = () => {
             message: "Use Connected Wallet",
           });
 
-          return;
         }
       }
       mutate({
@@ -246,17 +245,10 @@ const WalletActivity = () => {
     [statusIcon, statusText],
   );
 
-  const setSearchBarWithAccountID = useCallback(() => {
-    if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      if (!walletAddress) {
-        setWalletAddress(accountID);
-      }
-    }
-  }, [accountID, setWalletAddress, walletAddress, walletConnection]);
-
-  useEffect(() => {
-    setSearchBarWithAccountID();
-  }, [accountID, setSearchBarWithAccountID, walletConnection]);
+  const setSearchBarWithAccountID = () => {
+    setWalletAddress(accountID);
+    setWalletAddressErr(null);
+  }
 
   useEffect(() => {
     if (
@@ -294,12 +286,21 @@ const WalletActivity = () => {
   }, [date, selectedType, selectedStatus, page]);
 
   useEffect(() => {
-    console.log(accountID, "accountID")
     if (accountID)
       fetchWalletActivity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountID]);
 
+  useEffect(() => {
+    if (!(walletAddressErr && walletAddressErr.code !== 2) && (walletAddress && accountID && (walletAddress !== accountID))) {
+      setWalletAddressErr({
+        code: 2,
+        message: "Use Connected Wallet",
+      });
+    } else if (!walletAddress) {
+      setWalletAddressErr(null);
+    }
+  }, [walletAddress])
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>

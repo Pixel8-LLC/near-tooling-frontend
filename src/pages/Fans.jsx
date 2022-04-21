@@ -97,7 +97,6 @@ const Fans = () => {
             message: "Use Connected Wallet",
           });
 
-          return;
         }
       }
       mutate({
@@ -201,17 +200,10 @@ const Fans = () => {
     [statusIcon, statusText],
   );
 
-  const setSearchBarWithAccountID = useCallback(() => {
-    if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      if (!walletAddress) {
-        setWalletAddress(accountID);
-      }
-    }
-  }, [accountID, setWalletAddress, walletAddress, walletConnection]);
-
-  useEffect(() => {
-    setSearchBarWithAccountID();
-  }, [accountID, setSearchBarWithAccountID, walletConnection]);
+  const setSearchBarWithAccountID = () => {
+    setWalletAddress(accountID);
+    setWalletAddressErr(null);
+  }
 
   useEffect(() => {
     if (
