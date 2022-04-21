@@ -288,6 +288,7 @@ const WalletActivity = () => {
   useEffect(() => {
     if (accountID)
       fetchWalletActivity();
+    setWalletAddress(accountID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountID]);
 

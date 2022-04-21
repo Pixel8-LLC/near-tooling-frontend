@@ -49,8 +49,11 @@ const Flex = () => {
   }, [location])
 
   useEffect(() => {
-    if (accountID)
+    if (accountID) {
       mutate({ account_id: walletAddress ? walletAddress : accountID });
+      setWalletAddress(accountID);
+      setFetchedOnce(true);
+    }
   }, [accountID]);
 
   const fetchNFT = async () => {
