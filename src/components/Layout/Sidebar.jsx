@@ -33,7 +33,7 @@ const Sidebar = () => {
       <div className=" pl-5 pr-2 text-lg font-medium border-b border-b-black pb-3">
         NFT Tools
       </div>
-      <div className="text-lg overflow-y-auto space-y-1">
+      <div className="max-h-sidebarListHeight text-lg overflow-y-auto space-y-1">
         {links.map(({ icon, title, url }) => (
           <Link
             key={title}
