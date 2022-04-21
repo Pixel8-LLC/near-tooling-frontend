@@ -309,6 +309,7 @@ const WalletActivity = () => {
       <div className="mt-10">
         {walletAddressErr && walletAddressErr.code === 1 ? (
           <div className="flex flex-col items-center justify-center space-y-4">
+            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
             <div className="text-4xl">No Wallet Found</div>
             <div className="text-lg">
               Oops! Please enter a different wallet.
