@@ -3,7 +3,7 @@ import * as types from "../../constants/actions/topBar";
 /* eslint-disable no-case-declarations */
 
 const initialState = {
-  showConnectWallet: false,
+  showConnectWallet: true,
   loading: false,
 };
 

@@ -1,7 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import { connect, Contract, utils, WalletConnection } from "near-api-js";
+import { useDispatch, useSelector } from "react-redux";
 import { CONTRACT_NAME } from "./contract/config";
 import { config, net } from "./constants";
+import { setShowConnectWallet } from "./redux/actions/topBar";
 
 export const ConnectContext = createContext({
   accountID: "",
@@ -13,6 +15,7 @@ export const ConnectContext = createContext({
 });
 
 const ConnectProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const [accountID, setAccountID] = useState("");
   const [walletConnection, setWalletConnection] = useState(null);
   const [contract, setContract] = useState(null);
@@ -55,7 +58,11 @@ const ConnectProvider = ({ children }) => {
       await connectNearWallet();
     })();
   }, []);
-
+  useEffect(() => {
+    if (accountID) {
+      dispatch(setShowConnectWallet(false));
+    }
+  }, [accountID]);
   return (
     <ConnectContext.Provider
       value={{

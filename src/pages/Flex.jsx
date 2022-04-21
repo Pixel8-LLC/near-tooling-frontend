@@ -186,7 +186,7 @@ const Flex = () => {
             </form>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) &&
-            !showConnectWallet && (
+            showConnectWallet && (
               <>
                 <div className="font-bold text-sm">OR</div>
                 <button

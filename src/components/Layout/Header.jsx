@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
 import { ConnectContext } from "../../ConnectProvider";
 
@@ -10,7 +11,9 @@ const Header = () => {
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
   );
+  const location = useLocation();
 
+  const connectWalletExclusionPath = ['/', '/flex'];
   return (
     <div className="flex items-center py-10 w-full">
       <div className="flex-1 flex items-center space-x-5">
@@ -36,7 +39,7 @@ const Header = () => {
           </div>
         ) : (
           <>
-            {showConnectWallet && (
+            {showConnectWallet && !connectWalletExclusionPath.includes(location.pathname) && (
               <button
                 onClick={() => login()}
                 className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
