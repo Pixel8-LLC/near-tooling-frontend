@@ -52,7 +52,8 @@ const WalletActivity = () => {
     endDate: null,
   });
   const [focusedInput, setFocusedInput] = useState(null);
-  console.log(fetchedOnce);
+  const [finalSearchWalletId, setFinalSearchWalletId] = useState(null);
+
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
   );
@@ -82,7 +83,7 @@ const WalletActivity = () => {
 
   const fetchWalletActivity = useCallback(async () => {
     setWalletAddressErr(null);
-    if (walletAddress) {
+    if (finalSearchWalletId) {
       if (
         walletConnection &&
         walletConnection._connectedAccount &&
@@ -93,7 +94,7 @@ const WalletActivity = () => {
           await walletConnection._connectedAccount.connection.provider.query({
             request_type: "view_account",
             finality: "final",
-            account_id: walletAddress,
+            account_id: finalSearchWalletId,
           });
         } catch (error) {
           setWalletAddressErr({
@@ -105,7 +106,7 @@ const WalletActivity = () => {
       }
 
       if (walletConnection && walletConnection.isSignedIn() && accountID) {
-        if (walletAddress !== accountID) {
+        if (finalSearchWalletId !== accountID) {
           setWalletAddressErr({
             code: 2,
             message: "Use Connected Wallet",
@@ -114,7 +115,7 @@ const WalletActivity = () => {
         }
       }
       mutate({
-        account_id: walletAddress,
+        account_id: finalSearchWalletId,
         page,
         ...(date &&
           date.startDate &&
@@ -166,10 +167,11 @@ const WalletActivity = () => {
     setWalletAddressErr,
     walletAddress,
     walletConnection,
+    finalSearchWalletId
   ]);
   const handleWalletAddress = async (e) => {
     e.preventDefault();
-    await fetchWalletActivity();
+    setFinalSearchWalletId(walletAddress)
   };
 
   const statusIcon = useMemo(
@@ -247,7 +249,7 @@ const WalletActivity = () => {
 
   const setSearchBarWithAccountID = () => {
     setWalletAddress(accountID);
-    setWalletAddressErr(null);
+    setFinalSearchWalletId(accountID);
   }
 
   useEffect(() => {
@@ -281,14 +283,16 @@ const WalletActivity = () => {
     }
   };
   useEffect(() => {
-    fetchWalletActivity();
+    if (finalSearchWalletId)
+      fetchWalletActivity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date, selectedType, selectedStatus, page]);
+  }, [date, selectedType, selectedStatus, page, finalSearchWalletId]);
 
   useEffect(() => {
     if (accountID)
       fetchWalletActivity();
     setWalletAddress(accountID);
+    setFinalSearchWalletId(accountID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountID]);
 
@@ -302,7 +306,6 @@ const WalletActivity = () => {
       setWalletAddressErr(null);
     }
   }, [walletAddress])
-  console.log(selectedStatus, "selectedStatus")
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -424,7 +427,6 @@ const WalletActivity = () => {
                                 value={status}
                               >
                                 {({ selected }) => {
-                                  console.log(selected, 'selected');
                                   return (
                                     <>
                                       <span
