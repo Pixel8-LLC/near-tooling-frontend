@@ -32,6 +32,7 @@ import {
 } from "../redux/actions/walletActivity";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import Loader from '../common/Loader';
 
 const WalletActivity = () => {
   const dispatch = useDispatch();
@@ -269,7 +270,7 @@ const WalletActivity = () => {
   useEffect(() => {
     fetchWalletActivity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date, selectedType, selectedStatus]);
+  }, [date, selectedType, selectedStatus, page]);
 
   const onSelectStatus = (v) => {
     console.log(v)
@@ -507,7 +508,7 @@ const WalletActivity = () => {
             ""
           )
         ) : (
-          "Loading ..."
+          <div className="flex justify-center items-center h-96"><Loader /></div>
         )}
       </div>
     </div>
