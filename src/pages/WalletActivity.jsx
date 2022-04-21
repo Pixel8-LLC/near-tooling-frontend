@@ -134,6 +134,27 @@ const WalletActivity = () => {
         }),
       });
       setFetchedOnce(true);
+    } else if (accountID) {
+      mutate({
+        account_id: accountID,
+        page,
+        ...(date &&
+          date.startDate &&
+          date.endDate && {
+          date_column: "block_timestamp",
+          from_date: date.startDate.unix(),
+          to_date: date.endDate.add(1, "days").unix(),
+        }),
+        ...(selectedType &&
+          selectedType !== "All Types" && {
+          type: selectedType,
+        }),
+        ...(selectedStatus &&
+          selectedStatus.value !== "All Status" && {
+          status: selectedStatus.value,
+        }),
+      });
+      setFetchedOnce(true);
     }
   }, [
     accountID,
@@ -272,9 +293,13 @@ const WalletActivity = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, selectedType, selectedStatus, page]);
 
-  const onSelectStatus = (v) => {
-    console.log(v)
-  }
+  useEffect(() => {
+    console.log(accountID, "accountID")
+    if (accountID)
+      fetchWalletActivity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountID]);
+
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
