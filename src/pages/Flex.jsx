@@ -14,6 +14,7 @@ import {
 } from "../redux/actions/walletActivity";
 import { setShowConnectWallet } from "../redux/actions/topBar";
 import Loader from '../common/Loader';
+import { toast } from "react-toastify";
 
 const Flex = () => {
   const dispatch = useDispatch();
@@ -49,8 +50,11 @@ const Flex = () => {
   }, [location])
 
   useEffect(() => {
-    if (accountID)
+    if (accountID) {
       mutate({ account_id: walletAddress ? walletAddress : accountID });
+      setWalletAddress(accountID);
+      setFetchedOnce(true);
+    }
   }, [accountID]);
 
   const fetchNFT = async () => {
@@ -136,9 +140,10 @@ const Flex = () => {
     walletConnection,
   ]);
 
-  const onShare = () => {
-    window.open(
-      `${window.location.origin}/flex?wallet=${walletAddress}`, "_blank");
+  const onShare = (e) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(`${window.location.origin}/flex?wallet=${walletAddress}`);
+    toast.dark("Link has been copied.");
   }
 
   useEffect(() => {
