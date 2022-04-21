@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import format from "date-fns/format";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
 import { useMutation } from "react-query";
@@ -15,16 +15,16 @@ import { ConnectContext } from "../ConnectProvider";
 import { Popover } from "@headlessui/react";
 import { usePopper } from "react-popper";
 import classes from "./SingleNFT.module.css";
-import { getUserNftByTokenId } from '../api/UserNft';
-import { getNftEvents } from '../api/Nft';
+import { getUserNftByTokenId } from "../api/UserNft";
+import { getNftEvents } from "../api/Nft";
 
 const SingleNFT = () => {
   const { id } = useParams();
   const location = useLocation();
   console.log(location);
-  const idRaw = id.split(':');
+  const idRaw = id.split(":");
   const contract_id = idRaw[idRaw.length - 1];
-  const token_id = id.replace(`:${contract_id}`, '')
+  const token_id = id.replace(`:${contract_id}`, "");
   let [referenceElement, setReferenceElement] = useState();
   let [arrowElement, setArrowElement] = useState();
   let [popperElement, setPopperElement] = useState();
@@ -46,32 +46,31 @@ const SingleNFT = () => {
     isNFTLoading,
     nftLoadingError,
     mutate: nftActivitymutate,
-  } = useMutation(
-    ["nftEvents", page, walletAddress],
-    (getUserNftsByToken) => getNftEvents(getUserNftsByToken),
+  } = useMutation(["nftEvents", page, walletAddress], (getUserNftsByToken) =>
+    getNftEvents(getUserNftsByToken),
   );
   useEffect(() => {
     if (location.search) {
-      let wallet = location.search.split('=')[1];
+      let wallet = location.search.split("=")[1];
       console.log(wallet);
       setWalletAddress(wallet);
       mutate({ account_id: wallet });
       nftActivitymutate({
-        'filter[token_id]': token_id,
-        related: 'outcome,receipt'
+        "filter[token_id]": token_id,
+        related: "outcome,receipt",
       });
     }
-  }, [location])
+  }, [location]);
 
   useEffect(() => {
     if (contract_id && token_id && walletAddress) {
       mutate({ contract_id, token_id, account_id: walletAddress });
       nftActivitymutate({
-        'filter[token_id]': token_id,
-        related: 'outcome,receipt'
+        "filter[token_id]": token_id,
+        related: "outcome,receipt",
       });
     }
-  }, [contract_id, token_id, mutate, nftActivitymutate, walletAddress])
+  }, [contract_id, token_id, mutate, nftActivitymutate, walletAddress]);
 
   let { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
@@ -98,7 +97,7 @@ const SingleNFT = () => {
       FAILURE: <RedTimes />,
       Pending: <GreyClock />,
     }),
-    []
+    [],
   );
   const columns = useMemo(
     () => [
@@ -128,9 +127,15 @@ const SingleNFT = () => {
         accessor: "explorer_link",
         Cell: ({ row, value }) => (
           <div className="flex items-center space-x-2">
-            <div className="">{statusIcon[row.original.outcome.status] || ""}</div>
-            <div className="w-16">{row.original.outcome.status === 'SUCCESS_VALUE' ? 'Succedded' : 'Failed'}</div>
-          </div >
+            <div className="">
+              {statusIcon[row.original.outcome.status] || ""}
+            </div>
+            <div className="w-16">
+              {row.original.outcome.status === "SUCCESS_VALUE"
+                ? "Succedded"
+                : "Failed"}
+            </div>
+          </div>
         ),
       },
       {
@@ -138,17 +143,29 @@ const SingleNFT = () => {
         id: "action",
         Cell: ({ row }) => (
           <div className="flex justify-end">
-            <a href={`https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`} target="_blank" rel="noreferrer">
+            <a
+              href={`https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               <i className="fas fa-link"></i>
             </a>
-            <button className="ml-2" onClick={(e) => onCopy(e, `https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`)}>
+            <button
+              className="ml-2"
+              onClick={(e) =>
+                onCopy(
+                  e,
+                  `https://explorer.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`,
+                )
+              }
+            >
               <i className="fas fa-clipboard"></i>
             </button>
           </div>
         ),
       },
     ],
-    [statusIcon]
+    [statusIcon],
   );
   const onCopy = (e, link) => {
     e.stopPropagation();
@@ -157,25 +174,30 @@ const SingleNFT = () => {
   };
   const onClickPrevious = () => {
     if (page > 0) {
-      setPage(page - 1)
+      setPage(page - 1);
     }
-  }
+  };
   const onClickNext = () => {
     if (results.length === 20) {
-      setPage(page + 1)
+      setPage(page + 1);
     }
-  }
+  };
   const onShare = () => {
     window.open(
-      `${window.location.origin}/flex/${token_id}:${contract_id}?wallet=${walletAddress}`, "_blank");
-  }
+      `${window.location.origin}/flex/${token_id}:${contract_id}?wallet=${walletAddress}`,
+      "_blank",
+    );
+  };
 
   return (
     <div>
       <div className="flex items-center">
         <div className="text-4xl font-medium">{metadata?.title}</div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md" onClick={onShare}>
+          <button
+            className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md"
+            onClick={onShare}
+          >
             <ShareFromSquare />
             <div className="">Share</div>
           </button>
@@ -233,8 +255,15 @@ const SingleNFT = () => {
         </div>
         <div className="flex-1">
           <div className="text-xl font-bold">Contract History</div>
-          <div className="text-xs">
-            <ReactTable columns={columns} data={results} page={page} perPage={20} onClickPrevious={onClickPrevious} onClickNext={onClickNext} />
+          <div className="text-xs w-full overflow-x-auto">
+            <ReactTable
+              columns={columns}
+              data={results}
+              page={page}
+              perPage={20}
+              onClickPrevious={onClickPrevious}
+              onClickNext={onClickNext}
+            />
           </div>
         </div>
       </div>
