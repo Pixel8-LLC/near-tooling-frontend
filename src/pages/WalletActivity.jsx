@@ -1,4 +1,11 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useMutation } from "react-query";
 
 import { DateRangePicker, isInclusivelyBeforeDay } from "react-dates";
@@ -23,6 +30,9 @@ import {
   setWalletAddressAction,
   setWalletAddressErrAction,
 } from "../redux/actions/walletActivity";
+import { Listbox, Transition } from "@headlessui/react";
+import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import Loader from '../common/Loader';
 
 const WalletActivity = () => {
   const dispatch = useDispatch();
@@ -33,6 +43,8 @@ const WalletActivity = () => {
     (state) => state.walletActivity.walletAddressErr,
   );
   const fetchedOnce = useSelector((state) => state.walletActivity.fetchedOnce);
+  const [selectedStatus, setSelectedStatus] = useState({ name: "All Transactions", id: 'All Status' });
+  const [selectedType, setSelectedType] = useState("All Types");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(0);
   const [date, setDate] = useState({
@@ -40,7 +52,8 @@ const WalletActivity = () => {
     endDate: null,
   });
   const [focusedInput, setFocusedInput] = useState(null);
-  console.log(fetchedOnce);
+  const [finalSearchWalletId, setFinalSearchWalletId] = useState(null);
+
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
   );
@@ -59,7 +72,7 @@ const WalletActivity = () => {
   );
 
   const {
-    data: { results = [], success } = {},
+    data: { results = [] } = {},
     isLoading,
     isError,
     mutate,
@@ -70,7 +83,7 @@ const WalletActivity = () => {
 
   const fetchWalletActivity = useCallback(async () => {
     setWalletAddressErr(null);
-    if (walletAddress) {
+    if (finalSearchWalletId) {
       if (
         walletConnection &&
         walletConnection._connectedAccount &&
@@ -81,7 +94,7 @@ const WalletActivity = () => {
           await walletConnection._connectedAccount.connection.provider.query({
             request_type: "view_account",
             finality: "final",
-            account_id: walletAddress,
+            account_id: finalSearchWalletId,
           });
         } catch (error) {
           setWalletAddressErr({
@@ -93,25 +106,53 @@ const WalletActivity = () => {
       }
 
       if (walletConnection && walletConnection.isSignedIn() && accountID) {
-        if (walletAddress !== accountID) {
+        if (finalSearchWalletId !== accountID) {
           setWalletAddressErr({
             code: 2,
             message: "Use Connected Wallet",
           });
 
-          return;
         }
       }
       mutate({
-        account_id: walletAddress,
+        account_id: finalSearchWalletId,
         page,
         ...(date &&
           date.startDate &&
           date.endDate && {
-            date_column: "block_timestamp",
-            from_date: date.startDate.unix(),
-            to_date: date.endDate.add(1, "days").unix(),
-          }),
+          date_column: "block_timestamp",
+          from_date: date.startDate.unix(),
+          to_date: date.endDate.add(1, "days").unix(),
+        }),
+        ...(selectedType &&
+          selectedType !== "All Types" && {
+          type: selectedType,
+        }),
+        ...(selectedStatus &&
+          selectedStatus.id !== "All Status" && {
+          status: selectedStatus.id,
+        }),
+      });
+      setFetchedOnce(true);
+    } else if (accountID) {
+      mutate({
+        account_id: accountID,
+        page,
+        ...(date &&
+          date.startDate &&
+          date.endDate && {
+          date_column: "block_timestamp",
+          from_date: date.startDate.unix(),
+          to_date: date.endDate.add(1, "days").unix(),
+        }),
+        ...(selectedType &&
+          selectedType !== "All Types" && {
+          type: selectedType,
+        }),
+        ...(selectedStatus &&
+          selectedStatus.id !== "All Status" && {
+          status: selectedStatus.id,
+        }),
       });
       setFetchedOnce(true);
     }
@@ -120,14 +161,17 @@ const WalletActivity = () => {
     date,
     mutate,
     page,
+    selectedStatus,
+    selectedType,
     setFetchedOnce,
     setWalletAddressErr,
     walletAddress,
     walletConnection,
+    finalSearchWalletId
   ]);
   const handleWalletAddress = async (e) => {
     e.preventDefault();
-    await fetchWalletActivity();
+    setFinalSearchWalletId(walletAddress)
   };
 
   const statusIcon = useMemo(
@@ -148,6 +192,8 @@ const WalletActivity = () => {
     }),
     [],
   );
+  const statuses = [{ name: "All Transactions", id: 'All Status' }, { name: 'Successful Transactions', id: "SUCCESS_VALUE" }, { name: 'Failed Transactions', id: "FAILURE" }];
+  const types = ["All Types", "MINT", "TRANSFER", "FUNCTION_CALL", "ADD_KEY"];
   const columns = useMemo(
     () => [
       {
@@ -201,17 +247,10 @@ const WalletActivity = () => {
     [statusIcon, statusText],
   );
 
-  const setSearchBarWithAccountID = useCallback(() => {
-    if (walletConnection && walletConnection.isSignedIn() && accountID) {
-      if (!walletAddress) {
-        setWalletAddress(accountID);
-      }
-    }
-  }, [accountID, setWalletAddress, walletAddress, walletConnection]);
-
-  useEffect(() => {
-    setSearchBarWithAccountID();
-  }, [accountID, setSearchBarWithAccountID, walletConnection]);
+  const setSearchBarWithAccountID = () => {
+    setWalletAddress(accountID);
+    setFinalSearchWalletId(accountID);
+  }
 
   useEffect(() => {
     if (
@@ -244,8 +283,29 @@ const WalletActivity = () => {
     }
   };
   useEffect(() => {
-    fetchWalletActivity();
-  }, [date]);
+    if (finalSearchWalletId)
+      fetchWalletActivity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date, selectedType, selectedStatus, page, finalSearchWalletId]);
+
+  useEffect(() => {
+    if (accountID)
+      fetchWalletActivity();
+    setWalletAddress(accountID);
+    setFinalSearchWalletId(accountID);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountID]);
+
+  useEffect(() => {
+    if (!(walletAddressErr && walletAddressErr.code !== 2) && (walletAddress && accountID && (walletAddress !== accountID))) {
+      setWalletAddressErr({
+        code: 2,
+        message: "Use Connected Wallet",
+      });
+    } else if (!walletAddress) {
+      setWalletAddressErr(null);
+    }
+  }, [walletAddress])
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
@@ -280,7 +340,7 @@ const WalletActivity = () => {
             </form>
           </div>
           {!(walletConnection && walletConnection.isSignedIn()) &&
-            !showConnectWallet && (
+            showConnectWallet && (
               <>
                 <div className="font-bold text-sm">OR</div>
                 <button
@@ -318,9 +378,9 @@ const WalletActivity = () => {
         ) : !isLoading ? (
           fetchedOnce ? (
             !isError ? (
-              results && results.length ? (
-                <>
-                  <div className="mb-5">
+              <>
+                <div className="flex items-center mb-5 space-x-4">
+                  <div className="">
                     <p>Filter By Date:</p>
                     <DateRangePicker
                       startDate={date.startDate} // momentPropTypes.momentObj or null,
@@ -337,21 +397,150 @@ const WalletActivity = () => {
                       }
                     />
                   </div>
-                  <div className="text-xs">
-                    <ReactTable
-                      data={results}
-                      columns={columns}
-                      useFilters
-                      onClickPrevious={onClickPrevious}
-                      onClickNext={onClickNext}
-                      page={page}
-                      perPage={20}
-                    />
+                  <div className="w-72 top-16">
+                    <Listbox
+                      value={selectedStatus}
+                      onChange={setSelectedStatus}
+                    >
+                      <div className="relative mt-6">
+                        <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
+                          <span className="block truncate text-neutral-600">
+                            {selectedStatus.name}
+                          </span>
+                          <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                            <SelectorIcon
+                              className="w-5 h-5 text-gray-400"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </Listbox.Button>
+                        <Transition
+                          as={Fragment}
+                          leave="transition ease-in duration-100"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0"
+                        >
+                          <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                            {statuses.map((status) => (
+                              <Listbox.Option
+                                key={status.id}
+                                className={({ active }) =>
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
+                                    ? "text-amber-900 bg-amber-100"
+                                    : "text-gray-900"
+                                  }`
+                                }
+                                value={status}
+                              >
+                                {({ selected }) => {
+                                  return (
+                                    <>
+                                      <span
+                                        className={`block truncate ${selected
+                                          ? "font-medium"
+                                          : "font-normal"
+                                          }`}
+                                      >
+                                        {status.name}
+                                      </span>
+                                      {selected ? (
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                          <CheckIcon
+                                            className="w-5 h-5"
+                                            aria-hidden="true"
+                                          />
+                                        </span>
+                                      ) : null}
+                                    </>
+                                  )
+                                }
+                                }
+                              </Listbox.Option>
+                            ))}
+                          </Listbox.Options>
+                        </Transition>
+                      </div>
+                    </Listbox>
                   </div>
-                </>
-              ) : (
-                "No Data"
-              )
+                  <div className="w-72 top-16">
+                    <Listbox value={selectedType} onChange={setSelectedType}>
+                      <div className="relative mt-6">
+                        <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
+                          <span className="block truncate text-neutral-600">
+                            {selectedType}
+                          </span>
+                          <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                            <SelectorIcon
+                              className="w-5 h-5 text-gray-400"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </Listbox.Button>
+                        <Transition
+                          as={Fragment}
+                          leave="transition ease-in duration-100"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0"
+                        >
+                          <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                            {types.map((type) => (
+                              <Listbox.Option
+                                key={type}
+                                className={({ active }) =>
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
+                                    ? "text-amber-900 bg-amber-100"
+                                    : "text-gray-900"
+                                  }`
+                                }
+                                value={type}
+                              >
+                                {({ selected }) => (
+                                  <>
+                                    <span
+                                      className={`block truncate ${selected
+                                        ? "font-medium"
+                                        : "font-normal"
+                                        }`}
+                                    >
+                                      {type}
+                                    </span>
+                                    {selected ? (
+                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                        <CheckIcon
+                                          className="w-5 h-5"
+                                          aria-hidden="true"
+                                        />
+                                      </span>
+                                    ) : null}
+                                  </>
+                                )}
+                              </Listbox.Option>
+                            ))}
+                          </Listbox.Options>
+                        </Transition>
+                      </div>
+                    </Listbox>
+                  </div>
+                </div>
+                {
+                  results && results.length ? (
+                    <div className="text-xs">
+                      <ReactTable
+                        data={results}
+                        columns={columns}
+                        useFilters
+                        onClickPrevious={onClickPrevious}
+                        onClickNext={onClickNext}
+                        page={page}
+                        perPage={20}
+                      />
+                    </div>
+
+                  ) : (
+                    "No Data"
+                  )
+                }
+              </>
             ) : (
               "Failed"
             )
@@ -359,7 +548,7 @@ const WalletActivity = () => {
             ""
           )
         ) : (
-          "Loading ..."
+          <div className="flex justify-center items-center h-96"><Loader /></div>
         )}
       </div>
     </div>
