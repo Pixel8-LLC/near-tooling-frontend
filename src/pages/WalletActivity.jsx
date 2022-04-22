@@ -32,7 +32,7 @@ import {
 } from "../redux/actions/walletActivity";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import Loader from '../common/Loader';
+import Loader from "../common/Loader";
 
 const WalletActivity = () => {
   const dispatch = useDispatch();
@@ -43,7 +43,10 @@ const WalletActivity = () => {
     (state) => state.walletActivity.walletAddressErr,
   );
   const fetchedOnce = useSelector((state) => state.walletActivity.fetchedOnce);
-  const [selectedStatus, setSelectedStatus] = useState({ name: "All Transactions", id: 'All Status' });
+  const [selectedStatus, setSelectedStatus] = useState({
+    name: "All Transactions",
+    id: "All Status",
+  });
   const [selectedType, setSelectedType] = useState("All Types");
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(0);
@@ -111,7 +114,6 @@ const WalletActivity = () => {
             code: 2,
             message: "Use Connected Wallet",
           });
-
         }
       }
       mutate({
@@ -120,18 +122,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-          date_column: "block_timestamp",
-          from_date: date.startDate.unix(),
-          to_date: date.endDate.add(1, "days").unix(),
-        }),
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-          type: selectedType,
-        }),
+            type: selectedType,
+          }),
         ...(selectedStatus &&
           selectedStatus.id !== "All Status" && {
-          status: selectedStatus.id,
-        }),
+            status: selectedStatus.id,
+          }),
       });
       setFetchedOnce(true);
     } else if (accountID) {
@@ -141,18 +143,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-          date_column: "block_timestamp",
-          from_date: date.startDate.unix(),
-          to_date: date.endDate.add(1, "days").unix(),
-        }),
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-          type: selectedType,
-        }),
+            type: selectedType,
+          }),
         ...(selectedStatus &&
           selectedStatus.id !== "All Status" && {
-          status: selectedStatus.id,
-        }),
+            status: selectedStatus.id,
+          }),
       });
       setFetchedOnce(true);
     }
@@ -167,11 +169,11 @@ const WalletActivity = () => {
     setWalletAddressErr,
     walletAddress,
     walletConnection,
-    finalSearchWalletId
+    finalSearchWalletId,
   ]);
   const handleWalletAddress = async (e) => {
     e.preventDefault();
-    setFinalSearchWalletId(walletAddress)
+    setFinalSearchWalletId(walletAddress);
   };
 
   const statusIcon = useMemo(
@@ -192,7 +194,11 @@ const WalletActivity = () => {
     }),
     [],
   );
-  const statuses = [{ name: "All Transactions", id: 'All Status' }, { name: 'Successful Transactions', id: "SUCCESS_VALUE" }, { name: 'Failed Transactions', id: "FAILURE" }];
+  const statuses = [
+    { name: "All Transactions", id: "All Status" },
+    { name: "Successful Transactions", id: "SUCCESS_VALUE" },
+    { name: "Failed Transactions", id: "FAILURE" },
+  ];
   const types = ["All Types", "MINT", "TRANSFER", "FUNCTION_CALL", "ADD_KEY"];
   const columns = useMemo(
     () => [
@@ -250,7 +256,7 @@ const WalletActivity = () => {
   const setSearchBarWithAccountID = () => {
     setWalletAddress(accountID);
     setFinalSearchWalletId(accountID);
-  }
+  };
 
   useEffect(() => {
     if (
@@ -283,21 +289,24 @@ const WalletActivity = () => {
     }
   };
   useEffect(() => {
-    if (finalSearchWalletId)
-      fetchWalletActivity();
+    if (finalSearchWalletId) fetchWalletActivity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, selectedType, selectedStatus, page, finalSearchWalletId]);
 
   useEffect(() => {
-    if (accountID)
-      fetchWalletActivity();
+    if (accountID) fetchWalletActivity();
     setWalletAddress(accountID);
     setFinalSearchWalletId(accountID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountID]);
 
   useEffect(() => {
-    if (!(walletAddressErr && walletAddressErr.code !== 2) && (walletAddress && accountID && (walletAddress !== accountID))) {
+    if (
+      !(walletAddressErr && walletAddressErr.code !== 2) &&
+      walletAddress &&
+      accountID &&
+      walletAddress !== accountID
+    ) {
       setWalletAddressErr({
         code: 2,
         message: "Use Connected Wallet",
@@ -305,9 +314,9 @@ const WalletActivity = () => {
     } else if (!walletAddress) {
       setWalletAddressErr(null);
     }
-  }, [walletAddress])
+  }, [walletAddress]);
   return (
-    <div>
+    <>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
 
       <div className="">
@@ -419,9 +428,10 @@ const WalletActivity = () => {
                               <Listbox.Option
                                 key={status.id}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-amber-900 bg-amber-100"
-                                    : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "text-amber-900 bg-amber-100"
+                                      : "text-gray-900"
                                   }`
                                 }
                                 value={status}
@@ -430,10 +440,11 @@ const WalletActivity = () => {
                                   return (
                                     <>
                                       <span
-                                        className={`block truncate ${selected
-                                          ? "font-medium"
-                                          : "font-normal"
-                                          }`}
+                                        className={`block truncate ${
+                                          selected
+                                            ? "font-medium"
+                                            : "font-normal"
+                                        }`}
                                       >
                                         {status.name}
                                       </span>
@@ -446,9 +457,8 @@ const WalletActivity = () => {
                                         </span>
                                       ) : null}
                                     </>
-                                  )
-                                }
-                                }
+                                  );
+                                }}
                               </Listbox.Option>
                             ))}
                           </Listbox.Options>
@@ -481,9 +491,10 @@ const WalletActivity = () => {
                               <Listbox.Option
                                 key={type}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-amber-900 bg-amber-100"
-                                    : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "text-amber-900 bg-amber-100"
+                                      : "text-gray-900"
                                   }`
                                 }
                                 value={type}
@@ -491,10 +502,9 @@ const WalletActivity = () => {
                                 {({ selected }) => (
                                   <>
                                     <span
-                                      className={`block truncate ${selected
-                                        ? "font-medium"
-                                        : "font-normal"
-                                        }`}
+                                      className={`block truncate ${
+                                        selected ? "font-medium" : "font-normal"
+                                      }`}
                                     >
                                       {type}
                                     </span>
@@ -516,24 +526,21 @@ const WalletActivity = () => {
                     </Listbox>
                   </div>
                 </div>
-                {
-                  results && results.length ? (
-                    <div className="text-xs">
-                      <ReactTable
-                        data={results}
-                        columns={columns}
-                        useFilters
-                        onClickPrevious={onClickPrevious}
-                        onClickNext={onClickNext}
-                        page={page}
-                        perPage={20}
-                      />
-                    </div>
-
-                  ) : (
-                    "No Data"
-                  )
-                }
+                {results && results.length ? (
+                  <div className="text-xs w-full overflow-x-auto">
+                    <ReactTable
+                      data={results}
+                      columns={columns}
+                      useFilters
+                      onClickPrevious={onClickPrevious}
+                      onClickNext={onClickNext}
+                      page={page}
+                      perPage={20}
+                    />
+                  </div>
+                ) : (
+                  "No Data"
+                )}
               </>
             ) : (
               "Failed"
@@ -542,10 +549,12 @@ const WalletActivity = () => {
             ""
           )
         ) : (
-          <div className="flex justify-center items-center h-96"><Loader /></div>
+          <div className="flex justify-center items-center h-96">
+            <Loader />
+          </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

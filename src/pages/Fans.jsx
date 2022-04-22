@@ -14,7 +14,7 @@ import { getNftEvents } from "../api/Nft";
 import format from "date-fns/format";
 import { toast } from "react-toastify";
 import { net } from "../constants";
-import Loader from '../common/Loader';
+import Loader from "../common/Loader";
 import {
   setFetchedOnceAction,
   setWalletAddressAction,
@@ -61,9 +61,8 @@ const Fans = () => {
     isLoading,
     isError,
     mutate,
-  } = useMutation(
-    ["nftEvents", page, walletAddress],
-    (getUserNftsByToken) => getNftEvents(getUserNftsByToken),
+  } = useMutation(["nftEvents", page, walletAddress], (getUserNftsByToken) =>
+    getNftEvents(getUserNftsByToken),
   );
 
   const fetchWalletActivity = useCallback(async () => {
@@ -96,12 +95,11 @@ const Fans = () => {
             code: 2,
             message: "Use Connected Wallet",
           });
-
         }
       }
       mutate({
-        'filter[emitted_by_contract_account_id]': walletAddress,
-        related: 'outcome,receipt',
+        "filter[emitted_by_contract_account_id]": walletAddress,
+        related: "outcome,receipt",
         page,
         // ...(date &&
         //   date.startDate &&
@@ -158,8 +156,10 @@ const Fans = () => {
       {
         Header: "From",
         accessor: (row) => {
-          return row.token_old_owner_account_id ? row.token_old_owner_account_id : 'N/A'
-        }
+          return row.token_old_owner_account_id
+            ? row.token_old_owner_account_id
+            : "N/A";
+        },
       },
       {
         Header: "To",
@@ -174,7 +174,9 @@ const Fans = () => {
         accessor: "status",
         Cell: ({ row, value }) => (
           <div className="flex items-center space-x-2 w-full">
-            <div className="">{statusIcon[row.original.outcome.status] || ""}</div>
+            <div className="">
+              {statusIcon[row.original.outcome.status] || ""}
+            </div>
             <div className="w-28 flex-1">
               {statusText[row.original.outcome.status] || "N/A"}
             </div>
@@ -187,7 +189,9 @@ const Fans = () => {
             </a>
             <button
               onClick={() => {
-                navigator.clipboard.writeText(`https://explorer.${net}.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`);
+                navigator.clipboard.writeText(
+                  `https://explorer.${net}.near.org/transactions/${row.original.receipt.originated_from_transaction_hash}`,
+                );
                 toast.success("Copied transaction hash");
               }}
             >
@@ -203,7 +207,7 @@ const Fans = () => {
   const setSearchBarWithAccountID = () => {
     setWalletAddress(accountID);
     setWalletAddressErr(null);
-  }
+  };
 
   useEffect(() => {
     if (
@@ -237,7 +241,7 @@ const Fans = () => {
   };
   useEffect(() => {
     fetchWalletActivity();
-  }, [date, page,]);
+  }, [date, page]);
 
   console.log(isLoading, "isLoading");
 
@@ -266,12 +270,22 @@ const Fans = () => {
           </button>
         </div>
       </div>
-      {results.length ?
-        <div className="text-xs mt-10">
-          <ReactTable data={results} columns={columns} page={page} perPage={20} onClickPrevious={onClickPrevious} onClickNext={onClickNext} />
+      {results.length ? (
+        <div className="text-xs mt-10 w-full overflow-x-auto">
+          <ReactTable
+            data={results}
+            columns={columns}
+            page={page}
+            perPage={20}
+            onClickPrevious={onClickPrevious}
+            onClickNext={onClickNext}
+          />
         </div>
-        : isLoading ? <div className="flex justify-center items-center h-96"><Loader /></div> :
-          null}
+      ) : isLoading ? (
+        <div className="flex justify-center items-center h-96">
+          <Loader />
+        </div>
+      ) : null}
     </div>
   );
 };

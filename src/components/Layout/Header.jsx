@@ -13,9 +13,9 @@ const Header = () => {
   );
   const location = useLocation();
 
-  const connectWalletExclusionPath = ['/', '/flex'];
+  const connectWalletExclusionPath = ["/", "/flex"];
   return (
-    <div className="flex items-center py-10 w-full">
+    <div className="flex items-center py-10 pr-16 w-full">
       <div className="flex-1 flex items-center space-x-5">
         <div className="">
           <img src={logo} alt="Logo" />
@@ -39,14 +39,15 @@ const Header = () => {
           </div>
         ) : (
           <>
-            {showConnectWallet && !connectWalletExclusionPath.includes(location.pathname) && (
-              <button
-                onClick={() => login()}
-                className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
-              >
-                Connect Wallet
-              </button>
-            )}
+            {showConnectWallet &&
+              !connectWalletExclusionPath.includes(location.pathname) && (
+                <button
+                  onClick={() => login()}
+                  className="text-base font-medium bg-white text-black rounded-lg px-4 py-3"
+                >
+                  Connect Wallet
+                </button>
+              )}
           </>
         )}
       </div>
