@@ -54,7 +54,7 @@ const Flex = () => {
   useEffect(() => {
     if (accountID) {
       mutate({ account_id: walletAddress ? walletAddress : accountID });
-      setWalletAddress(accountID);
+      setWalletAddress(walletAddress ? walletAddress : accountID);
       setFetchedOnce(true);
     }
   }, [accountID]);

@@ -294,9 +294,10 @@ const WalletActivity = () => {
   }, [date, selectedType, selectedStatus, page, finalSearchWalletId]);
 
   useEffect(() => {
+    console.log(walletAddress, "walletAddress")
     if (accountID) fetchWalletActivity();
-    setWalletAddress(accountID);
-    setFinalSearchWalletId(accountID);
+    setWalletAddress(walletAddress ? walletAddress : accountID);
+    setFinalSearchWalletId(walletAddress ? walletAddress : accountID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountID]);
 
