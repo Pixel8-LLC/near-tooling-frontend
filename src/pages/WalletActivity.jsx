@@ -436,7 +436,7 @@ const WalletActivity = () => {
                                 key={status.id}
                                 className={({ active }) =>
                                   `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-amber-900 bg-amber-100"
+                                    ? "text-gray-900 bg-gray-300"
                                     : "text-gray-900"
                                   }`
                                 }
@@ -454,7 +454,7 @@ const WalletActivity = () => {
                                         {status.name}
                                       </span>
                                       {selected ? (
-                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-black-600">
                                           <CheckIcon
                                             className="w-5 h-5"
                                             aria-hidden="true"
@@ -497,7 +497,7 @@ const WalletActivity = () => {
                                 key={type}
                                 className={({ active }) =>
                                   `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-amber-900 bg-amber-100"
+                                    ? "text-gray-900 bg-gray-300"
                                     : "text-gray-900"
                                   }`
                                 }
@@ -512,7 +512,7 @@ const WalletActivity = () => {
                                       {type}
                                     </span>
                                     {selected ? (
-                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-black-600">
                                         <CheckIcon
                                           className="w-5 h-5"
                                           aria-hidden="true"

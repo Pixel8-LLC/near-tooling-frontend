@@ -30,3 +30,9 @@ body {
 .DateRangePickerInput_1{
   width: 100%;
 }
+.DateInput_input_1::placeholder{
+    --tw-text-opacity: 1;
+    color: rgb(82 82 82 / var(--tw-text-opacity));
+    font-size: 16px;
+    font-weight: 400;
+}
