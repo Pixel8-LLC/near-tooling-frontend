@@ -122,18 +122,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-            date_column: "block_timestamp",
-            from_date: date.startDate.unix(),
-            to_date: date.endDate.add(1, "days").unix(),
-          }),
+          date_column: "block_timestamp",
+          from_date: date.startDate.unix(),
+          to_date: date.endDate.add(1, "days").unix(),
+        }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-            type: selectedType,
-          }),
+          type: selectedType,
+        }),
         ...(selectedStatus &&
           selectedStatus.id !== "All Status" && {
-            status: selectedStatus.id,
-          }),
+          status: selectedStatus.id,
+        }),
       });
       setFetchedOnce(true);
     } else if (accountID) {
@@ -143,18 +143,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-            date_column: "block_timestamp",
-            from_date: date.startDate.unix(),
-            to_date: date.endDate.add(1, "days").unix(),
-          }),
+          date_column: "block_timestamp",
+          from_date: date.startDate.unix(),
+          to_date: date.endDate.add(1, "days").unix(),
+        }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-            type: selectedType,
-          }),
+          type: selectedType,
+        }),
         ...(selectedStatus &&
           selectedStatus.id !== "All Status" && {
-            status: selectedStatus.id,
-          }),
+          status: selectedStatus.id,
+        }),
       });
       setFetchedOnce(true);
     }
@@ -388,8 +388,8 @@ const WalletActivity = () => {
           fetchedOnce ? (
             !isError ? (
               <>
-                <div className="flex items-center mb-5 space-x-4">
-                  <div className="">
+                <div className="flex items-center mb-5 space-x-4 w-full">
+                  <div className="w-full">
                     <p>Filter By Date:</p>
                     <DateRangePicker
                       startDate={date.startDate} // momentPropTypes.momentObj or null,
@@ -406,13 +406,14 @@ const WalletActivity = () => {
                       }
                     />
                   </div>
-                  <div className="w-72 top-16">
+                  <div className="w-full top-16 rounded">
                     <Listbox
                       value={selectedStatus}
                       onChange={setSelectedStatus}
+
                     >
-                      <div className="relative mt-6">
-                        <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
+                      <div className="relative mt-6 ">
+                        <Listbox.Button className="relative rounded w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
                           <span className="block truncate text-neutral-600">
                             {selectedStatus.name}
                           </span>
@@ -434,10 +435,9 @@ const WalletActivity = () => {
                               <Listbox.Option
                                 key={status.id}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
-                                    active
-                                      ? "text-amber-900 bg-amber-100"
-                                      : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
+                                    ? "text-amber-900 bg-amber-100"
+                                    : "text-gray-900"
                                   }`
                                 }
                                 value={status}
@@ -446,11 +446,10 @@ const WalletActivity = () => {
                                   return (
                                     <>
                                       <span
-                                        className={`block truncate ${
-                                          selected
-                                            ? "font-medium"
-                                            : "font-normal"
-                                        }`}
+                                        className={`block truncate ${selected
+                                          ? "font-medium"
+                                          : "font-normal"
+                                          }`}
                                       >
                                         {status.name}
                                       </span>
@@ -472,10 +471,10 @@ const WalletActivity = () => {
                       </div>
                     </Listbox>
                   </div>
-                  <div className="w-72 top-16">
+                  <div className="w-full top-16">
                     <Listbox value={selectedType} onChange={setSelectedType}>
                       <div className="relative mt-6">
-                        <Listbox.Button className="relative w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
+                        <Listbox.Button className="relative rounded w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
                           <span className="block truncate text-neutral-600">
                             {selectedType}
                           </span>
@@ -497,10 +496,9 @@ const WalletActivity = () => {
                               <Listbox.Option
                                 key={type}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
-                                    active
-                                      ? "text-amber-900 bg-amber-100"
-                                      : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
+                                    ? "text-amber-900 bg-amber-100"
+                                    : "text-gray-900"
                                   }`
                                 }
                                 value={type}
@@ -508,9 +506,8 @@ const WalletActivity = () => {
                                 {({ selected }) => (
                                   <>
                                     <span
-                                      className={`block truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
+                                      className={`block truncate ${selected ? "font-medium" : "font-normal"
+                                        }`}
                                     >
                                       {type}
                                     </span>
