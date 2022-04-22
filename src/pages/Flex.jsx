@@ -1,5 +1,5 @@
 import { useEffect, useContext, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import Masonry from "react-masonry-css";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,10 +15,12 @@ import {
 import { setShowConnectWallet } from "../redux/actions/topBar";
 import Loader from '../common/Loader';
 import { toast } from "react-toastify";
+import hi from "date-fns/esm/locale/hi/index.js";
 
 const Flex = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const walletAddress = useSelector(
     (state) => state.walletActivity.walletAddress,
@@ -261,7 +263,7 @@ const Flex = () => {
             columnClassName="nft-masonry-grid_column"
           >
             {results.map((artwork) => (
-              <div key={artwork.token_id} className="">
+              <div key={artwork.token_id} className="cursor-pointer" onClick={() => navigate(`/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`)}>
                 <div className="text-black rounded-t-xl flex flex-col">
                   <img
                     src={artwork.media_url}
