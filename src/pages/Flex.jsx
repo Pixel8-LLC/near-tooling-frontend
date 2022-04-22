@@ -13,7 +13,7 @@ import {
   setWalletAddressErrAction,
 } from "../redux/actions/walletActivity";
 import { setShowConnectWallet } from "../redux/actions/topBar";
-import Loader from '../common/Loader';
+import Loader from "../common/Loader";
 import { toast } from "react-toastify";
 
 const Flex = () => {
@@ -42,12 +42,12 @@ const Flex = () => {
 
   useEffect(() => {
     if (location.search) {
-      let wallet = location.search.split('=')[1];
+      let wallet = location.search.split("=")[1];
       setWalletAddress(wallet);
       mutate({ account_id: wallet });
       setFetchedOnce(true);
     }
-  }, [location])
+  }, [location]);
 
   useEffect(() => {
     if (accountID) {
@@ -118,7 +118,7 @@ const Flex = () => {
   const setSearchBarWithAccountID = () => {
     setWalletAddress(accountID);
     setWalletAddressErr(null);
-  }
+  };
 
   useEffect(() => {
     if (
@@ -142,16 +142,23 @@ const Flex = () => {
 
   const onShare = (e) => {
     e.stopPropagation();
-    navigator.clipboard.writeText(`${window.location.origin}/flex?wallet=${walletAddress}`);
+    navigator.clipboard.writeText(
+      `${window.location.origin}/flex?wallet=${walletAddress}`,
+    );
     toast.dark("Link has been copied.");
-  }
+  };
 
   useEffect(() => {
     fetchNFT();
   }, []);
 
   useEffect(() => {
-    if (!(walletAddressErr && walletAddressErr.code !== 2) && (walletAddress && accountID && (walletAddress !== accountID))) {
+    if (
+      !(walletAddressErr && walletAddressErr.code !== 2) &&
+      walletAddress &&
+      accountID &&
+      walletAddress !== accountID
+    ) {
       setWalletAddressErr({
         code: 2,
         message: "Use Connected Wallet",
@@ -159,7 +166,7 @@ const Flex = () => {
     } else if (!walletAddress) {
       setWalletAddressErr(null);
     }
-  }, [walletAddress])
+  }, [walletAddress]);
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">Flex</div>
@@ -207,9 +214,7 @@ const Flex = () => {
         </div>
         <div className="text-xs mt-3">
           {walletAddressErr ? (
-            walletAddressErr.code === 1 ? (
-              walletAddressErr.message
-            ) : walletAddressErr.code === 2 ? (
+            walletAddressErr.code === 2 ? (
               <button onClick={setSearchBarWithAccountID}>
                 {walletAddressErr.message}
               </button>
@@ -240,7 +245,10 @@ const Flex = () => {
           </div> */}
         </div>
         <div className="ml-auto">
-          <button className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md" onClick={onShare}>
+          <button
+            className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md"
+            onClick={onShare}
+          >
             <ShareFromSquare />
             <div className="">Share</div>
           </button>
@@ -248,8 +256,18 @@ const Flex = () => {
       </div>
 
       <div className="mt-8">
-        {!fetchedOnce ? null : isLoading ? (
-          <div className="flex justify-center items-center h-96"><Loader /></div>
+        {walletAddressErr && walletAddressErr.code === 1 ? (
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
+            <div className="text-4xl">No Wallet Found</div>
+            <div className="text-lg">
+              Oops! Please enter a different wallet.
+            </div>
+          </div>
+        ) : !fetchedOnce ? null : isLoading ? (
+          <div className="flex justify-center items-center h-96">
+            <Loader />
+          </div>
         ) : isError ? (
           "Error"
         ) : !(results && results.length) ? (

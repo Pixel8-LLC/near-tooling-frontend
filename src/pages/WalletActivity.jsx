@@ -363,9 +363,7 @@ const WalletActivity = () => {
         </div>
         <div className="text-xs mt-3">
           {walletAddressErr ? (
-            walletAddressErr.code === 1 ? (
-              walletAddressErr.message
-            ) : walletAddressErr.code === 2 ? (
+            walletAddressErr.code === 2 ? (
               <button onClick={setSearchBarWithAccountID}>
                 {walletAddressErr.message}
               </button>
@@ -378,7 +376,15 @@ const WalletActivity = () => {
         </div>
       </div>
       <div className="mt-10">
-        {!isLoading ? (
+        {walletAddressErr && walletAddressErr.code === 1 ? (
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
+            <div className="text-4xl">No Wallet Found</div>
+            <div className="text-lg">
+              Oops! Please enter a different wallet.
+            </div>
+          </div>
+        ) : !isLoading ? (
           fetchedOnce ? (
             !isError ? (
               <>
