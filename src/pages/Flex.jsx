@@ -246,15 +246,19 @@ const Flex = () => {
             <div className="text-neutral-500">Based on floor price</div>
           </div> */}
         </div>
-        <div className="ml-auto">
-          <button
-            className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md"
-            onClick={onShare}
-          >
-            <ShareFromSquare />
-            <div className="">Share</div>
-          </button>
-        </div>
+        {results.length ?
+          <div className="ml-auto">
+            <button
+              className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md"
+              onClick={onShare}
+            >
+              <ShareFromSquare />
+              <div className="">Share</div>
+            </button>
+          </div>
+          :
+          null
+        }
       </div>
 
       <div className="mt-8">
