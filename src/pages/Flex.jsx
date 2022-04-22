@@ -147,7 +147,7 @@ const Flex = () => {
     navigator.clipboard.writeText(
       `${window.location.origin}/flex?wallet=${walletAddress}`,
     );
-    toast.dark("Link has been copied.");
+    toast.success("Copied link to clipboard");
   };
 
   useEffect(() => {
