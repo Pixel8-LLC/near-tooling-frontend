@@ -29,6 +29,13 @@ body {
 }
 .DateRangePickerInput_1{
   width: 100%;
+  height: 52px;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+}
+#end_date_id{
+  text-align: right;
 }
 .DateInput_input_1::placeholder{
     --tw-text-opacity: 1;
