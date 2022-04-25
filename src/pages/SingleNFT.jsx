@@ -17,11 +17,10 @@ import { usePopper } from "react-popper";
 import classes from "./SingleNFT.module.css";
 import { getUserNftByTokenId } from "../api/UserNft";
 import { getNftEvents } from "../api/Nft";
-
+import Loader from "../common/Loader";
 const SingleNFT = () => {
   const { id } = useParams();
   const location = useLocation();
-  console.log(location);
   const idRaw = id.split(":");
   const contract_id = idRaw[idRaw.length - 1];
   const token_id = id.replace(`:${contract_id}`, "");
@@ -43,8 +42,8 @@ const SingleNFT = () => {
   );
   const {
     data: { results = [] } = {},
-    isNFTLoading,
-    nftLoadingError,
+    isLoading: isNFTLoading,
+    isError: nftLoadingError,
     mutate: nftActivitymutate,
   } = useMutation(["nftEvents", page, walletAddress], (getUserNftsByToken) =>
     getNftEvents(getUserNftsByToken),
@@ -52,25 +51,24 @@ const SingleNFT = () => {
   useEffect(() => {
     if (location.search) {
       let wallet = location.search.split("=")[1];
-      console.log(wallet);
       setWalletAddress(wallet);
       mutate({ account_id: wallet });
-      nftActivitymutate({
-        "filter[token_id]": token_id,
-        related: "outcome,receipt",
-      });
     }
   }, [location]);
 
   useEffect(() => {
     if (contract_id && token_id && walletAddress) {
       mutate({ contract_id, token_id, account_id: walletAddress });
-      nftActivitymutate({
-        "filter[token_id]": token_id,
-        related: "outcome,receipt",
-      });
     }
   }, [contract_id, token_id, mutate, nftActivitymutate, walletAddress]);
+
+  useEffect(() => {
+    nftActivitymutate({
+      "filter[token_id]": token_id,
+      page,
+      related: "outcome,receipt",
+    });
+  }, [page])
 
   let { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
@@ -183,12 +181,12 @@ const SingleNFT = () => {
     }
   };
   const onShare = () => {
-    window.open(
+    navigator.clipboard.writeText(
       `${window.location.origin}/flex/${token_id}:${contract_id}?wallet=${walletAddress}`,
-      "_blank",
     );
+    toast.success("Copied link to clipboard");
   };
-
+  console.log(isNFTLoading, isLoading)
   return (
     <div>
       <div className="flex items-center">
@@ -254,17 +252,24 @@ const SingleNFT = () => {
           </div>
         </div>
         <div className="flex-1">
-          <div className="text-xl font-bold">Contract History</div>
-          <div className="text-xs w-full overflow-x-auto">
-            <ReactTable
-              columns={columns}
-              data={results}
-              page={page}
-              perPage={20}
-              onClickPrevious={onClickPrevious}
-              onClickNext={onClickNext}
-            />
-          </div>
+          <div className="text-xl font-bold">NFT History</div>
+          {!isNFTLoading && results.length ?
+            <div className="text-xs w-full overflow-x-auto">
+              <ReactTable
+                columns={columns}
+                data={results}
+                page={page}
+                perPage={20}
+                onClickPrevious={onClickPrevious}
+                onClickNext={onClickNext}
+              />
+            </div>
+            :
+            !isNFTLoading ? <div className="flex flex-col items-center justify-center space-y-4 h-48">
+              <i className="text-xl fa-regular fa-magnifying-glass"></i>
+              <div className="text-xl">No Data Found</div>
+            </div> : <div className="flex justify-center items-center h-48"> <Loader /> </div>
+          }
         </div>
       </div>
     </div>
