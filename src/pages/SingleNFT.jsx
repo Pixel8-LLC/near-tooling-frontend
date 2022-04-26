@@ -266,12 +266,13 @@ const SingleNFT = () => {
                 onClickNext={onClickNext}
               />
             </div>
-          ) : !isNFTLoading ? (
-            <div className="flex flex-col items-center justify-center space-y-4 h-48">
-              <img alt="Not Found" src={NotFoundImg} className="w-8"></img>
-              <div className="text-xl">No Data Found</div>
-            </div>
-          ) : (
+          ) : !isNFTLoading ? // (
+          //   <div className="flex flex-col items-center justify-center space-y-4 h-48">
+          //     <img alt="Not Found" src={NotFoundImg} className="w-8"></img>
+          //     <div className="text-xl">No Data Found</div>
+          //   </div>
+          // )
+          null : (
             <div className="flex justify-center items-center h-48">
               {" "}
               <Loader />{" "}
