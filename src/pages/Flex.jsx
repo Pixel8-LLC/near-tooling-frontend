@@ -16,6 +16,7 @@ import { setShowConnectWallet } from "../redux/actions/topBar";
 import Loader from "../common/Loader";
 import { toast } from "react-toastify";
 import hi from "date-fns/esm/locale/hi/index.js";
+import NotFoundImg from "../assets/img/NotFound.svg";
 
 const Flex = () => {
   const dispatch = useDispatch();
@@ -246,7 +247,7 @@ const Flex = () => {
             <div className="text-neutral-500">Based on floor price</div>
           </div> */}
         </div>
-        {results.length ?
+        {results.length ? (
           <div className="ml-auto">
             <button
               className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md"
@@ -256,15 +257,13 @@ const Flex = () => {
               <div className="">Share</div>
             </button>
           </div>
-          :
-          null
-        }
+        ) : null}
       </div>
 
       <div className="mt-8">
         {walletAddressErr && walletAddressErr.code === 1 ? (
           <div className="flex flex-col items-center justify-center space-y-4">
-            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
+            <img alt="Not Found" src={NotFoundImg} className="w-16"></img>
             <div className="text-4xl">No Wallet Found</div>
             <div className="text-lg">
               Oops! Please enter a different wallet.
@@ -285,7 +284,15 @@ const Flex = () => {
             columnClassName="nft-masonry-grid_column"
           >
             {results.map((artwork) => (
-              <div key={artwork.token_id} className="cursor-pointer" onClick={() => navigate(`/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`)}>
+              <div
+                key={artwork.token_id}
+                className="cursor-pointer"
+                onClick={() =>
+                  navigate(
+                    `/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`,
+                  )
+                }
+              >
                 <div className="text-black rounded-t-xl flex flex-col">
                   <img
                     src={artwork.media_url}

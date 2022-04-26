@@ -18,6 +18,8 @@ import classes from "./SingleNFT.module.css";
 import { getUserNftByTokenId } from "../api/UserNft";
 import { getNftEvents } from "../api/Nft";
 import Loader from "../common/Loader";
+import NotFoundImg from "../assets/img/NotFound.svg";
+
 const SingleNFT = () => {
   const { id } = useParams();
   const location = useLocation();
@@ -68,7 +70,7 @@ const SingleNFT = () => {
       page,
       related: "outcome,receipt",
     });
-  }, [page])
+  }, [page]);
 
   let { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
@@ -186,7 +188,7 @@ const SingleNFT = () => {
     );
     toast.success("Copied link to clipboard");
   };
-  console.log(isNFTLoading, isLoading)
+  console.log(isNFTLoading, isLoading);
   return (
     <div>
       <div className="flex items-center">
@@ -253,7 +255,7 @@ const SingleNFT = () => {
         </div>
         <div className="flex-1">
           <div className="text-xl font-bold">NFT History</div>
-          {!isNFTLoading && results.length ?
+          {!isNFTLoading && results.length ? (
             <div className="text-xs w-full overflow-x-auto">
               <ReactTable
                 columns={columns}
@@ -264,12 +266,17 @@ const SingleNFT = () => {
                 onClickNext={onClickNext}
               />
             </div>
-            :
-            !isNFTLoading ? <div className="flex flex-col items-center justify-center space-y-4 h-48">
-              <i className="text-xl fa-regular fa-magnifying-glass"></i>
+          ) : !isNFTLoading ? (
+            <div className="flex flex-col items-center justify-center space-y-4 h-48">
+              <img alt="Not Found" src={NotFoundImg} className="w-8"></img>
               <div className="text-xl">No Data Found</div>
-            </div> : <div className="flex justify-center items-center h-48"> <Loader /> </div>
-          }
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-48">
+              {" "}
+              <Loader />{" "}
+            </div>
+          )}
         </div>
       </div>
     </div>

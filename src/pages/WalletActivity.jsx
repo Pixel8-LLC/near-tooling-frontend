@@ -33,6 +33,7 @@ import {
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import Loader from "../common/Loader";
+import NotFoundImg from "../assets/img/NotFound.svg";
 
 const WalletActivity = () => {
   const statusValue = {
@@ -380,7 +381,7 @@ const WalletActivity = () => {
       <div className="mt-10">
         {walletAddressErr && walletAddressErr.code === 1 ? (
           <div className="flex flex-col items-center justify-center space-y-4">
-            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
+            <img alt="Not Found" src={NotFoundImg} className="w-16"></img>
             <div className="text-4xl">No Wallet Found</div>
             <div className="text-lg">
               Oops! Please enter a different wallet.
