@@ -380,7 +380,7 @@ const WalletActivity = () => {
       </div>
       <div className="mt-10">
         {walletAddressErr && walletAddressErr.code === 1 ? (
-          <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="flex flex-col items-center justify-center -ml-44 space-y-4">
             <img alt="Not Found" src={NotFoundImg} className="w-16"></img>
             <div className="text-4xl">No Wallet Found</div>
             <div className="text-lg">
