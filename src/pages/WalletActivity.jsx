@@ -32,7 +32,7 @@ import {
 } from "../redux/actions/walletActivity";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import Loader from "../common/Loader";
+import Loader from "../assets/img/loading/loadicon2.gif";
 
 const WalletActivity = () => {
   const statusValue = {
@@ -559,7 +559,7 @@ const WalletActivity = () => {
           )
         ) : (
           <div className="flex justify-center items-center h-96">
-            <Loader />
+            <img src={Loader} alt="Loading" />
           </div>
         )}
       </div>
