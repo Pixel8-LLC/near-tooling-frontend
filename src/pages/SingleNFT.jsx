@@ -211,11 +211,17 @@ const SingleNFT = () => {
             className="rounded-xl w-80"
           />
           <div className="text-sm mt-4">
-            <div className="">Royalty: {metadata?.royalty_perc}</div>
-            <div className="">Current Floor: {metadata.currentFloor}</div>
-            <div className="flex items-center space-x-4">
-              <div className="">Rarity:</div> {metadata.rarity}
-            </div>
+            {metadata?.royalty_perc && (
+              <div className="">Royalty: {metadata?.royalty_perc}</div>
+            )}
+            {metadata.currentFloor && (
+              <div className="">Current Floor: {metadata.currentFloor}</div>
+            )}
+            {metadata.rarity && (
+              <div className="flex items-center space-x-4">
+                <div className="">Rarity:</div> {metadata.rarity}
+              </div>
+            )}
           </div>
           <div className="mt-6 space-y-2.5">
             <button className="rounded-md text-sm bg-zinc-800 py-3 text-center w-full">
