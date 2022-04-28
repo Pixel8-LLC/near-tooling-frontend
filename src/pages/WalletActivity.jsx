@@ -558,7 +558,7 @@ const WalletActivity = () => {
             ""
           )
         ) : (
-          <div className="flex justify-center items-center h-96">
+          <div className="flex justify-center items-center -ml-44 h-96">
             <img src={Loader} alt="Loading" />
           </div>
         )}
