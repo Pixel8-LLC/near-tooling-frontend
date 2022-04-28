@@ -17,8 +17,9 @@ import Loader from "../common/Loader";
 import { toast } from "react-toastify";
 import hi from "date-fns/esm/locale/hi/index.js";
 import NotFoundImg from "../assets/img/NotFound.svg";
+import SearchIcon from "../common/SearchIcon";
 
-const Flex = () => {
+const NFTShowcase = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -54,8 +55,11 @@ const Flex = () => {
 
   useEffect(() => {
     if (accountID) {
-      mutate({ account_id: walletAddress ? walletAddress : accountID });
-      setWalletAddress(walletAddress ? walletAddress : accountID);
+      let wallet = location.search
+        ? location.search.split("=")[1]
+        : walletAddress;
+      mutate({ account_id: wallet ? wallet : accountID });
+      setWalletAddress(wallet ? wallet : accountID);
       setFetchedOnce(true);
     }
   }, [accountID]);
@@ -121,6 +125,7 @@ const Flex = () => {
   const setSearchBarWithAccountID = () => {
     setWalletAddress(accountID);
     setWalletAddressErr(null);
+    mutate({ account_id: accountID });
   };
 
   useEffect(() => {
@@ -146,7 +151,7 @@ const Flex = () => {
   const onShare = (e) => {
     e.stopPropagation();
     navigator.clipboard.writeText(
-      `${window.location.origin}/flex?wallet=${walletAddress}`,
+      `${window.location.origin}/nft-showcase?wallet=${walletAddress}`,
     );
     toast.success("Copied link to clipboard");
   };
@@ -172,7 +177,7 @@ const Flex = () => {
   }, [walletAddress]);
   return (
     <div>
-      <div className="text-6xl font-medium w-full pb-3">Flex</div>
+      <div className="text-6xl font-medium w-full pb-3">NFT Showcase</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div className="text-lg rounded-lg w-96 border flex items-center ">
@@ -276,7 +281,10 @@ const Flex = () => {
         ) : isError ? (
           "Error"
         ) : !(results && results.length) ? (
-          "No Data"
+          <div className="flex flex-col items-center justify-center space-y-4 h-48">
+            <SearchIcon />
+            <div className="text-xl">No Data Found</div>
+          </div>
         ) : (
           <Masonry
             breakpointCols={breakpointColumnsObj}
@@ -289,7 +297,7 @@ const Flex = () => {
                 className="cursor-pointer"
                 onClick={() =>
                   navigate(
-                    `/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`,
+                    `/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`,
                   )
                 }
               >
@@ -313,7 +321,7 @@ const Flex = () => {
                       </div>
                     </div>
                     <Link
-                      to={`/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
+                      to={`/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
                       className="flex items-center justify-center py-1 text-neutral-400"
                     >
                       More Info
@@ -330,4 +338,4 @@ const Flex = () => {
   );
 };
 
-export default Flex;
+export default NFTShowcase;
