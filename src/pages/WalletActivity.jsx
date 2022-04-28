@@ -35,6 +35,17 @@ import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import Loader from "../common/Loader";
 
 const WalletActivity = () => {
+  const statusValue = {
+    "Successful Transactions": "SUCCESS_VALUE",
+    "Failed Transactions": "FAILURE",
+  };
+  const statuses = [
+    "All Transactions",
+    "Successful Transactions",
+    "Failed Transactions",
+  ];
+  const types = ["All Types", "MINT", "TRANSFER", "FUNCTION_CALL", "ADD_KEY"];
+
   const dispatch = useDispatch();
   const walletAddress = useSelector(
     (state) => state.walletActivity.walletAddress,
@@ -43,11 +54,8 @@ const WalletActivity = () => {
     (state) => state.walletActivity.walletAddressErr,
   );
   const fetchedOnce = useSelector((state) => state.walletActivity.fetchedOnce);
-  const [selectedStatus, setSelectedStatus] = useState({
-    name: "All Transactions",
-    id: "All Status",
-  });
-  const [selectedType, setSelectedType] = useState("All Types");
+  const [selectedStatus, setSelectedStatus] = useState(statuses[0]);
+  const [selectedType, setSelectedType] = useState(types[0]);
   const { accountID, walletConnection, login } = useContext(ConnectContext);
   const [page, setPage] = useState(0);
   const [date, setDate] = useState({
@@ -122,18 +130,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-          date_column: "block_timestamp",
-          from_date: date.startDate.unix(),
-          to_date: date.endDate.add(1, "days").unix(),
-        }),
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-          type: selectedType,
-        }),
+            type: selectedType,
+          }),
         ...(selectedStatus &&
-          selectedStatus.id !== "All Status" && {
-          status: selectedStatus.id,
-        }),
+          statusValue[selectedStatus] && {
+            status: statusValue[selectedStatus],
+          }),
       });
       setFetchedOnce(true);
     } else if (accountID) {
@@ -143,18 +151,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-          date_column: "block_timestamp",
-          from_date: date.startDate.unix(),
-          to_date: date.endDate.add(1, "days").unix(),
-        }),
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-          type: selectedType,
-        }),
+            type: selectedType,
+          }),
         ...(selectedStatus &&
-          selectedStatus.id !== "All Status" && {
-          status: selectedStatus.id,
-        }),
+          statusValue[selectedStatus] && {
+            status: statusValue[selectedStatus],
+          }),
       });
       setFetchedOnce(true);
     }
@@ -194,12 +202,6 @@ const WalletActivity = () => {
     }),
     [],
   );
-  const statuses = [
-    { name: "All Transactions", id: "All Status" },
-    { name: "Successful Transactions", id: "SUCCESS_VALUE" },
-    { name: "Failed Transactions", id: "FAILURE" },
-  ];
-  const types = ["All Types", "MINT", "TRANSFER", "FUNCTION_CALL", "ADD_KEY"];
   const columns = useMemo(
     () => [
       {
@@ -294,7 +296,6 @@ const WalletActivity = () => {
   }, [date, selectedType, selectedStatus, page, finalSearchWalletId]);
 
   useEffect(() => {
-    console.log(walletAddress, "walletAddress")
     if (accountID) fetchWalletActivity();
     setWalletAddress(walletAddress ? walletAddress : accountID);
     setFinalSearchWalletId(walletAddress ? walletAddress : accountID);
@@ -411,12 +412,11 @@ const WalletActivity = () => {
                     <Listbox
                       value={selectedStatus}
                       onChange={setSelectedStatus}
-
                     >
                       <div className="relative mt-6 ">
                         <Listbox.Button className="relative rounded w-full py-3.5 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
                           <span className="block truncate text-neutral-600">
-                            {selectedStatus.name}
+                            {selectedStatus}
                           </span>
                           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                             <SelectorIcon
@@ -434,25 +434,28 @@ const WalletActivity = () => {
                           <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                             {statuses.map((status) => (
                               <Listbox.Option
-                                key={status.id}
+                                key={status}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-gray-900 bg-gray-300"
-                                    : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "text-gray-900 bg-gray-300"
+                                      : "text-gray-900"
                                   }`
                                 }
                                 value={status}
                               >
                                 {({ selected }) => {
+                                  console.log(selected);
                                   return (
                                     <>
                                       <span
-                                        className={`block truncate ${selected
-                                          ? "font-medium"
-                                          : "font-normal"
-                                          }`}
+                                        className={`block truncate ${
+                                          selected
+                                            ? "font-medium"
+                                            : "font-normal"
+                                        }`}
                                       >
-                                        {status.name}
+                                        {status}
                                       </span>
                                       {selected ? (
                                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-black-600">
@@ -497,9 +500,10 @@ const WalletActivity = () => {
                               <Listbox.Option
                                 key={type}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-gray-900 bg-gray-300"
-                                    : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "text-gray-900 bg-gray-300"
+                                      : "text-gray-900"
                                   }`
                                 }
                                 value={type}
@@ -507,8 +511,9 @@ const WalletActivity = () => {
                                 {({ selected }) => (
                                   <>
                                     <span
-                                      className={`block truncate ${selected ? "font-medium" : "font-normal"
-                                        }`}
+                                      className={`block truncate ${
+                                        selected ? "font-medium" : "font-normal"
+                                      }`}
                                     >
                                       {type}
                                     </span>

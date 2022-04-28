@@ -1,10 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React from "react";
 import { useTable, useFilters } from "react-table/";
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 
-
-const ReactTable = ({ columns, data, onClickPrevious, onClickNext, page, perPage }) => {
+const ReactTable = ({
+  columns,
+  data,
+  onClickPrevious,
+  onClickNext,
+  page,
+  perPage,
+}) => {
   const tableInstance = useTable({ columns, data }, useFilters);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -78,22 +83,27 @@ const ReactTable = ({ columns, data, onClickPrevious, onClickNext, page, perPage
       >
         <div className="hidden sm:block">
           <p className="text-sm text-white">
-            Showing <span className="font-medium">{(page * perPage) + 1}</span> to <span className="font-medium">{(page + 1) * perPage}</span>
+            Showing <span className="font-medium">{page * perPage + 1}</span> to{" "}
+            <span className="font-medium">{page * perPage + data.length}</span>
           </p>
         </div>
         <div className="flex-1 flex justify-between sm:justify-end">
-          <a
-            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
-            onClick={onClickPrevious}
-          >
-            Previous
-          </a>
-          <a
-            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
-            onClick={onClickNext}
-          >
-            Next
-          </a>
+          {page !== 0 && (
+            <a
+              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
+              onClick={onClickPrevious}
+            >
+              Previous
+            </a>
+          )}
+          {data.length === 20 && (
+            <a
+              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
+              onClick={onClickNext}
+            >
+              Next
+            </a>
+          )}
         </div>
       </nav>
     </>
