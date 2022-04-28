@@ -17,7 +17,7 @@ import Loader from "../common/Loader";
 import { toast } from "react-toastify";
 import hi from "date-fns/esm/locale/hi/index.js";
 
-const Flex = () => {
+const NFTShowcase = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -145,7 +145,7 @@ const Flex = () => {
   const onShare = (e) => {
     e.stopPropagation();
     navigator.clipboard.writeText(
-      `${window.location.origin}/flex?wallet=${walletAddress}`,
+      `${window.location.origin}/nft-showcase?wallet=${walletAddress}`,
     );
     toast.success("Copied link to clipboard");
   };
@@ -171,7 +171,7 @@ const Flex = () => {
   }, [walletAddress]);
   return (
     <div>
-      <div className="text-6xl font-medium w-full pb-3">Flex</div>
+      <div className="text-6xl font-medium w-full pb-3">NFT Showcase</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div className="text-lg rounded-lg w-96 border flex items-center ">
@@ -285,7 +285,7 @@ const Flex = () => {
             columnClassName="nft-masonry-grid_column"
           >
             {results.map((artwork) => (
-              <div key={artwork.token_id} className="cursor-pointer" onClick={() => navigate(`/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`)}>
+              <div key={artwork.token_id} className="cursor-pointer" onClick={() => navigate(`/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`)}>
                 <div className="text-black rounded-t-xl flex flex-col">
                   <img
                     src={artwork.media_url}
@@ -306,7 +306,7 @@ const Flex = () => {
                       </div>
                     </div>
                     <Link
-                      to={`/flex/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
+                      to={`/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
                       className="flex items-center justify-center py-1 text-neutral-400"
                     >
                       More Info
@@ -323,4 +323,4 @@ const Flex = () => {
   );
 };
 
-export default Flex;
+export default NFTShowcase;
