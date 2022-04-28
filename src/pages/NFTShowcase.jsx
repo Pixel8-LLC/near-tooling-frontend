@@ -15,7 +15,7 @@ import {
 import { setShowConnectWallet } from "../redux/actions/topBar";
 import Loader from "../common/Loader";
 import { toast } from "react-toastify";
-import hi from "date-fns/esm/locale/hi/index.js";
+import SearchIcon from "../common/SearchIcon";
 
 const NFTShowcase = () => {
   const dispatch = useDispatch();
@@ -277,7 +277,10 @@ const NFTShowcase = () => {
         ) : isError ? (
           "Error"
         ) : !(results && results.length) ? (
-          "No Data"
+          <div className="flex flex-col items-center justify-center space-y-4 h-48">
+            <SearchIcon />
+            <div className="text-xl">No Data Found</div>
+          </div>
         ) : (
           <Masonry
             breakpointCols={breakpointColumnsObj}
