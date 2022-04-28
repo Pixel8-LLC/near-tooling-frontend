@@ -14,8 +14,8 @@ const Sidebar = () => {
     },
     {
       icon: <Trophy />,
-      title: "Flex",
-      url: "/flex",
+      title: "NFT Showcase",
+      url: "/nft-showcase",
     },
     {
       icon: <UserGroup />,
@@ -38,9 +38,8 @@ const Sidebar = () => {
           <Link
             key={title}
             to={url}
-            className={`flex items-center py-3 pl-5 pr-2 space-x-5 ${
-              url === location.pathname ? "font-medium bg-white text-black" : ""
-            } hover:font-medium hover:bg-white hover:text-black`}
+            className={`flex items-center py-3 pl-5 pr-2 space-x-5 ${url === location.pathname ? "font-medium bg-white text-black" : ""
+              } hover:font-medium hover:bg-white hover:text-black`}
           >
             {icon}
             <div className="">{title}</div>

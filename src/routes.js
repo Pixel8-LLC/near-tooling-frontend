@@ -2,7 +2,7 @@ import { lazy } from "react";
 
 const Layout = lazy(() => import("./components/Layout/Layout"));
 const WalletActivity = lazy(() => import("./pages/WalletActivity"));
-const Flex = lazy(() => import("./pages/Flex"));
+const NFTShowcase = lazy(() => import("./pages/NFTShowcase"));
 const SingleNFT = lazy(() => import("./pages/SingleNFT"));
 const Fans = lazy(() => import("./pages/Fans"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -16,10 +16,10 @@ const routes = () => [
     children: [
       { index: true, element: <WalletActivity /> },
       {
-        path: "/flex",
+        path: "/nft-showcase",
         children: [
-          { index: true, element: <Flex /> },
-          { path: "/flex/:id", element: <SingleNFT /> },
+          { index: true, element: <NFTShowcase /> },
+          { path: "/nft-showcase/:id", element: <SingleNFT /> },
         ],
       },
       {
