@@ -53,8 +53,9 @@ const NFTShowcase = () => {
 
   useEffect(() => {
     if (accountID) {
-      mutate({ account_id: walletAddress ? walletAddress : accountID });
-      setWalletAddress(walletAddress ? walletAddress : accountID);
+      let wallet = location.search ? location.search.split("=")[1] : walletAddress;
+      mutate({ account_id: wallet ? wallet : accountID });
+      setWalletAddress(wallet ? wallet : accountID);
       setFetchedOnce(true);
     }
   }, [accountID]);
