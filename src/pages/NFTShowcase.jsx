@@ -121,6 +121,7 @@ const NFTShowcase = () => {
   const setSearchBarWithAccountID = () => {
     setWalletAddress(accountID);
     setWalletAddressErr(null);
+    mutate({ account_id: accountID });
   };
 
   useEffect(() => {
