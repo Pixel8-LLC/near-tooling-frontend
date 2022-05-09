@@ -2,6 +2,8 @@ import { useMemo, useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import format from "date-fns/format";
 import { toast } from "react-toastify";
+import ReactImageFallback from "react-image-fallback";
+
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
 import { useMutation } from "react-query";
@@ -18,6 +20,8 @@ import classes from "./SingleNFT.module.css";
 import { getUserNftByTokenId } from "../api/UserNft";
 import { getNftEvents } from "../api/Nft";
 import Loader from "../common/Loader";
+import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
+
 const SingleNFT = () => {
   const { id } = useParams();
   const location = useLocation();
@@ -68,7 +72,7 @@ const SingleNFT = () => {
       page,
       related: "outcome,receipt",
     });
-  }, [page])
+  }, [page]);
 
   let { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
@@ -186,7 +190,7 @@ const SingleNFT = () => {
     );
     toast.success("Copied link to clipboard");
   };
-  console.log(isNFTLoading, isLoading)
+  console.log(isNFTLoading, isLoading);
   return (
     <div>
       <div className="flex items-center">
@@ -203,9 +207,10 @@ const SingleNFT = () => {
       </div>
       <div className="flex space-x-14 mt-8">
         <div className="">
-          <img
+          <ReactImageFallback
             src={metadata?.media_url}
             alt={metadata?.title}
+            fallbackImage={FallbackImg}
             className="rounded-xl w-80"
           />
           <div className="text-sm mt-4">
@@ -253,7 +258,7 @@ const SingleNFT = () => {
         </div>
         <div className="flex-1">
           <div className="text-xl font-bold">NFT History</div>
-          {!isNFTLoading && results.length ?
+          {!isNFTLoading && results.length ? (
             <div className="text-xs w-full overflow-x-auto">
               <ReactTable
                 columns={columns}
@@ -264,12 +269,17 @@ const SingleNFT = () => {
                 onClickNext={onClickNext}
               />
             </div>
-            :
-            !isNFTLoading ? <div className="flex flex-col items-center justify-center space-y-4 h-48">
+          ) : !isNFTLoading ? (
+            <div className="flex flex-col items-center justify-center space-y-4 h-48">
               <i className="text-xl fa-regular fa-magnifying-glass"></i>
               <div className="text-xl">No Data Found</div>
-            </div> : <div className="flex justify-center items-center h-48"> <Loader /> </div>
-          }
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-48">
+              {" "}
+              <Loader />{" "}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -2,10 +2,12 @@ import { Fragment, useEffect, useState } from "react";
 import classnames from "classnames";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import { usePopper } from "react-popper";
+import ReactImageFallback from "react-image-fallback";
 
 import { ReactComponent as NearIcon } from "../../../assets/img/near-icon.svg";
 import images from "./files";
 import classes from "./Step3.module.css";
+import FallbackImg from "../../../assets/img/fallback/Fallback_7.jpg";
 
 const Step3 = () => {
   const [selImgs, setSelImgs] = useState([]);
@@ -207,7 +209,7 @@ const Step3 = () => {
                           >
                             {`Translucent Vandal for Ukraine ${val.id}`}
                           </div>
-                          <img
+                          <ReactImageFallback
                             className={classnames(
                               "rounded-2xl w-full h-full",
                               {
@@ -218,6 +220,7 @@ const Step3 = () => {
                             )}
                             src={val.image}
                             alt={`${val.id}`}
+                            fallbackImage={FallbackImg}
                           />
                         </div>
                         <div

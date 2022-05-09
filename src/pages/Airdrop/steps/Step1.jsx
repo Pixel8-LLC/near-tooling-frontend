@@ -2,7 +2,10 @@ import { Fragment, useState } from "react";
 import classnames from "classnames";
 import { v4 as uuidv4 } from "uuid";
 import { Dialog, Transition } from "@headlessui/react";
+import ReactImageFallback from "react-image-fallback";
+
 import images from "./files";
+import FallbackImg from "../../../assets/img/fallback/Fallback_7.jpg";
 
 const Step1 = () => {
   const [selected, setSelected] = useState("near");
@@ -239,7 +242,7 @@ const Step1 = () => {
                                 >
                                   {`Translucent Vandal for Ukraine ${val.id}`}
                                 </div>
-                                <img
+                                <ReactImageFallback
                                   className={classnames(
                                     "rounded-2xl w-full h-full",
                                     {
@@ -252,6 +255,7 @@ const Step1 = () => {
                                   )}
                                   src={val.image}
                                   alt={`${val.id}`}
+                                  fallbackImage={FallbackImg}
                                 />
                               </div>
                               <div
