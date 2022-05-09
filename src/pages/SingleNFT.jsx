@@ -19,6 +19,7 @@ import { usePopper } from "react-popper";
 import classes from "./SingleNFT.module.css";
 import { getUserNftByTokenId } from "../api/UserNft";
 import { getNftEvents } from "../api/Nft";
+import NotFoundImg from "../assets/img/NotFound.svg";
 import Loader from "../assets/img/loading/loadicon2.gif";
 import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
 
@@ -214,11 +215,17 @@ const SingleNFT = () => {
             className="rounded-xl w-80"
           />
           <div className="text-sm mt-4">
-            <div className="">Royalty: {metadata?.royalty_perc}</div>
-            <div className="">Current Floor: {metadata.currentFloor}</div>
-            <div className="flex items-center space-x-4">
-              <div className="">Rarity:</div> {metadata.rarity}
-            </div>
+            {metadata?.royalty_perc && (
+              <div className="">Royalty: {metadata?.royalty_perc}</div>
+            )}
+            {metadata.currentFloor && (
+              <div className="">Current Floor: {metadata.currentFloor}</div>
+            )}
+            {metadata.rarity && (
+              <div className="flex items-center space-x-4">
+                <div className="">Rarity:</div> {metadata.rarity}
+              </div>
+            )}
           </div>
           <div className="mt-6 space-y-2.5">
             <button className="rounded-md text-sm bg-zinc-800 py-3 text-center w-full">
@@ -271,7 +278,7 @@ const SingleNFT = () => {
             </div>
           ) : !isNFTLoading ? (
             <div className="flex flex-col items-center justify-center space-y-4 h-48">
-              <i className="text-xl fa-regular fa-magnifying-glass"></i>
+              <img alt="Not Found" src={NotFoundImg} className="w-8"></img>
               <div className="text-xl">No Data Found</div>
             </div>
           ) : (

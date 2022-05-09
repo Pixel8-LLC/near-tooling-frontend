@@ -18,6 +18,7 @@ import { setShowConnectWallet } from "../redux/actions/topBar";
 import Loader from "../assets/img/loading/loadicon2.gif";
 import { toast } from "react-toastify";
 import hi from "date-fns/esm/locale/hi/index.js";
+import NotFoundImg from "../assets/img/NotFound.svg";
 import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
 import SearchIcon from "../common/SearchIcon";
 
@@ -269,8 +270,8 @@ const NFTShowcase = () => {
 
       <div className="mt-8">
         {walletAddressErr && walletAddressErr.code === 1 ? (
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
+          <div className="flex flex-col items-center justify-center -ml-44 space-y-4">
+            <img alt="Not Found" src={NotFoundImg} className="w-16"></img>
             <div className="text-4xl">No Wallet Found</div>
             <div className="text-lg">
               Oops! Please enter a different wallet.
