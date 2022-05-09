@@ -19,7 +19,7 @@ import { usePopper } from "react-popper";
 import classes from "./SingleNFT.module.css";
 import { getUserNftByTokenId } from "../api/UserNft";
 import { getNftEvents } from "../api/Nft";
-import Loader from "../common/Loader";
+import Loader from "../assets/img/loading/loadicon2.gif";
 import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
 
 const SingleNFT = () => {
@@ -276,8 +276,7 @@ const SingleNFT = () => {
             </div>
           ) : (
             <div className="flex justify-center items-center h-48">
-              {" "}
-              <Loader />{" "}
+              <img src={Loader} alt="Loading" />
             </div>
           )}
         </div>

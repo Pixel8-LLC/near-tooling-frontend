@@ -12,7 +12,7 @@ import { getNftEvents } from "../api/Nft";
 import format from "date-fns/format";
 import { toast } from "react-toastify";
 import { net } from "../constants";
-import Loader from "../common/Loader";
+import Loader from "../assets/img/loading/loadicon2.gif";
 import {
   setContractAddressAction,
   setContractAddressErrAction,
@@ -271,8 +271,8 @@ const Fans = () => {
           />
         </div>
       ) : isLoading ? (
-        <div className="flex justify-center items-center h-96">
-          <Loader />
+        <div className="flex justify-center items-center -ml-44 h-96">
+          <img src={Loader} alt="Loading" />
         </div>
       ) : null}
     </div>

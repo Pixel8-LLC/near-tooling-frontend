@@ -15,7 +15,7 @@ import {
   setWalletAddressErrAction,
 } from "../redux/actions/walletActivity";
 import { setShowConnectWallet } from "../redux/actions/topBar";
-import Loader from "../common/Loader";
+import Loader from "../assets/img/loading/loadicon2.gif";
 import { toast } from "react-toastify";
 import hi from "date-fns/esm/locale/hi/index.js";
 import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
@@ -277,8 +277,8 @@ const NFTShowcase = () => {
             </div>
           </div>
         ) : !fetchedOnce ? null : isLoading ? (
-          <div className="flex justify-center items-center h-96">
-            <Loader />
+          <div className="flex justify-center items-center -ml-44 h-96">
+            <img src={Loader} alt="Loading" />
           </div>
         ) : isError ? (
           "Error"
