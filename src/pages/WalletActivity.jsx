@@ -32,8 +32,9 @@ import {
 } from "../redux/actions/walletActivity";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import Loader from "../common/Loader";
 import NotFoundImg from "../assets/img/NotFound.svg";
+import Loader from "../assets/img/loading/loadicon2.gif";
+import SearchIcon from "../common/SearchIcon";
 
 const WalletActivity = () => {
   const statusValue = {
@@ -549,7 +550,10 @@ const WalletActivity = () => {
                     />
                   </div>
                 ) : (
-                  "No Data"
+                  <div className="flex flex-col items-center justify-center space-y-4 h-48">
+                    <SearchIcon />
+                    <div className="text-xl">No Data Found</div>
+                  </div>
                 )}
               </>
             ) : (
@@ -559,8 +563,8 @@ const WalletActivity = () => {
             ""
           )
         ) : (
-          <div className="flex justify-center items-center h-96">
-            <Loader />
+          <div className="flex justify-center items-center -ml-44 h-96">
+            <img src={Loader} alt="Loading" />
           </div>
         )}
       </div>
