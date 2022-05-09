@@ -2,6 +2,8 @@ import { useMemo, useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import format from "date-fns/format";
 import { toast } from "react-toastify";
+import ReactImageFallback from "react-image-fallback";
+
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
 import { useMutation } from "react-query";
@@ -18,6 +20,8 @@ import classes from "./SingleNFT.module.css";
 import { getUserNftByTokenId } from "../api/UserNft";
 import { getNftEvents } from "../api/Nft";
 import Loader from "../assets/img/loading/loadicon2.gif";
+import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
+
 const SingleNFT = () => {
   const { id } = useParams();
   const location = useLocation();
@@ -203,9 +207,10 @@ const SingleNFT = () => {
       </div>
       <div className="flex space-x-14 mt-8">
         <div className="">
-          <img
+          <ReactImageFallback
             src={metadata?.media_url}
             alt={metadata?.title}
+            fallbackImage={FallbackImg}
             className="rounded-xl w-80"
           />
           <div className="text-sm mt-4">

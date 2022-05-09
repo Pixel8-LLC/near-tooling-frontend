@@ -33,6 +33,7 @@ import {
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import Loader from "../assets/img/loading/loadicon2.gif";
+import SearchIcon from "../common/SearchIcon";
 
 const WalletActivity = () => {
   const statusValue = {
@@ -548,7 +549,10 @@ const WalletActivity = () => {
                     />
                   </div>
                 ) : (
-                  "No Data"
+                  <div className="flex flex-col items-center justify-center space-y-4 h-48">
+                    <SearchIcon />
+                    <div className="text-xl">No Data Found</div>
+                  </div>
                 )}
               </>
             ) : (

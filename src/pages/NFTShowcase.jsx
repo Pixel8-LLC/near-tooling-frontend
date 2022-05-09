@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import Masonry from "react-masonry-css";
 import { useDispatch, useSelector } from "react-redux";
+import ReactImageFallback from "react-image-fallback";
+
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import { getUserNfts } from "../api/UserNft";
@@ -15,6 +17,8 @@ import {
 import { setShowConnectWallet } from "../redux/actions/topBar";
 import Loader from "../assets/img/loading/loadicon2.gif";
 import { toast } from "react-toastify";
+import hi from "date-fns/esm/locale/hi/index.js";
+import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
 import SearchIcon from "../common/SearchIcon";
 
 const NFTShowcase = () => {
@@ -300,9 +304,10 @@ const NFTShowcase = () => {
                 }
               >
                 <div className="text-black rounded-t-xl flex flex-col">
-                  <img
+                  <ReactImageFallback
                     src={artwork.media_url}
                     alt={artwork.title}
+                    fallbackImage={FallbackImg}
                     className="rounded-t-xl"
                   />
                   <div className="bg-white rounded-b-xl flex flex-col flex-1">
