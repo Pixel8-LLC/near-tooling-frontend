@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import Masonry from "react-masonry-css";
 import { useDispatch, useSelector } from "react-redux";
+import ReactImageFallback from "react-image-fallback";
+
 import { ReactComponent as Search } from "../assets/img/search.svg";
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import { getUserNfts } from "../api/UserNft";
@@ -13,8 +15,11 @@ import {
   setWalletAddressErrAction,
 } from "../redux/actions/walletActivity";
 import { setShowConnectWallet } from "../redux/actions/topBar";
-import Loader from "../common/Loader";
+import Loader from "../assets/img/loading/loadicon2.gif";
 import { toast } from "react-toastify";
+import hi from "date-fns/esm/locale/hi/index.js";
+import NotFoundImg from "../assets/img/NotFound.svg";
+import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
 import SearchIcon from "../common/SearchIcon";
 
 const NFTShowcase = () => {
@@ -53,7 +58,9 @@ const NFTShowcase = () => {
 
   useEffect(() => {
     if (accountID) {
-      let wallet = location.search ? location.search.split("=")[1] : walletAddress;
+      let wallet = location.search
+        ? location.search.split("=")[1]
+        : walletAddress;
       mutate({ account_id: wallet ? wallet : accountID });
       setWalletAddress(wallet ? wallet : accountID);
       setFetchedOnce(true);
@@ -248,7 +255,7 @@ const NFTShowcase = () => {
             <div className="text-neutral-500">Based on floor price</div>
           </div> */}
         </div>
-        {results.length ?
+        {results.length ? (
           <div className="ml-auto">
             <button
               className="bg-zinc-800 py-4 px-10 flex items-center font-bold space-x-4 rounded-md"
@@ -258,23 +265,21 @@ const NFTShowcase = () => {
               <div className="">Share</div>
             </button>
           </div>
-          :
-          null
-        }
+        ) : null}
       </div>
 
       <div className="mt-8">
         {walletAddressErr && walletAddressErr.code === 1 ? (
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
+          <div className="flex flex-col items-center justify-center -ml-44 space-y-4">
+            <img alt="Not Found" src={NotFoundImg} className="w-16"></img>
             <div className="text-4xl">No Wallet Found</div>
             <div className="text-lg">
               Oops! Please enter a different wallet.
             </div>
           </div>
         ) : !fetchedOnce ? null : isLoading ? (
-          <div className="flex justify-center items-center h-96">
-            <Loader />
+          <div className="flex justify-center items-center -ml-44 h-96">
+            <img src={Loader} alt="Loading" />
           </div>
         ) : isError ? (
           "Error"
@@ -290,11 +295,20 @@ const NFTShowcase = () => {
             columnClassName="nft-masonry-grid_column"
           >
             {results.map((artwork) => (
-              <div key={artwork.token_id} className="cursor-pointer" onClick={() => navigate(`/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`)}>
+              <div
+                key={artwork.token_id}
+                className="cursor-pointer"
+                onClick={() =>
+                  navigate(
+                    `/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`,
+                  )
+                }
+              >
                 <div className="text-black rounded-t-xl flex flex-col">
-                  <img
+                  <ReactImageFallback
                     src={artwork.media_url}
                     alt={artwork.title}
+                    fallbackImage={FallbackImg}
                     className="rounded-t-xl"
                   />
                   <div className="bg-white rounded-b-xl flex flex-col flex-1">

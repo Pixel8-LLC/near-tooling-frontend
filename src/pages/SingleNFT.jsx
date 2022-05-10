@@ -2,6 +2,8 @@ import { useMemo, useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import format from "date-fns/format";
 import { toast } from "react-toastify";
+import ReactImageFallback from "react-image-fallback";
+
 import { ReactComponent as ShareFromSquare } from "../assets/img/share-from-square.svg";
 import artworks from "../constants/artWorks";
 import { useMutation } from "react-query";
@@ -17,7 +19,10 @@ import { usePopper } from "react-popper";
 import classes from "./SingleNFT.module.css";
 import { getUserNftByTokenId } from "../api/UserNft";
 import { getNftEvents } from "../api/Nft";
-import Loader from "../common/Loader";
+import NotFoundImg from "../assets/img/NotFound.svg";
+import Loader from "../assets/img/loading/loadicon2.gif";
+import FallbackImg from "../assets/img/fallback/Fallback_7.jpg";
+
 const SingleNFT = () => {
   const { id } = useParams();
   const location = useLocation();
@@ -68,7 +73,7 @@ const SingleNFT = () => {
       page,
       related: "outcome,receipt",
     });
-  }, [page])
+  }, [page]);
 
   let { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
@@ -186,7 +191,7 @@ const SingleNFT = () => {
     );
     toast.success("Copied link to clipboard");
   };
-  console.log(isNFTLoading, isLoading)
+  console.log(isNFTLoading, isLoading);
   return (
     <div>
       <div className="flex items-center">
@@ -203,17 +208,24 @@ const SingleNFT = () => {
       </div>
       <div className="flex space-x-14 mt-8">
         <div className="">
-          <img
+          <ReactImageFallback
             src={metadata?.media_url}
             alt={metadata?.title}
+            fallbackImage={FallbackImg}
             className="rounded-xl w-80"
           />
           <div className="text-sm mt-4">
-            <div className="">Royalty: {metadata?.royalty_perc}</div>
-            <div className="">Current Floor: {metadata.currentFloor}</div>
-            <div className="flex items-center space-x-4">
-              <div className="">Rarity:</div> {metadata.rarity}
-            </div>
+            {metadata?.royalty_perc && (
+              <div className="">Royalty: {metadata?.royalty_perc}</div>
+            )}
+            {metadata.currentFloor && (
+              <div className="">Current Floor: {metadata.currentFloor}</div>
+            )}
+            {metadata.rarity && (
+              <div className="flex items-center space-x-4">
+                <div className="">Rarity:</div> {metadata.rarity}
+              </div>
+            )}
           </div>
           <div className="mt-6 space-y-2.5">
             <button className="rounded-md text-sm bg-zinc-800 py-3 text-center w-full">
@@ -253,7 +265,7 @@ const SingleNFT = () => {
         </div>
         <div className="flex-1">
           <div className="text-xl font-bold">NFT History</div>
-          {!isNFTLoading && results.length ?
+          {!isNFTLoading && results.length ? (
             <div className="text-xs w-full overflow-x-auto">
               <ReactTable
                 columns={columns}
@@ -264,12 +276,16 @@ const SingleNFT = () => {
                 onClickNext={onClickNext}
               />
             </div>
-            :
-            !isNFTLoading ? <div className="flex flex-col items-center justify-center space-y-4 h-48">
-              <i className="text-xl fa-regular fa-magnifying-glass"></i>
+          ) : !isNFTLoading ? (
+            <div className="flex flex-col items-center justify-center space-y-4 h-48">
+              <img alt="Not Found" src={NotFoundImg} className="w-8"></img>
               <div className="text-2xl">No Data Found</div>
-            </div> : <div className="flex justify-center items-center h-48"> <Loader /> </div>
-          }
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-48">
+              <img src={Loader} alt="Loading" />
+            </div>
+          )}
         </div>
       </div>
     </div>

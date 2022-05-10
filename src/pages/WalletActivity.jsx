@@ -32,7 +32,8 @@ import {
 } from "../redux/actions/walletActivity";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import Loader from "../common/Loader";
+import NotFoundImg from "../assets/img/NotFound.svg";
+import Loader from "../assets/img/loading/loadicon2.gif";
 import SearchIcon from "../common/SearchIcon";
 
 const WalletActivity = () => {
@@ -131,18 +132,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-          date_column: "block_timestamp",
-          from_date: date.startDate.unix(),
-          to_date: date.endDate.add(1, "days").unix(),
-        }),
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-          type: selectedType,
-        }),
+            type: selectedType,
+          }),
         ...(selectedStatus &&
           statusValue[selectedStatus] && {
-          status: statusValue[selectedStatus],
-        }),
+            status: statusValue[selectedStatus],
+          }),
       });
       setFetchedOnce(true);
     } else if (accountID) {
@@ -152,18 +153,18 @@ const WalletActivity = () => {
         ...(date &&
           date.startDate &&
           date.endDate && {
-          date_column: "block_timestamp",
-          from_date: date.startDate.unix(),
-          to_date: date.endDate.add(1, "days").unix(),
-        }),
+            date_column: "block_timestamp",
+            from_date: date.startDate.unix(),
+            to_date: date.endDate.add(1, "days").unix(),
+          }),
         ...(selectedType &&
           selectedType !== "All Types" && {
-          type: selectedType,
-        }),
+            type: selectedType,
+          }),
         ...(selectedStatus &&
           statusValue[selectedStatus] && {
-          status: statusValue[selectedStatus],
-        }),
+            status: statusValue[selectedStatus],
+          }),
       });
       setFetchedOnce(true);
     }
@@ -380,8 +381,8 @@ const WalletActivity = () => {
       </div>
       <div className="mt-10">
         {walletAddressErr && walletAddressErr.code === 1 ? (
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <i className="text-7xl fa-regular fa-magnifying-glass"></i>
+          <div className="flex flex-col items-center justify-center -ml-44 space-y-4">
+            <img alt="Not Found" src={NotFoundImg} className="w-16"></img>
             <div className="text-4xl">No Wallet Found</div>
             <div className="text-lg">
               Oops! Please enter a different wallet.
@@ -437,9 +438,10 @@ const WalletActivity = () => {
                               <Listbox.Option
                                 key={status}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-gray-900 bg-gray-300"
-                                    : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "text-gray-900 bg-gray-300"
+                                      : "text-gray-900"
                                   }`
                                 }
                                 value={status}
@@ -449,10 +451,11 @@ const WalletActivity = () => {
                                   return (
                                     <>
                                       <span
-                                        className={`block truncate ${selected
-                                          ? "font-medium"
-                                          : "font-normal"
-                                          }`}
+                                        className={`block truncate ${
+                                          selected
+                                            ? "font-medium"
+                                            : "font-normal"
+                                        }`}
                                       >
                                         {status}
                                       </span>
@@ -499,9 +502,10 @@ const WalletActivity = () => {
                               <Listbox.Option
                                 key={type}
                                 className={({ active }) =>
-                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${active
-                                    ? "text-gray-900 bg-gray-300"
-                                    : "text-gray-900"
+                                  `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "text-gray-900 bg-gray-300"
+                                      : "text-gray-900"
                                   }`
                                 }
                                 value={type}
@@ -509,8 +513,9 @@ const WalletActivity = () => {
                                 {({ selected }) => (
                                   <>
                                     <span
-                                      className={`block truncate ${selected ? "font-medium" : "font-normal"
-                                        }`}
+                                      className={`block truncate ${
+                                        selected ? "font-medium" : "font-normal"
+                                      }`}
                                     >
                                       {type}
                                     </span>
@@ -558,8 +563,8 @@ const WalletActivity = () => {
             ""
           )
         ) : (
-          <div className="flex justify-center items-center h-96">
-            <Loader />
+          <div className="flex justify-center items-center -ml-44 h-96">
+            <img src={Loader} alt="Loading" />
           </div>
         )}
       </div>
