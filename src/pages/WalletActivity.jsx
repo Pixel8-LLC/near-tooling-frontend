@@ -547,7 +547,7 @@ const WalletActivity = () => {
                 ) : (
                   <div className="flex flex-col items-center justify-center space-y-4 h-48">
                     <SearchIcon />
-                    <div className="text-xl">No Data Found</div>
+                    <div className="text-2xl">No Data Found</div>
                   </div>
                 )}
               </>
