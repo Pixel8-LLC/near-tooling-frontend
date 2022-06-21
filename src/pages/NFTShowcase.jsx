@@ -181,8 +181,8 @@ const NFTShowcase = () => {
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">NFT Explorer</div>
-      <div className="">
-        <div className="flex items-center space-x-6 text-lg mt-6">
+      <div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-6 text-lg mt-6">
           <div className="text-lg rounded-lg w-96 border flex items-center ">
             <form
               id="search"

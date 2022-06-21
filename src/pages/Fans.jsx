@@ -237,10 +237,10 @@ const Fans = () => {
   return (
     <div>
       <div className="text-6xl font-medium w-full pb-3">NFT Minters</div>
-      <div className="flex items-end space-x-6 text-lg mt-6">
-        <div className="flex-1">
+      <div className="flex items-start lg:items-end lg:space-x-6 text-lg mt-6 flex-col lg:flex-row">
+        <div className="flex-1 w-full">
           <div className="text-lg">Enter minting contract address</div>
-          <div className="mt-4 text-lg rounded-lg w-11/12 border flex items-center">
+          <div className="mt-4 text-lg rounded-lg w-full border flex items-center">
             <input
               value={contractAddress}
               onChange={(e) => setContractAddress(e.target.value)}
@@ -252,7 +252,7 @@ const Fans = () => {
             </button>
           </div>
         </div>
-        <div className="ml-auto">
+        <div className="mt-3 lg:mt-0">
           <button className="bg-zinc-800 py-4 text-base px-10 flex items-center font-bold space-x-4 rounded-md">
             <FileExport />
             <div className="">Export Minters</div>

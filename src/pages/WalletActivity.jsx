@@ -323,12 +323,12 @@ const WalletActivity = () => {
     <>
       <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
 
-      <div className="">
-        <div className="flex items-center space-x-6 text-lg mt-6">
+      <div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-6 text-lg mt-6">
           <div>
             <form
               id="search"
-              className="text-lg rounded-lg w-96 border flex items-center"
+              className="text-lg rounded-lg lw-96 border flex items-center"
               onSubmit={handleWalletAddress}
             >
               <input

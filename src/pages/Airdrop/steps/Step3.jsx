@@ -141,7 +141,7 @@ const Step3 = () => {
                   <Popover.Button
                     ref={setReferenceElement}
                     className={classnames(
-                      "space-x-6 py-3 px-5 rounded-lg",
+                      "py-3 px-5 rounded-lg",
                       { "bg-white text-black": open },
                       { "bg-neutral-900": !open },
                     )}

@@ -4,14 +4,14 @@ import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
   return (
-    <div className="bg-black text-white pl-16 h-screen overflow-y-auto">
-      <div className="sticky top-0 bg-black z-10">
+    <div className="text-white container px-4 mx-auto h-screen overflow-y-auto">
+      <div className="sticky top-0 z-10">
         <Header />
       </div>
-      <div className="relative flex ">
+      <div className="relative flex gap-8">
         <Sidebar />
-        <div className="w-full overflow-x-auto pl-8 pb-10">
-          <div className="mr-16">
+        <div className="w-full overflow-x-auto pb-10">
+          <div>
             <Outlet />
           </div>
         </div>
