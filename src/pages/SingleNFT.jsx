@@ -187,7 +187,7 @@ const SingleNFT = () => {
   };
   const onShare = () => {
     navigator.clipboard.writeText(
-      `${window.location.origin}/nft-showcase/${token_id}:${contract_id}?wallet=${walletAddress}`,
+      `${window.location.origin}/nft-explorer/${token_id}:${contract_id}?wallet=${walletAddress}`,
     );
     toast.success("Copied link to clipboard");
   };

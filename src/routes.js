@@ -16,17 +16,17 @@ const routes = () => [
     children: [
       { index: true, element: <WalletActivity /> },
       {
-        path: "/nft-showcase",
+        path: "/nft-explorer",
         children: [
           { index: true, element: <NFTShowcase /> },
-          { path: "/nft-showcase/:id", element: <SingleNFT /> },
+          { path: "/nft-explorer/:id", element: <SingleNFT /> },
         ],
       },
       {
         path: "/airdrop",
         children: [{ index: true, element: <Airdrop /> }],
       },
-      { path: "/fans", element: <Fans /> },
+      { path: "/nft-minters", element: <Fans /> },
       { path: "/near/success", element: <NearSuccess /> },
       { path: "*", element: <NotFound /> },
     ],

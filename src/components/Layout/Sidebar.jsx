@@ -14,19 +14,19 @@ const Sidebar = () => {
     },
     {
       icon: <Trophy />,
-      title: "NFT Showcase",
-      url: "/nft-showcase",
+      title: "NFT Explorer",
+      url: "/nft-explorer",
     },
     {
       icon: <UserGroup />,
-      title: "Fans",
-      url: "/fans",
+      title: "NFT Minters",
+      url: "/nft-minters",
     },
-    {
-      icon: <BullseyeArrow />,
-      title: "Air Drop",
-      url: "/airdrop",
-    },
+    // {
+    //   icon: <BullseyeArrow />,
+    //   title: "Air Drop",
+    //   url: "/airdrop",
+    // },
   ];
   return (
     <div className="sticky top-32 h-fit w-sidebarWidth bg-zinc-800 rounded-xl py-5">

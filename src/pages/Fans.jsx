@@ -236,7 +236,7 @@ const Fans = () => {
 
   return (
     <div>
-      <div className="text-6xl font-medium w-full pb-3">Fans</div>
+      <div className="text-6xl font-medium w-full pb-3">NFT Minters</div>
       <div className="flex items-end space-x-6 text-lg mt-6">
         <div className="flex-1">
           <div className="text-lg">Enter minting contract address</div>
@@ -255,7 +255,7 @@ const Fans = () => {
         <div className="ml-auto">
           <button className="bg-zinc-800 py-4 text-base px-10 flex items-center font-bold space-x-4 rounded-md">
             <FileExport />
-            <div className="">Export Fans</div>
+            <div className="">Export Minters</div>
           </button>
         </div>
       </div>

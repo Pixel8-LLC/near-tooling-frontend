@@ -154,7 +154,7 @@ const NFTShowcase = () => {
   const onShare = (e) => {
     e.stopPropagation();
     navigator.clipboard.writeText(
-      `${window.location.origin}/nft-showcase?wallet=${walletAddress}`,
+      `${window.location.origin}/nft-explorer?wallet=${walletAddress}`,
     );
     toast.success("Copied link to clipboard");
   };
@@ -180,7 +180,7 @@ const NFTShowcase = () => {
   }, [walletAddress]);
   return (
     <div>
-      <div className="text-6xl font-medium w-full pb-3">NFT Showcase</div>
+      <div className="text-6xl font-medium w-full pb-3">NFT Explorer</div>
       <div className="">
         <div className="flex items-center space-x-6 text-lg mt-6">
           <div className="text-lg rounded-lg w-96 border flex items-center ">
@@ -300,7 +300,7 @@ const NFTShowcase = () => {
                 className="cursor-pointer"
                 onClick={() =>
                   navigate(
-                    `/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`,
+                    `/nft-explorer/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`,
                   )
                 }
               >
@@ -325,7 +325,7 @@ const NFTShowcase = () => {
                       </div>
                     </div>
                     <Link
-                      to={`/nft-showcase/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
+                      to={`/nft-explorer/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
                       className="flex items-center justify-center py-1 text-neutral-400"
                     >
                       More Info

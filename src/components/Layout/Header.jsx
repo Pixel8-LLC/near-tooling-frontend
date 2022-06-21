@@ -13,7 +13,7 @@ const Header = () => {
   );
   const location = useLocation();
 
-  const connectWalletExclusionPath = ["/", "/nft-showcase"];
+  const connectWalletExclusionPath = ["/", "/nft-explorer"];
   return (
     <div className="flex items-center py-10 pr-16 w-full">
       <div className="flex-1 flex items-center space-x-5">
