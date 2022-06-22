@@ -226,7 +226,7 @@ const SingleNFT = () => {
               </div>
             )}
           </div>
-          <div className="mt-6 space-y-2.5">
+          {/* <div className="mt-6 space-y-2.5">
             <button className="rounded-md text-sm bg-zinc-800 py-3 text-center w-full">
               Transfer NFT
             </button>
@@ -260,7 +260,7 @@ const SingleNFT = () => {
                 <img src="/solutions.jpg" alt="" />
               </Popover.Panel>
             </Popover>
-          </div>
+          </div> */}
         </div>
         <div className="flex-1">
           <div className="text-xl font-bold">NFT History</div>

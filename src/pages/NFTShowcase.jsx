@@ -313,7 +313,7 @@ const NFTShowcase = () => {
                   <div className="bg-white rounded-b-xl flex flex-col flex-1">
                     <div className="bg-slate-50 py-3 px-4 flex-1">
                       <p className="font-bold text-lg">{artwork.title}</p>
-                      <div className="text-sm mt-1">
+                      {/* <div className="text-sm mt-1">
                         <div>Royalty: {artwork.royalty_perc}</div>
                         <div>
                           Current Floor: {artwork.currentFloor}
@@ -321,7 +321,7 @@ const NFTShowcase = () => {
                         <div className="flex items-center space-x-4">
                           <div>Rarity:</div> {artwork.rarity}
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     <Link
                       to={`/nft-explorer/${artwork.token_id}:${artwork.contract_name}?wallet=${walletAddress}`}
