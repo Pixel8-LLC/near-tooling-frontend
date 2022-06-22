@@ -33,7 +33,6 @@ const Fans = () => {
     endDate: null,
   });
   const [focusedInput, setFocusedInput] = useState(null);
-  console.log(fetchedOnce);
   const showConnectWallet = useSelector(
     (state) => state.topBar.showConnectWallet,
   );
@@ -163,7 +162,7 @@ const Fans = () => {
         accessor: "status",
         Cell: ({ row, value }) => (
           <div className="flex items-center space-x-2 w-full">
-            <div className="">
+            <div>
               {statusIcon[row.original.outcome.status] || ""}
             </div>
             <div className="w-28 flex-1">
@@ -232,11 +231,8 @@ const Fans = () => {
     fetchWalletActivity();
   }, [date, page]);
 
-  console.log(isLoading, "isLoading");
-
   return (
     <div>
-      <div className="text-6xl font-medium w-full pb-3">NFT Minters</div>
       <div className="flex items-start lg:items-end lg:space-x-6 text-lg mt-6 flex-col lg:flex-row">
         <div className="flex-1 w-full">
           <div className="text-lg">Enter minting contract address</div>
@@ -255,7 +251,7 @@ const Fans = () => {
         <div className="mt-3 lg:mt-0">
           <button className="bg-zinc-800 py-4 text-base px-10 flex items-center font-bold space-x-4 rounded-md">
             <FileExport />
-            <div className="">Export Minters</div>
+            <div>Export Minters</div>
           </button>
         </div>
       </div>

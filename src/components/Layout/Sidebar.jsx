@@ -2,9 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import { ReactComponent as Wallet } from "../../assets/img/wallet.svg";
 import { ReactComponent as Trophy } from "../../assets/img/trophy.svg";
 import { ReactComponent as UserGroup } from "../../assets/img/user-group.svg";
-import { ReactComponent as BullseyeArrow } from "../../assets/img/bullseye-arrow.svg";
+// import { ReactComponent as BullseyeArrow } from "../../assets/img/bullseye-arrow.svg";
 
-const Sidebar = () => {
+const Sidebar = ({open}) => {
   let location = useLocation();
   const links = [
     {
@@ -29,7 +29,7 @@ const Sidebar = () => {
     // },
   ];
   return (
-    <div className="sticky top-32 h-fit w-sidebarWidth bg-zinc-800 rounded-xl py-5">
+    <div className={`${!open && 'hidden'} absolute left-11 sm:left-0 top-0 sm:sticky sm:top-32 h-fit w-sidebarWidth bg-zinc-800 rounded-xl py-5 sm:block`}>
       <div className=" pl-5 pr-2 text-lg font-medium border-b border-b-black pb-3">
         NFT Tools
       </div>
@@ -42,7 +42,7 @@ const Sidebar = () => {
               } hover:font-medium hover:bg-white hover:text-black`}
           >
             {icon}
-            <div className="">{title}</div>
+            <div>{title}</div>
           </Link>
         ))}
       </div>

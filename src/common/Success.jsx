@@ -21,7 +21,6 @@ const Success = () => {
           near.connection.signer.keyStore.localStorage[
             `near-api-js:keystore:${account_id}:${net}`
           ];
-        console.log(pk);
         const keyPair = KeyPair.fromString(pk);
 
         const signedObj = keyPair.sign(Buffer.from(account_id));
@@ -33,7 +32,6 @@ const Success = () => {
           signature: signature,
           pk,
         });
-        console.log(sign);
         if (sign.success) {
           localStorage.setItem("nt_token", sign.token);
           navigate("/");

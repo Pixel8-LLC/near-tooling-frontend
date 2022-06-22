@@ -67,7 +67,7 @@ const Step3 = () => {
           <span> - 3 Wallets</span>
         </div>
         <div className="mt-5 flex items-centext-neutral-400ter justify-between">
-          <div className="">
+          <div>
             <div className="flex items-center space-x-5">
               <i className="fas fa-image"></i>
               <div className="min-w-[8rem]">69 NFT</div>
@@ -294,7 +294,7 @@ const Step3 = () => {
                     as="h3"
                     className="flex flex-col items-center justify-between px-36 pt-8 pb-4 text-center"
                   >
-                    <i className="far fa-exclamation-circle text-6xl leading-6 text-white mb-11"></i>
+                    <i className="far fa-exclamation-circle text-4xl md:text-6xl leading-6 text-white mb-11"></i>
                     <div className="text-4xl text-white mb-10 leading-10">
                       This Airdrop cannot be completed
                     </div>

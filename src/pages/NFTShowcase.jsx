@@ -180,13 +180,12 @@ const NFTShowcase = () => {
   }, [walletAddress]);
   return (
     <div>
-      <div className="text-6xl font-medium w-full pb-3">NFT Explorer</div>
       <div>
         <div className="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-6 text-lg mt-6">
-          <div className="text-lg rounded-lg w-96 border flex items-center ">
+          <div className="text-lg rounded-lg w-96 max-w-full border flex items-center ">
             <form
               id="search"
-              className="text-lg rounded-lg w-96 border flex items-center"
+              className="text-lg rounded-lg w-96 max-w-full border flex items-center"
               onSubmit={onSearch}
             >
               <input
@@ -241,17 +240,17 @@ const NFTShowcase = () => {
         <div className="flex space-x-14 flex-1">
           {/* 
           // NOTE: Just commenting out for now until we get the data in place
-          <div className="">
+          <div>
             <div className="text-2xl">5</div>
-            <div className="">Artworks collected</div>
+            <div>Artworks collected</div>
           </div>
-          <div className="">
+          <div>
             <div className="text-2xl">13</div>
-            <div className="">Unique Artists</div>
+            <div>Unique Artists</div>
           </div>
-          <div className="">
+          <div>
             <div className="text-2xl">13 NEAR</div>
-            <div className="">Wallet Value </div>
+            <div>Wallet Value </div>
             <div className="text-neutral-500">Based on floor price</div>
           </div> */}
         </div>
@@ -262,7 +261,7 @@ const NFTShowcase = () => {
               onClick={onShare}
             >
               <ShareFromSquare />
-              <div className="">Share</div>
+              <div>Share</div>
             </button>
           </div>
         ) : null}
@@ -315,12 +314,12 @@ const NFTShowcase = () => {
                     <div className="bg-slate-50 py-3 px-4 flex-1">
                       <p className="font-bold text-lg">{artwork.title}</p>
                       <div className="text-sm mt-1">
-                        <div className="">Royalty: {artwork.royalty_perc}</div>
-                        <div className="">
+                        <div>Royalty: {artwork.royalty_perc}</div>
+                        <div>
                           Current Floor: {artwork.currentFloor}
                         </div>
                         <div className="flex items-center space-x-4">
-                          <div className="">Rarity:</div> {artwork.rarity}
+                          <div>Rarity:</div> {artwork.rarity}
                         </div>
                       </div>
                     </div>

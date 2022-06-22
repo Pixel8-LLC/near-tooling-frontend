@@ -1,5 +1,4 @@
 import { lazy } from "react";
-
 const Layout = lazy(() => import("./components/Layout/Layout"));
 const WalletActivity = lazy(() => import("./pages/WalletActivity"));
 const NFTShowcase = lazy(() => import("./pages/NFTShowcase"));

@@ -231,7 +231,7 @@ const WalletActivity = () => {
         accessor: "status",
         Cell: ({ row, value }) => (
           <div className="flex items-center space-x-2 w-full">
-            <div className="">{statusIcon[row.original.status] || ""}</div>
+            <div>{statusIcon[row.original.status] || ""}</div>
             <div className="w-28 flex-1">
               {statusText[row.original.status] || "N/A"}
             </div>
@@ -319,16 +319,15 @@ const WalletActivity = () => {
       setWalletAddressErr(null);
     }
   }, [walletAddress]);
+
   return (
     <>
-      <div className="text-6xl font-medium w-full pb-3">Wallet Activity</div>
-
       <div>
         <div className="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-6 text-lg mt-6">
-          <div>
+          <div className="w-full">
             <form
               id="search"
-              className="text-lg rounded-lg lw-96 border flex items-center"
+              className="text-lg rounded-lg lg:w-96 border flex items-center max-w-full"
               onSubmit={handleWalletAddress}
             >
               <input
@@ -447,7 +446,6 @@ const WalletActivity = () => {
                                 value={status}
                               >
                                 {({ selected }) => {
-                                  console.log(selected);
                                   return (
                                     <>
                                       <span

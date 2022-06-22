@@ -10,7 +10,7 @@ const Step4 = () => {
           <span> - 3 Wallets</span>
         </div>
         <div className="mt-5 flex items-center justify-between">
-          <div className="">
+          <div>
             <div className="flex items-center space-x-5">
               <i className="fas fa-image"></i>
               <div className="min-w-[8rem]">69 NFT</div>

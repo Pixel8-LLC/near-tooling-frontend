@@ -16,16 +16,16 @@ const Step2 = () => {
   };
   return (
     <div>
-      <div className="">
+      <div>
         <div className="text-2xl font-bold">Sending:</div>
         <div className="mt-2 text-lg">
           <div className="flex items-center space-x-5">
             <i className="fas fa-image"></i>
-            <div className="">69 NFT</div>
+            <div>69 NFT</div>
           </div>
           <div className="flex items-center space-x-5">
             <NearIcon />
-            <div className="">420 NEAR</div>
+            <div>420 NEAR</div>
           </div>
         </div>
       </div>

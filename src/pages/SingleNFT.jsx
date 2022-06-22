@@ -130,7 +130,7 @@ const SingleNFT = () => {
         accessor: "explorer_link",
         Cell: ({ row, value }) => (
           <div className="flex items-center space-x-2">
-            <div className="">
+            <div>
               {statusIcon[row.original.outcome.status] || ""}
             </div>
             <div className="w-16">
@@ -191,7 +191,6 @@ const SingleNFT = () => {
     );
     toast.success("Copied link to clipboard");
   };
-  console.log(isNFTLoading, isLoading);
   return (
     <div>
       <div className="flex items-center">
@@ -202,12 +201,12 @@ const SingleNFT = () => {
             onClick={onShare}
           >
             <ShareFromSquare />
-            <div className="">Share</div>
+            <div>Share</div>
           </button>
         </div>
       </div>
       <div className="flex space-x-14 mt-8">
-        <div className="">
+        <div>
           <ReactImageFallback
             src={metadata?.media_url}
             alt={metadata?.title}
@@ -216,14 +215,14 @@ const SingleNFT = () => {
           />
           <div className="text-sm mt-4">
             {metadata?.royalty_perc && (
-              <div className="">Royalty: {metadata?.royalty_perc}</div>
+              <div>Royalty: {metadata?.royalty_perc}</div>
             )}
             {metadata.currentFloor && (
-              <div className="">Current Floor: {metadata.currentFloor}</div>
+              <div>Current Floor: {metadata.currentFloor}</div>
             )}
             {metadata.rarity && (
               <div className="flex items-center space-x-4">
-                <div className="">Rarity:</div> {metadata.rarity}
+                <div>Rarity:</div> {metadata.rarity}
               </div>
             )}
           </div>
@@ -254,8 +253,8 @@ const SingleNFT = () => {
                   ref={setArrowElement}
                 ></div>
                 <div className="text-center px-10 py-8">
-                  <div className="">Some Function Two</div>
-                  <div className="">Some Function One</div>
+                  <div>Some Function Two</div>
+                  <div>Some Function One</div>
                 </div>
 
                 <img src="/solutions.jpg" alt="" />
