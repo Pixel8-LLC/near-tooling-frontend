@@ -324,7 +324,7 @@ const WalletActivity = () => {
     <>
       <div>
         <div className="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-6 text-lg mt-6">
-          <div className="w-full">
+          <div className="text-lg rounded-lg w-96 max-w-full border flex items-center">
             <form
               id="search"
               className="text-lg rounded-lg lg:w-96 border flex items-center max-w-full"
