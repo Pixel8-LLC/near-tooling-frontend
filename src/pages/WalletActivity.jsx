@@ -327,7 +327,7 @@ const WalletActivity = () => {
           <div className="text-lg rounded-lg w-96 max-w-full border flex items-center">
             <form
               id="search"
-              className="text-lg rounded-lg lg:w-96 border flex items-center max-w-full"
+              className="text-lg rounded-lg w-96 max-w-full border flex items-center"
               onSubmit={handleWalletAddress}
             >
               <input
