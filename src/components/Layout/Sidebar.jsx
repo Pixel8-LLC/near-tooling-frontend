@@ -29,7 +29,7 @@ const Sidebar = ({open}) => {
     // },
   ];
   return (
-    <div className={`${!open && 'hidden'} absolute left-11 sm:left-0 top-0 sm:sticky sm:top-32 h-fit w-sidebarWidth bg-zinc-800 rounded-xl py-5 sm:block`}>
+    <div className={`${!open && 'hidden'} absolute z-10 left-11 sm:left-0 top-0 sm:sticky sm:top-32 h-fit w-sidebarWidth bg-zinc-800 rounded-xl py-5 sm:block`}>
       <div className=" pl-5 pr-2 text-lg font-medium border-b border-b-black pb-3">
         NFT Tools
       </div>

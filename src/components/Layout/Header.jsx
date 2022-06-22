@@ -25,7 +25,7 @@ const Header = () => {
       <div>
         {walletConnection && walletConnection.isSignedIn() ? (
           <div className="flex items-center space-x-4">
-            <div className="flex items-center font-medium space-x-4">
+            <div className="hidden sm:flex items-center font-medium space-x-4">
               <div className="rounded-full w-6 h-6 bg-neutral-300"></div>
               <div>{accountID}</div>
             </div>
