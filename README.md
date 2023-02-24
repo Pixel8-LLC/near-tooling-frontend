@@ -8,7 +8,7 @@ The goal is to create a suite of open source tools that you wish existed when st
 - NFT Minters -- Get the minters of a contract
 - Airdropper (WIP) -- Easily airdrop tokens and NFTs to an array of wallets
 
-These tools are very early in development and could definitely be expanded upon. If you have any ideas for a tool, even if you're not a dev... please open an issue so someone can build it for you.
+These tools are very early in development and could definitely be expanded upon. If you have any ideas for a tool, even if you're not a dev... please [open an issue](https://github.com/Pixel8-LLC/near-tooling-frontend/issues) so someone can build it for you.
 
 ## Getting Started
 `yarn install`
